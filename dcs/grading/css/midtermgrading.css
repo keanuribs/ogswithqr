@@ -1,0 +1,59 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f7f7;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.responsive-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 80%; /* Adjust the width as needed */
+  max-width: 400px; /* Set a maximum width */
+  max-height: 80vh; /* Set a maximum height */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+select, input[type="text"], input[type="submit"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+input[type="submit"] {
+  background-color: #4caf50;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 600px) {
+  .responsive-form {
+      width: 90%;
+      max-height: none; /* Remove the max-height on smaller screens */
+  }
+}

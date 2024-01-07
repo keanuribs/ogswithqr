@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/labgrading.css">
+  <title>Grading Categories</title>
+</head>
+
+<body>
+  <div class="form-container">
+    <h1>Grading Form</h1>
+
+    <div class="form-group">
+      <label for="gradingCategory">Select Grading Category:</label>
+      <select id="gradingCategory" name="gradingCategory" onchange="showForm()" class="form-control">
+        <option value="attendance">Attendance (10%)</option>
+        <option value="classParticipation">Class Participation (10%)</option>
+        <option value="quizzesExams">Quizzes / Long Exams (15%)</option>
+        <option value="outputPortfolio">Outputs / Portfolio (25%)</option>
+        <option value="midtermExam">Midterm Exam (20%)</option>
+        <option value="finalExam">Final Exam (20%)</option>
+        <option value="total">TOTAL</option>
+      </select>
+    </div>
+
+    <!-- Class Participation Form -->
+    <form id="classParticipationForm" class="hidden-form">
+      <div class="form-group">
+        <label for="classParticipationInput">Class Participation (10%):</label>
+        <input type="text" id="classParticipationInput" name="classParticipationInput" class="form-control">
+      </div>
+    </form>
+
+    <!-- Quizzes/Long Exams Form -->
+    <form id="quizzesExamsForm" class="hidden-form">
+      <div class="form-group">
+        <label for="quizzesExamsInput">Quizzes / Long Exams (15%):</label>
+        <input type="text" id="quizzesExamsInput" name="quizzesExamsInput" class="form-control">
+      </div>
+    </form>
+
+    <!-- Output/Portfolio Form -->
+    <form id="outputPortfolioForm" class="hidden-form">
+      <div class="form-group">
+        <label for="outputPortfolioInput">Outputs / Portfolio (25%):</label>
+        <input type="text" id="outputPortfolioInput" name="outputPortfolioInput" class="form-control">
+      </div>
+    </form>
+
+    <!-- Midterm Exam Form -->
+    <form id="midtermExamForm" class="hidden-form">
+      <div class="form-group">
+        <label for="midtermExamInput">Midterm Exam (20%):</label>
+        <input type="text" id="midtermExamInput" name="midtermExamInput" class="form-control">
+      </div>
+    </form>
+
+    <!-- Final Exam Form -->
+    <form id="finalExamForm" class="hidden-form">
+      <div class="form-group">
+        <label for="finalExamInput">Final Exam (20%):</label>
+        <input type="text" id="finalExamInput" name="finalExamInput" class="form-control">
+      </div>
+    </form>
+
+    <!-- Total Form -->
+    <form id="totalForm" class="hidden-form">
+      <div class="form-group">
+        <label for="totalInput">TOTAL:</label>
+        <input type="text" id="totalInput" name="totalInput" class="form-control">
+      </div>
+    </form>
+
+    <!-- Single Submit Button -->
+    <button type="submit" onclick="submitForm()" class="btn-submit">Submit</button>
+  </div>
+
+  <script>
+    function showForm() {
+      var selectedCategory = document.getElementById("gradingCategory").value;
+    
+      // Hide all forms
+      var allForms = document.querySelectorAll('form');
+      allForms.forEach(function (form) {
+        form.classList.add("hidden-form");
+      });
+    
+      // Show the selected form
+      if (selectedCategory !== "total") {
+        var selectedForm = document.getElementById(selectedCategory + "Form");
+        selectedForm.classList.remove("hidden-form");
+      } else {
+        var totalForm = document.getElementById("totalForm");
+        totalForm.classList.remove("hidden-form");
+      }
+    }
+    
+
+    function submitForm() {
+      // Perform any additional actions with the input values (e.g., submit to a server)
+      var attendanceParticipationValue = document.getElementById("attendanceParticipationInput").value;
+      var classParticipationValue = document.getElementById("classParticipationInput").value;
+      var quizzesExamsValue = document.getElementById("quizzesExamsInput").value;
+      var outputPortfolioValue = document.getElementById("outputPortfolioInput").value;
+      var midtermExamValue = document.getElementById("midtermExamInput").value;
+      var finalExamValue = document.getElementById("finalExamInput").value;
+      var totalValue = document.getElementById("totalInput").value;
+
+      console.log("Attendance Value:", attendanceParticipationValue);
+      console.log("Class Participation Value:", classParticipationValue);
+      console.log("Quizzes/Long Exams Value:", quizzesExamsValue);
+      console.log("Output/Portfolio Value:", outputPortfolioValue);
+      console.log("Midterm Exam Value:", midtermExamValue);
+      console.log("Final Exam Value:", finalExamValue);
+      console.log("Total Value:", totalValue);
+    }
+  </script>
+</body>
+
+</html>

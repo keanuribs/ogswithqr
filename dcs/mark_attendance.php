@@ -16,7 +16,6 @@ include 'config.php';
 
 $query = mysqli_query($conn, "SELECT * FROM users WHERE email='{$_SESSION['SESSION_EMAIL']}'");
 
-
 if ($query) {
     if (mysqli_num_rows($query) > 0) {
         $row = mysqli_fetch_assoc($query);
@@ -142,21 +141,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
                     echo "Attendance marked successfully. Status: $attendanceStatus";
+
+                    // Close the $stmtInsertAttendance statement
+                    $stmtInsertAttendance->close();
                 }
             } else {
                 echo "Class not found or class details do not match.";
             }
+
+            // Close the $stmtCheckClass statement
+            $stmtCheckClass->close();
         } else {
             echo "Section not found for the given section name.";
         }
+
+        // Close the $stmtFetchSection statement
+        $stmtFetchSection->close();
     } else {
         echo "Student not found with the given student number.";
     }
 
-    // Close statements and the database connection
+    // Close the $stmtCheckStudent statement
     $stmtCheckStudent->close();
-    $stmtFetchSection->close();
-    $stmtCheckClass->close();
     // (Close other statements as needed...)
     $conn->close();
 }
@@ -177,62 +183,59 @@ function determineAttendanceStatus($classData, $currentTime) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DCS | Student Attendance Form</title>
-
-  
+    
     <!-- Font Awesome icons for additional styling and icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
+    
     <!-- Favicon for the website tab -->
     <link rel="icon" href="image/dcss.png" type="image"/>
-
+    
     <!-- Bootstrap CSS for styling and layout components -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"/>
-
+    
     <!-- Custom styles for the post dashboard -->
     <link rel="stylesheet" href="css/postdashboard.css" />
-
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
-
     
     <!-- DataTables CSS for enhanced HTML tables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css"/>
-
+    
     <!-- DataTables Responsive extension CSS for responsive tables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" />
-
+    
     <!-- JavaScript module for application logic -->
     <script src="js/course.js" type="module"></script>
-  </head>
-  <body>
-   <?php include 'inc/sidebar.php';?>
+</head>
+<body>
+    <?php include 'inc/sidebar.php';?>
 
     <section class="content">
-    <?php include 'inc/navbar.php';?>
-<main>
+        <?php include 'inc/navbar.php';?>
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>Student Attendance Form</h1>
+                    <ul class="breadcrumb">
+                        <!-- Breadcrumb links go here if needed -->
+                    </ul>
+                </div>
+            </div>
 
+            <form method="post" action="">
+                <label for="student_number">Student Number:</label>
+                <input type="text" name="student_number" required><br>
 
-<div class="head-title" >
-          <div class="left">
-            <h1>Student Attendance Form</h1>
-            <ul class="breadcrumb">
-            </ul>
-          </div>
-        </div>
-
-<form method="post" action="">
-    <label for="student_number">Student Number:</label>
-    <input type="text" name="student_number" required><br>
-
-    <input type="submit" value="Mark Attendance">
-</form>
-
+                <input type="submit" value="Mark Attendance">
+            </form>
+        </main>
+    </section>
 </body>
 </html>

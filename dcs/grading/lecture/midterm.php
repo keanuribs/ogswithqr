@@ -54,8 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $quizTotals[] = $_POST['quiz' . $i . 'Total'] ?? '';
             }
 
-            // Insert data into the 'lecture' table for quizzes
-            $sql = "INSERT INTO lecture (option_selected, " . implode(', ', array_map(function ($i) {
+            // Insert data into the 'quiz' table for quizzes
+            $sql = "INSERT INTO quiz (option_selected, " . implode(', ', array_map(function ($i) {
                     return "quiz{$i}_score, quiz{$i}_total";
                 }, range(1, 10))) . ") VALUES ('$selectedOption', " . implode(', ', $quizScores) . ", " . implode(', ', $quizTotals) . ")";
 
@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $bindParams = str_repeat('ss', 10);  // Assuming both Number of Works and Score are strings
 
             // Prepare and execute the SQL statement
-            $stmt = $conn->prepare("INSERT INTO lecture (option_selected, " . implode(', ', array_map(function ($i) {
+            $stmt = $conn->prepare("INSERT INTO output_portfolio (option_selected, " . implode(', ', array_map(function ($i) {
                     return "num_of_works_$i, score_$i";
                 }, range(1, 10))) . ") VALUES ('$selectedOption', $placeholdersNumWorks, $placeholdersScores)");
 
@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $midtermExamTotalQuestions = $_POST['midtermExamTotalQuestions'] ?? '';
 
             // Insert data into the 'lecture' table for Midterm Exam
-            $sql = "INSERT INTO lecture (option_selected, midterm_exam_score, midterm_exam_total) 
+            $sql = "INSERT INTO midterm (option_selected, midterm_exam_score, midterm_exam_total) 
                     VALUES ('$selectedOption', '$midtermExamScore', '$midtermExamTotalQuestions')";
 
             if ($conn->query($sql) === TRUE) {

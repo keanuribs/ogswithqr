@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 08, 2024 at 08:05 AM
+-- Generation Time: Jan 08, 2024 at 03:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,61 +32,15 @@ CREATE TABLE `lecture` (
   `option_selected` varchar(255) DEFAULT NULL,
   `overall_total` int(11) DEFAULT NULL,
   `number_of_participants` int(11) DEFAULT NULL,
-  `weighted_total` float DEFAULT NULL,
-  `quiz1_score` float NOT NULL DEFAULT 0,
-  `quiz1_total` float NOT NULL DEFAULT 0,
-  `quiz2_score` float NOT NULL DEFAULT 0,
-  `quiz2_total` float NOT NULL DEFAULT 0,
-  `quiz3_score` float NOT NULL DEFAULT 0,
-  `quiz3_total` float NOT NULL DEFAULT 0,
-  `quiz4_score` float NOT NULL DEFAULT 0,
-  `quiz4_total` float NOT NULL DEFAULT 0,
-  `quiz5_score` float NOT NULL DEFAULT 0,
-  `quiz5_total` float NOT NULL DEFAULT 0,
-  `quiz6_score` float NOT NULL DEFAULT 0,
-  `quiz6_total` float NOT NULL DEFAULT 0,
-  `quiz7_score` float NOT NULL DEFAULT 0,
-  `quiz7_total` float NOT NULL DEFAULT 0,
-  `quiz8_score` float NOT NULL DEFAULT 0,
-  `quiz8_total` float NOT NULL DEFAULT 0,
-  `quiz9_score` float NOT NULL DEFAULT 0,
-  `quiz9_total` float NOT NULL DEFAULT 0,
-  `quiz10_score` float NOT NULL DEFAULT 0,
-  `quiz10_total` float NOT NULL DEFAULT 0,
-  `num_of_works_1` int(11) DEFAULT NULL,
-  `score_1` int(11) DEFAULT NULL,
-  `num_of_works_2` int(11) DEFAULT NULL,
-  `score_2` int(11) DEFAULT NULL,
-  `num_of_works_3` int(11) DEFAULT NULL,
-  `score_3` int(11) DEFAULT NULL,
-  `num_of_works_4` int(11) DEFAULT NULL,
-  `score_4` int(11) DEFAULT NULL,
-  `num_of_works_5` int(11) DEFAULT NULL,
-  `score_5` int(11) DEFAULT NULL,
-  `num_of_works_6` int(11) DEFAULT NULL,
-  `score_6` int(11) DEFAULT NULL,
-  `num_of_works_7` int(11) DEFAULT NULL,
-  `score_7` int(11) DEFAULT NULL,
-  `num_of_works_8` int(11) DEFAULT NULL,
-  `score_8` int(11) DEFAULT NULL,
-  `num_of_works_9` int(11) DEFAULT NULL,
-  `score_9` int(11) DEFAULT NULL,
-  `num_of_works_10` int(11) DEFAULT NULL,
-  `score_10` int(11) DEFAULT NULL,
-  `midterm_exam_score` float DEFAULT NULL,
-  `midterm_exam_total` float DEFAULT NULL
+  `weighted_total` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `lecture`
 --
 
-INSERT INTO `lecture` (`id`, `option_selected`, `overall_total`, `number_of_participants`, `weighted_total`, `quiz1_score`, `quiz1_total`, `quiz2_score`, `quiz2_total`, `quiz3_score`, `quiz3_total`, `quiz4_score`, `quiz4_total`, `quiz5_score`, `quiz5_total`, `quiz6_score`, `quiz6_total`, `quiz7_score`, `quiz7_total`, `quiz8_score`, `quiz8_total`, `quiz9_score`, `quiz9_total`, `quiz10_score`, `quiz10_total`, `num_of_works_1`, `score_1`, `num_of_works_2`, `score_2`, `num_of_works_3`, `score_3`, `num_of_works_4`, `score_4`, `num_of_works_5`, `score_5`, `num_of_works_6`, `score_6`, `num_of_works_7`, `score_7`, `num_of_works_8`, `score_8`, `num_of_works_9`, `score_9`, `num_of_works_10`, `score_10`, `midterm_exam_score`, `midterm_exam_total`) VALUES
-(12, 'classParticipation', 18, 16, 8.89, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(23, 'quizzesExams', NULL, NULL, NULL, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(25, 'outputPortfolio', NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, NULL, NULL),
-(26, 'midtermExam', NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 80, 100),
-(27, 'outputPortfolio', NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 1, 1, 1, 1, 1, 11, 1, 1, 1, NULL, NULL);
+INSERT INTO `lecture` (`id`, `option_selected`, `overall_total`, `number_of_participants`, `weighted_total`) VALUES
+(12, 'classParticipation', 18, 16, 8.89);
 
 -- --------------------------------------------------------
 
@@ -112,6 +66,64 @@ CREATE TABLE `members` (
 
 INSERT INTO `members` (`id`, `first_name`, `last_name`, `email`, `gender`, `country`, `created`, `modified`, `status`) VALUES
 (3, 'cha', 'Char', '2323@gmail.com', 'Female', 'Philippines', '2023-12-03 10:19:49', '2023-12-03 19:49:01', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `midterm`
+--
+
+CREATE TABLE `midterm` (
+  `id` int(11) NOT NULL,
+  `option_selected` varchar(255) DEFAULT NULL,
+  `midterm_exam_score` float DEFAULT NULL,
+  `midterm_exam_total` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `midterm`
+--
+
+INSERT INTO `midterm` (`id`, `option_selected`, `midterm_exam_score`, `midterm_exam_total`) VALUES
+(1, 'midtermExam', 100, 90);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `output_portfolio`
+--
+
+CREATE TABLE `output_portfolio` (
+  `id` int(11) NOT NULL,
+  `option_selected` varchar(255) DEFAULT NULL,
+  `num_of_works_1` int(11) DEFAULT NULL,
+  `score_1` int(11) DEFAULT NULL,
+  `num_of_works_2` int(11) DEFAULT NULL,
+  `score_2` int(11) DEFAULT NULL,
+  `num_of_works_3` int(11) DEFAULT NULL,
+  `score_3` int(11) DEFAULT NULL,
+  `num_of_works_4` int(11) DEFAULT NULL,
+  `score_4` int(11) DEFAULT NULL,
+  `num_of_works_5` int(11) DEFAULT NULL,
+  `score_5` int(11) DEFAULT NULL,
+  `num_of_works_6` int(11) DEFAULT NULL,
+  `score_6` int(11) DEFAULT NULL,
+  `num_of_works_7` int(11) DEFAULT NULL,
+  `score_7` int(11) DEFAULT NULL,
+  `num_of_works_8` int(11) DEFAULT NULL,
+  `score_8` int(11) DEFAULT NULL,
+  `num_of_works_9` int(11) DEFAULT NULL,
+  `score_9` int(11) DEFAULT NULL,
+  `num_of_works_10` int(11) DEFAULT NULL,
+  `score_10` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `output_portfolio`
+--
+
+INSERT INTO `output_portfolio` (`id`, `option_selected`, `num_of_works_1`, `score_1`, `num_of_works_2`, `score_2`, `num_of_works_3`, `score_3`, `num_of_works_4`, `score_4`, `num_of_works_5`, `score_5`, `num_of_works_6`, `score_6`, `num_of_works_7`, `score_7`, `num_of_works_8`, `score_8`, `num_of_works_9`, `score_9`, `num_of_works_10`, `score_10`) VALUES
+(1, 'outputPortfolio', 2, 2, 2, 22, 2, 2, 2, 2, 2, 22, 2, 2, 2, 2, 2, 22, 2, 2, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -179,6 +191,44 @@ INSERT INTO `performance_after_midterm` (`id`, `option_selected`, `overall_total
 (6, 'outputPortfolio', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (7, 'outputPortfolio', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, 2, 22, 2, 2, 2, 2, 2, 2, 2, 2, 2, 22, 2, 2, 2, 2, 2, 2, NULL, NULL),
 (8, 'finalsExam', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 100, 90);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz`
+--
+
+CREATE TABLE `quiz` (
+  `id` int(11) NOT NULL,
+  `option_selected` varchar(255) DEFAULT NULL,
+  `quiz1_score` float NOT NULL DEFAULT 0,
+  `quiz1_total` float NOT NULL DEFAULT 0,
+  `quiz2_score` float NOT NULL DEFAULT 0,
+  `quiz2_total` float NOT NULL DEFAULT 0,
+  `quiz3_score` float NOT NULL DEFAULT 0,
+  `quiz3_total` float NOT NULL DEFAULT 0,
+  `quiz4_score` float NOT NULL DEFAULT 0,
+  `quiz4_total` float NOT NULL DEFAULT 0,
+  `quiz5_score` float NOT NULL DEFAULT 0,
+  `quiz5_total` float NOT NULL DEFAULT 0,
+  `quiz6_score` float NOT NULL DEFAULT 0,
+  `quiz6_total` float NOT NULL DEFAULT 0,
+  `quiz7_score` float NOT NULL DEFAULT 0,
+  `quiz7_total` float NOT NULL DEFAULT 0,
+  `quiz8_score` float NOT NULL DEFAULT 0,
+  `quiz8_total` float NOT NULL DEFAULT 0,
+  `quiz9_score` float NOT NULL DEFAULT 0,
+  `quiz9_total` float NOT NULL DEFAULT 0,
+  `quiz10_score` float NOT NULL DEFAULT 0,
+  `quiz10_total` float NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `quiz`
+--
+
+INSERT INTO `quiz` (`id`, `option_selected`, `quiz1_score`, `quiz1_total`, `quiz2_score`, `quiz2_total`, `quiz3_score`, `quiz3_total`, `quiz4_score`, `quiz4_total`, `quiz5_score`, `quiz5_total`, `quiz6_score`, `quiz6_total`, `quiz7_score`, `quiz7_total`, `quiz8_score`, `quiz8_total`, `quiz9_score`, `quiz9_total`, `quiz10_score`, `quiz10_total`) VALUES
+(1, 'quizzesExams', 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -441,9 +491,27 @@ ALTER TABLE `members`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `midterm`
+--
+ALTER TABLE `midterm`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `output_portfolio`
+--
+ALTER TABLE `output_portfolio`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `performance_after_midterm`
 --
 ALTER TABLE `performance_after_midterm`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `quiz`
+--
+ALTER TABLE `quiz`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -536,10 +604,28 @@ ALTER TABLE `members`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `midterm`
+--
+ALTER TABLE `midterm`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `output_portfolio`
+--
+ALTER TABLE `output_portfolio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `performance_after_midterm`
 --
 ALTER TABLE `performance_after_midterm`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `quiz`
+--
+ALTER TABLE `quiz`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tblattendance`

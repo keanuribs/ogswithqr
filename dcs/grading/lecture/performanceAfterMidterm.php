@@ -32,31 +32,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         case 'quizzesExams':
             $quizScores = [];
             $quizTotals = [];
-
+        
             for ($i = 1; $i <= 10; $i++) {
                 $quizScores[] = $_POST["quizScore$i"] ?? '';
                 $quizTotals[] = $_POST["quizTotal$i"] ?? '';
             }
-
+        
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
-
-            $sql = "INSERT INTO performance_after_midterm (option_selected, " . 
-                   "score_1, total_1, score_2, total_2, score_3, total_3, " . 
-                   "score_4, total_4, score_5, total_5, score_6, total_6, " . 
-                   "score_7, total_7, score_8, total_8, score_9, total_9, " . 
-                   "score_10, total_10) VALUES ('$selectedOption', " . 
+        
+            $scoreColumns = [];
+            $totalColumns = [];
+        
+            for ($i = 1; $i <= 10; $i++) {
+                $scoreColumns[] = "quiz{$i}_score";
+                $totalColumns[] = "quiz{$i}_total";
+            }
+        
+            $sql = "INSERT INTO quiz2 (option_selected, " . 
+                   implode(', ', $scoreColumns) . ", " . implode(', ', $totalColumns) . ") VALUES ('$selectedOption', " . 
                    "'" . implode("', '", $quizScores) . "', '" . implode("', '", $quizTotals) . "')";
-
+        
             if ($conn->query($sql) === TRUE) {
                 echo "Record inserted successfully";
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
-
+        
             $conn->close();
-
+        
             break;
 
         case 'outputPortfolio':
@@ -72,12 +77,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 die("Connection failed: " . $conn->connect_error);
             }
         
+            // Initialize $columnNames array
             $columnNames = [];
             for ($i = 1; $i <= 10; $i++) {
                 $columnNames[] = "num_of_works_$i, score_$i";
             }
         
-            $sql = "INSERT INTO performance_after_midterm (option_selected, " . implode(', ', $columnNames) . ") 
+            // Include 'option_selected' in the VALUES clause
+            $sql = "INSERT INTO output_portfolio2 (option_selected, " . implode(', ', $columnNames) . ") 
                     VALUES ('$selectedOption', " . implode(', ', $numWorksArray) . ", " . implode(', ', $scoreArray) . ")";
         
             if ($conn->query($sql) === TRUE) {
@@ -90,47 +97,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
             break;
 
-        case 'midtermExam':
-            $midtermExamScore = $_POST['midtermExamScore'] ?? '';
-            $midtermExamTotalQuestions = $_POST['midtermExamTotalQuestions'] ?? '';
-
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            $sql = "INSERT INTO performance_after_midterm (option_selected, midterm_exam_score, midterm_exam_total) 
-                    VALUES ('$selectedOption', '$midtermExamScore', '$midtermExamTotalQuestions')";
-
-            if ($conn->query($sql) === TRUE) {
-                echo "Record inserted successfully";
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
-
-            $conn->close();
-
-            break;
-
-        case 'finalsExam':
-            $finalsExamScore = $_POST['finalsExamScore'] ?? '';
-            $finalsExamTotalQuestions = $_POST['finalsExamTotalQuestions'] ?? '';
-
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            $sql = "INSERT INTO performance_after_midterm (option_selected, finals_exam_score, finals_exam_total) 
-                    VALUES ('$selectedOption', '$finalsExamScore', '$finalsExamTotalQuestions')";
-
-            if ($conn->query($sql) === TRUE) {
-                echo "Record inserted successfully";
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
-
-            $conn->close();
-
-            break;
+            case 'finalsExam':
+                $finalsExamScore = $_POST['finalsExamScore'] ?? '';
+                $finalsExamTotalQuestions = $_POST['finalsExamTotalQuestions'] ?? '';
+    
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+    
+                $sql = "INSERT INTO finals_exam (option_selected, finals_exam_score, finals_exam_total) 
+                        VALUES ('$selectedOption', '$finalsExamScore', '$finalsExamTotalQuestions')";
+    
+                if ($conn->query($sql) === TRUE) {
+                    echo "Record inserted successfully";
+                } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+    
+                $conn->close();
+    
+                break;
 
         default:
             break;
@@ -155,7 +141,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <option value="classParticipation">CLASS PARTICIPATION</option>
         <option value="quizzesExams">QUIZZES / LONG EXAMINATIONS</option>
         <option value="outputPortfolio">OUTPUT / PORTFOLIO</option>
-        <option value="midtermExam">MIDTERM EXAM</option>
         <option value="finalsExam">FINALS EXAM</option>
     </select>
 
@@ -195,14 +180,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
-    <div id="midtermExamForm" class="hidden">
-        <label for="midtermExamScore">Midterm Exam Score:</label>
-        <input type="text" id="midtermExamScore" name="midtermExamScore" class="hidden">
-
-        <label for="midtermExamTotalQuestions">Total Questions:</label>
-        <input type="text" id="midtermExamTotalQuestions" name="midtermExamTotalQuestions" class="hidden">
-    </div>
-
     <div id="finalsExamForm" class="hidden">
         <label for="finalsExamScore">Finals Exam Score:</label>
         <input type="text" id="finalsExamScore" name="finalsExamScore" class="hidden">
@@ -220,7 +197,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         var classParticipationForm = document.getElementById("classParticipationForm");
         var quizzesExamsForm = document.getElementById("quizzesExamsForm");
         var outputPortfolioForm = document.getElementById("outputPortfolioForm");
-        var midtermExamForm = document.getElementById("midtermExamForm");
         var finalsExamForm = document.getElementById("finalsExamForm");
         var quizFieldsContainer = document.getElementById("quizFieldsContainer");
         var outputPortfolioFieldsContainer = document.getElementById("outputPortfolioFieldsContainer");
@@ -266,10 +242,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 outputPortfolioFieldsContainer.appendChild(document.createElement("br"));
             }
-        } else if (selectedOption === "midtermExam") {
-            midtermExamForm.style.display = 'block';
-            document.getElementById("midtermExamScore").style.display = 'block';
-            document.getElementById("midtermExamTotalQuestions").style.display = 'block';
         } else if (selectedOption === "finalsExam") {
             finalsExamForm.style.display = 'block';
             document.getElementById("finalsExamScore").style.display = 'block';

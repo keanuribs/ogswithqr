@@ -1,10 +1,6 @@
 <?php
 include __DIR__ . '/../../config.php';
 
-// Assuming your database connection is in $conn variable
-// Replace 'lecture' with the actual table name in your database
-// Adjust the database fields accordingly
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $selectedOption = $_POST['options'] ?? '';
 
@@ -12,19 +8,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         case 'classParticipation':
             $overallTotal = $_POST['classParticipationOverallTotal'] ?? '';
             $numberOfParticipants = $_POST['classParticipationNumberOfParticipants'] ?? '';
-
-            // Weight percentage for class participation
             $weightPercentage = 0.10;
-
-            // Calculate weighted values
             $weightedOverallTotal = sprintf("%.2f", $numberOfParticipants / $overallTotal * 10);
 
-            // Check connection
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            // Insert data into the 'lecture' table
             $sql = "INSERT INTO lecture (option_selected, overall_total, number_of_participants, weighted_total) 
                     VALUES ('$selectedOption', '$overallTotal', '$numberOfParticipants', '$weightedOverallTotal')";
 
@@ -34,13 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
 
-            // Close the database connection
             $conn->close();
-
             break;
 
         case 'quizzesExams':
-            // Check connection
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
@@ -48,16 +35,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $quizScores = array();
             $quizTotals = array();
 
-            // Loop through quiz data and collect scores and totals
             for ($i = 1; $i <= 10; $i++) {
                 $quizScores[] = $_POST['quiz' . $i . 'Score'] ?? '';
                 $quizTotals[] = $_POST['quiz' . $i . 'Total'] ?? '';
             }
 
-            // Insert data into the 'quiz' table for quizzes
+            $totalQuizScore = array_sum($quizScores);
+            $totalQuizTotal = array_sum($quizTotals);
+            $totalWeight = sprintf("%.2f", ($totalQuizScore / $totalQuizTotal) * 15);
+
             $sql = "INSERT INTO quiz (option_selected, " . implode(', ', array_map(function ($i) {
-                    return "quiz{$i}_score, quiz{$i}_total";
-                }, range(1, 10))) . ") VALUES ('$selectedOption', " . implode(', ', $quizScores) . ", " . implode(', ', $quizTotals) . ")";
+                return "quiz{$i}_score, quiz{$i}_total";
+            }, range(1, 10))) . ", total_quiz_score, total_quiz_total, total_weight) 
+            VALUES ('$selectedOption', " . implode(', ', $quizScores) . ", " . implode(', ', $quizTotals) . ", '$totalQuizScore', '$totalQuizTotal', '$totalWeight')";
 
             if ($conn->query($sql) === TRUE) {
                 echo "Record inserted successfully";
@@ -65,66 +55,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
 
-            // Close the database connection
             $conn->close();
-
             break;
 
         case 'outputPortfolio':
-            // Check connection
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            // Arrays to store the data
             $numWorksArray = array();
             $scoreArray = array();
 
-            // Loop through outputPortfolio data and collect Number of Works and Scores
             for ($i = 1; $i <= 10; $i++) {
                 $numWorksArray[] = $_POST['outputPortfolioNumWorks' . $i] ?? '';
                 $scoreArray[] = $_POST['outputPortfolioScore' . $i] ?? '';
             }
 
-            // Create placeholders for prepared statement
             $placeholdersNumWorks = implode(', ', array_fill(0, 10, '?'));
             $placeholdersScores = implode(', ', array_fill(0, 10, '?'));
+            $bindParams = str_repeat('ss', 10);
 
-            // Create placeholders for binding
-            $bindParams = str_repeat('ss', 10);  // Assuming both Number of Works and Score are strings
-
-            // Prepare and execute the SQL statement
             $stmt = $conn->prepare("INSERT INTO output_portfolio (option_selected, " . implode(', ', array_map(function ($i) {
                     return "num_of_works_$i, score_$i";
                 }, range(1, 10))) . ") VALUES ('$selectedOption', $placeholdersNumWorks, $placeholdersScores)");
 
-            // Bind parameters
             $bindParamsArray = array_merge([$bindParams], $numWorksArray, $scoreArray);
             $stmt->bind_param(...$bindParamsArray);
 
-            // Execute the statement
             if ($stmt->execute()) {
                 echo "Record inserted successfully";
+                $overallTotalScore = array_sum($scoreArray);
+                $overallNumWorks = array_sum($numWorksArray);
+                $weight = sprintf("%.2f", ($overallTotalScore / $overallNumWorks) * 25);
+                echo "<br>Overall Total Score: $overallTotalScore";
+                echo "<br>Overall Number of Works: $overallNumWorks";
+                echo "<br>Weight: $weight";
             } else {
                 echo "Error: " . $stmt->error;
             }
 
-            // Close the database connection
             $stmt->close();
-
             break;
 
         case 'midtermExam':
-            // Check connection
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            // Get Midterm Exam Score and Total Questions from the form
             $midtermExamScore = $_POST['midtermExamScore'] ?? '';
             $midtermExamTotalQuestions = $_POST['midtermExamTotalQuestions'] ?? '';
 
-            // Insert data into the 'lecture' table for Midterm Exam
             $sql = "INSERT INTO midterm (option_selected, midterm_exam_score, midterm_exam_total) 
                     VALUES ('$selectedOption', '$midtermExamScore', '$midtermExamTotalQuestions')";
 
@@ -134,13 +114,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
 
-            // Close the database connection
             $conn->close();
-
             break;
 
         default:
-            // Handle other cases or show an error message
             break;
     }
 }
@@ -166,7 +143,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <option value="midtermExam">MIDTERM EXAM</option>
     </select>
 
-    <!-- CLASS PARTICIPATION FORM -->
     <div id="classParticipationForm" class="hidden">
         <label for="classParticipationOverallTotal">Overall Total:</label>
         <input type="text" id="classParticipationOverallTotal" name="classParticipationOverallTotal" class="hidden">
@@ -175,11 +151,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" id="classParticipationNumberOfParticipants" name="classParticipationNumberOfParticipants" class="hidden">
     </div>
 
-    <!-- QUIZZES / LONG EXAMINATIONS FORM -->
     <div id="quizzesExamsForm" class="hidden">
         <div id="quizFieldsContainer">
             <?php
-            // Create input fields for quiz scores and totals
             for ($i = 1; $i <= 10; $i++) {
                 echo '<label for="quiz' . $i . 'Score">Quiz ' . $i . ' Score:</label>';
                 echo '<input type="text" id="quiz' . $i . 'Score" name="quiz' . $i . 'Score">';
@@ -192,12 +166,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
-    <!-- OUTPUT / PORTFOLIO FORM -->
     <div id="outputPortfolioForm" class="hidden">
         <div id="outputPortfolioFieldsContainer"></div>
     </div>
 
-    <!-- MIDTERM EXAM FORM -->
     <div id="midtermExamForm" class="hidden">
         <label for="midtermExamScore">Midterm Exam Score:</label>
         <input type="text" id="midtermExamScore" name="midtermExamScore" class="hidden">

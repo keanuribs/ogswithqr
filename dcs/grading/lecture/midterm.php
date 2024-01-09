@@ -97,25 +97,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->close();
             break;
 
-        case 'midtermExam':
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            $midtermExamScore = $_POST['midtermExamScore'] ?? '';
-            $midtermExamTotalQuestions = $_POST['midtermExamTotalQuestions'] ?? '';
-
-            $sql = "INSERT INTO midterm (option_selected, midterm_exam_score, midterm_exam_total) 
-                    VALUES ('$selectedOption', '$midtermExamScore', '$midtermExamTotalQuestions')";
-
-            if ($conn->query($sql) === TRUE) {
-                echo "Record inserted successfully";
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
-
-            $conn->close();
-            break;
+            case 'midtermExam':
+                $midtermExamScore = $_POST['midtermExamScore'] ?? '';
+                $midtermExamTotalQuestions = $_POST['midtermExamTotalQuestions'] ?? '';
+    
+                // Additional computation for the midterm option
+                $midtermWeightedScore = sprintf("%.2f", $midtermExamScore / $midtermExamTotalQuestions * 20);
+    
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+    
+                $sql = "INSERT INTO midterm (option_selected, midterm_exam_score, midterm_exam_total, weight) 
+                        VALUES ('$selectedOption', '$midtermExamScore', '$midtermExamTotalQuestions', '$midtermWeightedScore')";
+    
+                if ($conn->query($sql) === TRUE) {
+                    echo "Record inserted successfully";
+                } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+    
+                $conn->close();
+                break;
 
         default:
             break;

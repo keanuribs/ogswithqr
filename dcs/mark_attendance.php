@@ -4,36 +4,13 @@ date_default_timezone_set('Asia/Manila');
 include 'phpqrcode/qrlib.php';
 include 'config.php';
 
-$currentPage = basename($_SERVER['PHP_SELF']);
-
-session_start();
-if (!isset($_SESSION['SESSION_EMAIL'])) {
-    header("Location: index.php");
-    die();
-}
-
-include 'config.php';
-
-$query = mysqli_query($conn, "SELECT * FROM users WHERE email='{$_SESSION['SESSION_EMAIL']}'");
-
-
-if ($query) {
-    if (mysqli_num_rows($query) > 0) {
-        $row = mysqli_fetch_assoc($query);
-        $name = $row['name'];
-    } else {
-        $name = "User Not Found"; // Set a default name for this case
-    }
-} else {
-    die("Query failed: " . mysqli_error($conn)); // Display any SQL query errors
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $studentNumber = $_POST['student_number'] ?? '';
 
     // Validate the student number (you might want to add more validation)
     if (empty($studentNumber)) {
-        die("Please enter a valid student number.");
+        echo "<div style='text-align: center; color: red; margin-top: 20px;'>Please enter a valid student number.</div>";
+        die();
     }
 
     $classId = $_GET['class_id'] ?? '';
@@ -45,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Execute and handle errors
     if (!$stmtCheckStudent->execute()) {
-        die("Error checking student: " . $stmtCheckStudent->error);
+        echo "<div style='text-align: center; color: red; margin-top: 20px;'>Error checking student.</div>";
+        die();
     }
 
     $resultStudent = $stmtCheckStudent->get_result();
@@ -70,7 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute and handle errors
         if (!$stmtFetchSection->execute()) {
-            die("Error fetching section ID: " . $stmtFetchSection->error);
+            echo "<div style='text-align: center; color: red; margin-top: 20px;'>Error fetching section ID.</div>";
+            $stmtCheckStudent->close();
+            die();
         }
 
         $resultSection = $stmtFetchSection->get_result();
@@ -83,7 +63,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Execute and handle errors
             if (!$stmtCheckClass->execute()) {
-                die("Error checking class: " . $stmtCheckClass->error);
+                echo "<div style='text-align: center; color: red; margin-top: 20px;'>Error checking class.</div>";
+                $stmtCheckStudent->close();
+                $stmtFetchSection->close();
+                die();
             }
 
             $resultClass = $stmtCheckClass->get_result();
@@ -91,26 +74,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($resultClass->num_rows > 0) {
                 $classData = $resultClass->fetch_assoc();
 
-                // Debugging output
-                echo "Current Day: " . date('N') . "<br>";
-                echo "Scheduled Day: " . $classData['day_name'] . "<br>";
-                echo "Current Time: " . date('H:i:s') . "<br>";
-                echo "Time: " . $classData['start_time'] . " - " . $classData['end_time'] . "<br>";
-
                 // Check if the current day matches the scheduled day for the class
                 $scheduledDay = date('N', strtotime($classData['day_name'])); // Convert day name to day of the week (1 to 7)
 
                 if ($scheduledDay != date('N')) {
-                    die("It's not the scheduled day for this class. Attendance cannot be marked.");
+                    echo "<div style='text-align: center; color: red; margin-top: 20px;'>It's not the scheduled day for this class. Attendance cannot be marked.</div>";
+                    $stmtCheckStudent->close();
+                    $stmtFetchSection->close();
+                    $stmtCheckClass->close();
+                    die();
                 }
 
                 // Check if the current time is within the class time range
                 $currentTime = strtotime(date('H:i:s'));
-                $classStartTime = strtotime($classData['start_time']);
-                $classEndTime = strtotime($classData['end_time']);
+                $classStartTime = strtotime($classData['time']);
+                $classEndTime = strtotime($classData['time_end']);
 
                 if ($currentTime < $classStartTime || $currentTime > $classEndTime) {
-                    die("It's currently not the class time. Attendance cannot be marked.");
+                    echo "<div style='text-align: center; color: red; margin-top: 20px;'>It's currently not the class time. Attendance cannot be marked.</div>";
+                    $stmtCheckStudent->close();
+                    $stmtFetchSection->close();
+                    $stmtCheckClass->close();
+                    die();
                 }
 
                 // Check if the student has already marked attendance for this class
@@ -120,37 +105,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Execute and handle errors
                 if (!$stmtCheckAttendance->execute()) {
-                    die("Error checking attendance: " . $stmtCheckAttendance->error);
+                    echo "<div style='text-align: center; color: red; margin-top: 20px;'>Error checking attendance.</div>";
+                    $stmtCheckStudent->close();
+                    $stmtFetchSection->close();
+                    $stmtCheckClass->close();
+                    die();
                 }
 
                 $resultAttendance = $stmtCheckAttendance->get_result();
 
                 if ($resultAttendance->num_rows > 0) {
-                    echo "Attendance already marked for this class.";
+                    echo "<div style='text-align: center; margin-top: 20px;'>Attendance already marked for this class.</div>";
                 } else {
-                    // Set the attendance status explicitly to "present" or "late"
-                    $attendanceStatus = determineAttendanceStatus($classData, $currentTime);
+                    // Determine the attendance status based on the current time
+                    $timeBuffer = 15 * 60; // 15 minutes buffer in seconds
+                    if ($currentTime < $classStartTime) {
+                        $attendanceStatus = 'present';
+                    } elseif ($currentTime <= $classEndTime) {
+                        $attendanceStatus = 'late';
+                    } else {
+                        echo "<div style='text-align: center; color: red; margin-top: 20px;'>It's currently not the class time. Attendance cannot be marked.</div>";
+                        $stmtCheckStudent->close();
+                        $stmtFetchSection->close();
+                        $stmtCheckClass->close();
+                        die();
+                    }
 
-                    // Insert attendance record into tblattendance
-                    $insertAttendanceQuery = "INSERT INTO tblattendance (class_id, student_id, attendance_status) VALUES (?, ?, ?)";
+                    // Continue with the rest of your code...
+                    // (Get student ID, mark attendance, etc.)
+
+                    // For example, you can insert attendance record into tblattendance with status
+                    $insertAttendanceQuery = "INSERT INTO tblattendance (class_id, student_id, attendance_time, attendance_status) VALUES (?, ?, NOW(), ?)";
                     $stmtInsertAttendance = $conn->prepare($insertAttendanceQuery);
                     $stmtInsertAttendance->bind_param("iis", $classId, $studentData['id'], $attendanceStatus);
 
                     // Execute and handle errors
-                    if (!$stmtInsertAttendance->execute()) {
-                        die("Error marking attendance: " . $stmtInsertAttendance->error);
+                    if ($stmtInsertAttendance->execute()) {
+                        // Mark attendance successfully
+                        echo "<div style='text-align: center; margin-top: 20px;'>Attendance marked successfully.</div>";
+                    } else {
+                        echo "<div style='text-align: center; color: red; margin-top: 20px;'>Error marking attendance.</div>";
                     }
 
-                    echo "Attendance marked successfully. Status: $attendanceStatus";
+                    $stmtInsertAttendance->close();
                 }
             } else {
-                echo "Class not found or class details do not match.";
+                echo "<div style='text-align: center; color: red; margin-top: 20px;'>Class not found or class details do not match.</div>";
             }
         } else {
-            echo "Section not found for the given section name.";
+            echo "<div style='text-align: center; color: red; margin-top: 20px;'>Section not found for the given section name.</div>";
         }
     } else {
-        echo "Student not found with the given student number.";
+        echo "<div style='text-align: center; color: red; margin-top: 20px;'>Student not found with the given student number.</div>";
     }
 
     // Close statements and the database connection
@@ -160,79 +166,81 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // (Close other statements as needed...)
     $conn->close();
 }
-
-// Function to determine attendance status based on current time and class schedule
-function determineAttendanceStatus($classData, $currentTime) {
-    $classStartTime = strtotime($classData['start_time']);
-    $classEndTime = strtotime($classData['end_time']);
-
-    // Adjust the threshold as needed
-    $lateThreshold = 15 * 60; // 15 minutes
-
-    if ($currentTime < $classStartTime + $lateThreshold) {
-        return "present";
-    } else {
-        return "late";
-    }
-}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DCS | Student Attendance Form</title>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance Form</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
 
-  
-    <!-- Font Awesome icons for additional styling and icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+        .form-container {
+            margin: 50px auto;
+            padding: 20px;
+            max-width: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    <!-- Favicon for the website tab -->
-    <link rel="icon" href="image/dcss.png" type="image"/>
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+        }
 
-    <!-- Bootstrap CSS for styling and layout components -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"/>
+        .form-container input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
 
-    <!-- Custom styles for the post dashboard -->
-    <link rel="stylesheet" href="css/postdashboard.css" />
+        .form-container input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+        .form-container input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
 
-    
-    <!-- DataTables CSS for enhanced HTML tables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css"/>
+        .error-message {
+            color: red;
+            margin-top: 20px;
+            text-align: center;
+        }
 
-    <!-- DataTables Responsive extension CSS for responsive tables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" />
+        .success-message {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
 
-    <!-- JavaScript module for application logic -->
-    <script src="js/course.js" type="module"></script>
-  </head>
-  <body>
-   <?php include 'inc/sidebar.php';?>
+<div class="form-container">
+    <h2 style="text-align: center;">Student Attendance Form</h2>
 
-    <section class="content">
-    <?php include 'inc/navbar.php';?>
-<main>
+    <form method="post" action="" style="text-align: center;">
+        <label for="student_number">Student Number:</label>
+        <input type="text" name="student_number" required><br>
 
+        <input type="submit" value="Mark Attendance">
+    </form>
 
-<div class="head-title" >
-          <div class="left">
-            <h1>Student Attendance Form</h1>
-            <ul class="breadcrumb">
-            </ul>
-          </div>
-        </div>
-
-<form method="post" action="">
-    <label for="student_number">Student Number:</label>
-    <input type="text" name="student_number" required><br>
-
-    <input type="submit" value="Mark Attendance">
-</form>
+    <?php
+    if (isset($successMessage)) {
+        echo "<div class='success-message'>$successMessage</div>";
+    }
+    ?>
+</div>
 
 </body>
 </html>

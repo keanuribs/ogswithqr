@@ -118,7 +118,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<div style='text-align: center; margin-top: 20px;'>Attendance already marked for this class.</div>";
                 } else {
                     // Determine the attendance status based on the current time
-                    $timeBuffer = 15 * 60; // 15 minutes buffer in seconds
                     if ($currentTime < $classStartTime) {
                         $attendanceStatus = 'present';
                     } elseif ($currentTime <= $classEndTime) {

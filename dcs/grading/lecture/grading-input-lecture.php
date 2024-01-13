@@ -1,280 +1,274 @@
-<!DOCTYPE html>
-<html>
+<?php
+// Include the database configuration
+include __DIR__ . '/../../config.php';
 
+// Fetch existing students for dropdown
+$studentsQuery = "SELECT id, CONCAT(first_name, ' ', middle_name, ' ', last_name) AS full_name, student_number FROM tblstudents";
+
+$studentsResult = $conn->query($studentsQuery);
+$students = [];
+
+// Default student ID
+/*$selectedStudentId = 1; // Replace with your default value or leave it empty
+
+// Check if a student ID is provided in the form
+if (isset($_POST['selectedStudentId'])) {
+    $selectedStudentId = $_POST['selectedStudentId'];
+}
+
+// Prepare and execute the SQL query
+$sql = "SELECT COUNT(*) AS count FROM tblattendance WHERE student_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $selectedStudentId);
+$stmt->execute();
+
+// Bind the result variable
+$stmt->bind_result($count);
+
+// Fetch the result
+$stmt->fetch();*/
+
+while ($row = $studentsResult->fetch_assoc()) {
+    $students[] = $row;
+}
+
+// Initialize total attendance
+$totalAttendance = 0;
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $student_name = $conn->real_escape_string($_POST["student_name"]);
+    $student_number = intval($_POST["student_number"]);
+
+    // Retrieve total attendance status for the selected student
+    $attendanceQuery = "SELECT COUNT(attendance_status) AS total_attendance FROM tblattendance WHERE student_id = (SELECT id FROM tblstudents WHERE student_number = $student_number)";
+    $attendanceResult = $conn->query($attendanceQuery);
+
+    if ($attendanceResult) {
+        $attendanceRow = $attendanceResult->fetch_assoc();
+        $totalAttendance = $attendanceRow['total_attendance'];
+    } else {
+        $totalAttendance = 0; // Default value if there's an error
+    }
+}
+
+// Form submission and database insertion
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $participation_score = floatval($_POST["participation_score"]);
+
+    // Retrieve quiz scores and totals
+    $quiz_scores = $quiz_totals = $portfolio_scores = $portfolio_totals = [];
+
+    for ($i = 1; $i <= 10; $i++) {
+        $quiz_scores[$i] = floatval($_POST["quiz{$i}_score"]);
+        $quiz_totals[$i] = floatval($_POST["quiz{$i}_total"]);
+        $portfolio_scores[$i] = floatval($_POST["portfolio{$i}_score"]);
+        $portfolio_totals[$i] = floatval($_POST["portfolio{$i}_total"]);
+    }
+
+    // Retrieve midterm scores and total
+    $midterm_score = floatval($_POST["midterm_score"]);
+    $midterm_total = floatval($_POST["midterm_total"]);
+
+    // Insert data into the database
+    $sql = "INSERT INTO LectureData (student_name, student_number, attendance_score, participation_score, ";
+    $sql .= "quiz1_score, quiz1_total, quiz2_score, quiz2_total, quiz3_score, quiz3_total, quiz4_score, quiz4_total, quiz5_score, quiz5_total, quiz6_score, quiz6_total, quiz7_score, quiz7_total, quiz8_score, quiz8_total, quiz9_score, quiz9_total, quiz10_score, quiz10_total, ";
+    $sql .= "portfolio1_score, portfolio1_total, portfolio2_score, portfolio2_total, portfolio3_score, portfolio3_total, portfolio4_score, portfolio4_total, portfolio5_score, portfolio5_total, portfolio6_score, portfolio6_total, portfolio7_score, portfolio7_total, portfolio8_score, portfolio8_total, portfolio9_score, portfolio9_total, portfolio10_score, portfolio10_total, ";
+    $sql .= "midterm_score, midterm_total) VALUES ('$student_name', $student_number, $totalAttendance, $participation_score, ";
+    $sql .= implode(", ", $quiz_scores) . ", " . implode(", ", $quiz_totals) . ", " . implode(", ", $portfolio_scores) . ", " . implode(", ", $portfolio_totals) . ", $midterm_score, $midterm_total)";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Data inserted successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+// Fetch attendance count for the selected student (AJAX request)
+if (isset($_GET['fetch_attendance']) && $_GET['fetch_attendance'] == 1) {
+    $student_number_for_attendance = intval($_GET['student_number']);
+    $attendanceQuery = "SELECT COUNT(attendance_status) AS total_attendance FROM tbl_attendance WHERE student_id = (SELECT id FROM tblstudents WHERE student_number = $student_number_for_attendance)";
+    $attendanceResult = $conn->query($attendanceQuery);
+
+    if ($attendanceResult) {
+        $attendanceRow = $attendanceResult->fetch_assoc();
+        echo $attendanceRow['total_attendance'];
+    } else {
+        echo 0; // Default value if there's an error
+    }
+
+    exit; // Stop further processing
+}
+
+// Close the database connection
+$conn->close();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture Input Table</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
-        .table-container {
-            display: flex;
-            justify-content: space-between;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
         }
 
-        table,
-        th,
-        td {
-            border: 1px solid black;
-            border-collapse: collapse;
-            width: 48%; /* Adjusted width for two tables side by side */
+        h1 {
             text-align: center;
-            padding: 8px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
         }
 
-        input {
-            width: 80px;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
             text-align: center;
-            padding: 5px;
-            -moz-appearance: textfield;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield; /* Firefox */
         }
 
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
+            -webkit-appearance: none; /* Safari and Chrome */
             margin: 0;
         }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        #result {
-            margin-top: 10px;
-        }
-
-        .label {
-            text-align: right;
-            padding-right: 10px;
-            font-weight: bold;
+        #studentNumber {
+            width: auto;
+            max-width: 80px; /* Adjust this value based on your preference */
         }
     </style>
 </head>
-
 <body>
+    <h1>Lecture Input Table</h1>
 
-    <h2>Class Participation and Quiz Input</h2>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <table>
+            <thead>
+                <th colspan="20">Students</th>
+                <tr>
+                    <th rowspan="2">Student Name</th>
+                    <th rowspan="2">Student Number</th>
+                    <th rowspan="2">Attendance</th>
+                    <th rowspan="2">Participation</th>
+                    <?php for ($i = 1; $i <= 10; $i++) : ?>
+                        <th colspan="2">Quiz <?php echo $i ?></th>
+                    <?php endfor; ?>
+                    <?php for ($i = 1; $i <= 10; $i++) : ?>
+                        <th colspan="2">Portfolio <?php echo $i ?></th>
+                    <?php endfor; ?>
+                    <th colspan="2">Midterm</th>
+                </tr>
+                <tr>
+                    <?php for ($i = 1; $i <= 10; $i++) : ?>
+                        <th>Score</th>
+                        <th class="total">Total</th>
+                    <?php endfor; ?>
+                    <?php for ($i = 1; $i <= 10; $i++) : ?>
+                        <th>Score</th>
+                        <th class="total">Total</th>
+                    <?php endfor; ?>
+                    <th>Score</th>
+                    <th class="total">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <select name="student_name" id="studentName" required>
+                            <?php foreach ($students as $student) : ?>
+                                <option value="<?php echo $student['full_name']; ?>" data-student-number="<?php echo $student['student_number']; ?>">
+                                    <?php echo $student['full_name']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                    <td><input type="text" name="student_number" id="studentNumber" readonly></td>
+                    <td><input type="number" step="0.01" name="attendance_score" id="attendanceScore" value="<?php echo $totalAttendance; ?>" required></td>
+                    <td><input type="number" step="0.01" name="participation_score" required></td>
+                    <?php for ($i = 1; $i <= 10; $i++) : ?>
+                        <td><input type="number" step="0.01" name="quiz<?php echo $i ?>_score" required></td>
+                        <td><input type="number" step="0.01" name="quiz<?php echo $i ?>_total" required></td>
+                    <?php endfor; ?>
+                    <?php for ($i = 1; $i <= 10; $i++) : ?>
+                        <td><input type="number" step="0.01" name="portfolio<?php echo $i ?>_score" required></td>
+                        <td><input type="number" step="0.01" name="portfolio<?php echo $i ?>_total" required></td>
+                    <?php endfor; ?>
+                    <td><input type="number" step="0.01" name="midterm_score" required></td>
+                    <td><input type="number" step="0.01" name="midterm_total" required></td>
+                </tr>
+            </tbody>
+        </table>
 
-    <!-- First Table -->
-    <table>
-        <tr>
-            <th rowspan="2">Student</th>
-            <th rowspan="2">Student Number</th>
-            <th rowspan="2">Attendance</th>
-            <th colspan="3">Class Participation</th>
-            <!-- Add columns dynamically for each quiz -->
-            <th colspan="21">Quizzes</th>
-            <!-- Add columns dynamically for each portfolio -->
-            <th colspan="21">Output / Portfolios</th>
-            <!-- Midterm -->
-            <th colspan="3">Midterm</th>
-        </tr>
-        <tr>
-            <td class="label" rowspan="2">Total & Score:</td>
-            <td><input type="number" id="participationTotal" name="participationTotal" placeholder="Total" required></td>
-            <th>Weighted</th>
-            <!-- Midterm -->
-            <td class="label" rowspan="2">Quiz #1</td>
-            <td><input type="number" id="Quiz1Total" name="Quiz1Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #2</td>
-            <td><input type="number" id="Quiz2Total" name="Quiz2Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #3</td>
-            <td><input type="number" id="Quiz3Total" name="Quiz3Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #4</td>
-            <td><input type="number" id="Quiz4Total" name="Quiz4Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #5</td>
-            <td><input type="number" id="Quiz5Total" name="Quiz5Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #6</td>
-            <td><input type="number" id="Quiz6Total" name="Quiz6Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #7</td>
-            <td><input type="number" id="Quiz7Total" name="Quiz7Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #8</td>
-            <td><input type="number" id="Quiz8Total" name="Quiz8Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #9</td>
-            <td><input type="number" id="Quiz9Total" name="Quiz9Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #10</td>
-            <td><input type="number" id="Quiz10Total" name="Quiz10Total" placeholder="Total" required></td>
-            <th>Weighted</th>
-            <!-- Add columns for portfolios -->
-            <td class="label" rowspan="2">Portfolio 1</td>
-            <td><input type="number" id="Portfolio1Total" name="Portfolio1Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 2</td>
-            <td><input type="number" id="Portfolio2Total" name="Portfolio2Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 3</td>
-            <td><input type="number" id="Portfolio3Total" name="Portfolio3Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 4</td>
-            <td><input type="number" id="Portfolio4Total" name="Portfolio4Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 5</td>
-            <td><input type="number" id="Portfolio5Total" name="Portfolio5Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 6</td>
-            <td><input type="number" id="Portfolio6Total" name="Portfolio6Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 7</td>
-            <td><input type="number" id="Portfolio7Total" name="Portfolio7Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 8</td>
-            <td><input type="number" id="Portfolio8Total" name="Portfolio8Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 9</td>
-            <td><input type="number" id="Portfolio9Total" name="Portfolio9Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 10</td>
-            <td><input type="number" id="Portfolio10Total" name="Portfolio10Total" placeholder="Total" required></td>
-            <th>Weighted</th>
-            <td class="label" rowspan="2">Total & Score:</td>
-            <td><input type="number" id="midtermTotal" name="midtermTotal" placeholder="Total" required></td>
-            <th>Weighted</th>
+        <input type="submit" value="Submit">
+    </form>
 
-            <!-- Repeat for Portfolio 5 to Portfolio 10 -->
-        </tr>
-        <tr>
-            <td>Forteza, Jollyvher</td>
-            <td>202010320</td>
-            <td>20/25</td>
-            <td><input type="number" id="participationScore" name="participationScore" placeholder="Score" required></td>
-            <td>10%</td>
-            <td><input type="number" id="Quiz1Score" name="Quiz1Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz2Score" name="Quiz2Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz3Score" name="Quiz3core" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz4Score" name="Quiz4Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz5Score" name="Quiz5Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz6Score" name="Quiz6Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz7Score" name="Quiz7Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz8Score" name="Quiz8Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz9Score" name="Quiz9Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz10Score" name="Quiz10Score" placeholder="Score" required></td>
-            <td>15%</td>
-            <!-- Add input fields for each portfolio -->
-            <td><input type="number" id="Portfolio1Score" name="Portfolio1Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio2Score" name="Portfolio2Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio3Score" name="Portfolio3Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio4Score" name="Portfolio4Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio5Score" name="Portfolio5Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio6Score" name="Portfolio6Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio7Score" name="Portfolio7Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio8Score" name="Portfolio8Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio9Score" name="Portfolio8Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio10Score" name="Portfolio10Score" placeholder="Score" required></td>
-            <td>15%</td>
-            <td><input type="number" id="midtermScore" name="midtermScore" placeholder="Score" required></td>
-            <td>20%</td>
-        </tr>
-    </table>
+    <!-- Add this script to update the student number and fetch attendance count when a student is selected -->
+    <script>
+        document.querySelector('select[name="student_name"]').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const studentNumber = selectedOption.getAttribute('data-student-number');
+            var studentId = (this.selectedIndex)+1;
+            
+            console.log('Student id:', studentId);
+            console.log('Selected Student:', selectedOption.value);
+            console.log('Student Number:', studentNumber);
+            document.getElementById('studentNumber').value = studentNumber;
 
-    <!-- Second Table -->
-    <h2>Class Participation and Quiz Input (Table 2)</h2>
-    <table>
-        <tr>
-            <th rowspan="2">Student</th>
-            <th rowspan="2">Student Number</th>
-            <th rowspan="2">Attendance</th>
-            <th colspan="3">Class Participation</th>
-            <!-- Add columns dynamically for each quiz -->
-            <th colspan="21">Quizzes</th>
-            <!-- Add columns dynamically for each portfolio -->
-            <th colspan="21">Output / Portfolios</th>
-            <!-- Midterm -->
-            <th colspan="3">Midterm</th>
-        </tr>
-        <tr>
-            <td class="label" rowspan="2">Total & Score:</td>
-            <td><input type="number" id="participationTotal" name="participationTotal" placeholder="Total" required></td>
-            <th>Weighted</th>
-            <!-- Midterm -->
-            <td class="label" rowspan="2">Quiz #1</td>
-            <td><input type="number" id="Quiz1Total" name="Quiz1Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #2</td>
-            <td><input type="number" id="Quiz2Total" name="Quiz2Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #3</td>
-            <td><input type="number" id="Quiz3Total" name="Quiz3Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #4</td>
-            <td><input type="number" id="Quiz4Total" name="Quiz4Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #5</td>
-            <td><input type="number" id="Quiz5Total" name="Quiz5Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #6</td>
-            <td><input type="number" id="Quiz6Total" name="Quiz6Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #7</td>
-            <td><input type="number" id="Quiz7Total" name="Quiz7Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #8</td>
-            <td><input type="number" id="Quiz8Total" name="Quiz8Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #9</td>
-            <td><input type="number" id="Quiz9Total" name="Quiz9Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Quiz #10</td>
-            <td><input type="number" id="Quiz10Total" name="Quiz10Total" placeholder="Total" required></td>
-            <th>Weighted</th>
-            <!-- Add columns for portfolios -->
-            <td class="label" rowspan="2">Portfolio 1</td>
-            <td><input type="number" id="Portfolio1Total" name="Portfolio1Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 2</td>
-            <td><input type="number" id="Portfolio2Total" name="Portfolio2Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 3</td>
-            <td><input type="number" id="Portfolio3Total" name="Portfolio3Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 4</td>
-            <td><input type="number" id="Portfolio4Total" name="Portfolio4Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 5</td>
-            <td><input type="number" id="Portfolio5Total" name="Portfolio5Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 6</td>
-            <td><input type="number" id="Portfolio6Total" name="Portfolio6Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 7</td>
-            <td><input type="number" id="Portfolio7Total" name="Portfolio7Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 8</td>
-            <td><input type="number" id="Portfolio8Total" name="Portfolio8Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 9</td>
-            <td><input type="number" id="Portfolio9Total" name="Portfolio9Total" placeholder="Total" required></td>
-            <td class="label" rowspan="2">Portfolio 10</td>
-            <td><input type="number" id="Portfolio10Total" name="Portfolio10Total" placeholder="Total" required></td>
-            <th>Weighted</th>
-            <td class="label" rowspan="2">Total & Score:</td>
-            <td><input type="number" id="midtermTotal" name="midtermTotal" placeholder="Total" required></td>
-            <th>Weighted</th>
+            // Fetch attendance count for the selected student
+        });
 
-            <!-- Repeat for Portfolio 5 to Portfolio 10 -->
-        </tr>
-        <tr>
-            <td>Forteza, Jollyvher</td>
-            <td>202010320</td>
-            <td>20/25</td>
-            <td><input type="number" id="participationScore" name="participationScore" placeholder="Score" required></td>
-            <td>10%</td>
-            <td><input type="number" id="Quiz1Score" name="Quiz1Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz2Score" name="Quiz2Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz3Score" name="Quiz3core" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz4Score" name="Quiz4Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz5Score" name="Quiz5Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz6Score" name="Quiz6Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz7Score" name="Quiz7Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz8Score" name="Quiz8Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz9Score" name="Quiz9Score" placeholder="Score" required></td>
-            <td><input type="number" id="Quiz10Score" name="Quiz10Score" placeholder="Score" required></td>
-            <td>15%</td>
-            <!-- Add input fields for each portfolio -->
-            <td><input type="number" id="Portfolio1Score" name="Portfolio1Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio2Score" name="Portfolio2Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio3Score" name="Portfolio3Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio4Score" name="Portfolio4Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio5Score" name="Portfolio5Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio6Score" name="Portfolio6Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio7Score" name="Portfolio7Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio8Score" name="Portfolio8Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio9Score" name="Portfolio8Score" placeholder="Score" required></td>
-            <td><input type="number" id="Portfolio10Score" name="Portfolio10Score" placeholder="Score" required></td>
-            <td>15%</td>
-            <td><input type="number" id="midtermScore" name="midtermScore" placeholder="Score" required></td>
-            <td>20%</td>
-        </tr>
-    </table>
+        $('#studentName').change(function() {
+            var selectedStudentId = $(this).prop('selectedIndex');
+            console.log('Student Index:', selectedStudentId);
+            fetchAttendanceCount(selectedStudentId+1);
+            //console.log('Student attendance:',); 
+        });
 
-    </div>
+        function fetchAttendanceCount(selectedStudentId) {
+            $.ajax({
+                type: 'POST',
+                url: 'fetch-attendance.php', // Replace with the actual path to your PHP script
+                data: { selectedStudentId: selectedStudentId },
+                success: function(response) {
+                    // 'response' will contain the result from the PHP script
+                    var count = parseInt(response);
+                    console.log("Count: " + count);
+                    document.getElementById('attendanceScore').value = count;
 
-<!-- Submit button for the first table -->
-<button type="button" onclick="submitForm()">Submit</button>
-
-<div id="result">
-    <!-- Result will be displayed here -->
-</div>
-
-<script>
-    function submitForm() {
-        // Add your form submission logic here
-        console.log('Form submitted!');
-    }
-</script>
-
+                    // Now you can use the 'count' variable as needed in your JavaScript code
+                },
+                error: function(error) {
+                    console.error("Error fetching data: " + error);
+                }
+            });
+        }
+    </script>
 </body>
-
 </html>

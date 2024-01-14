@@ -3,7 +3,7 @@
 $classId = $_GET['class_id'] ?? '';
 
 // Display success message with QR code and verification link
-echo "Class created successfully! QR Code generated: <img src='qrcodes/class_$classId.png'><br>";
+echo "Class created successfully! QR Code generated: <img src='qrcodes/class_$classId.png' width='150' height='150'><br>";
 echo "To verify attendance, students can scan the QR code or click the link below:<br>";
 echo "<a href='verify-attendance.php?class_id=$classId' target='_blank'>Verify Attendance</a>";
 

@@ -8,26 +8,6 @@ $studentsQuery = "SELECT id, CONCAT(first_name, ' ', middle_name, ' ', last_name
 $studentsResult = $conn->query($studentsQuery);
 $students = [];
 
-// Default student ID
-/*$selectedStudentId = 1; // Replace with your default value or leave it empty
-
-// Check if a student ID is provided in the form
-if (isset($_POST['selectedStudentId'])) {
-    $selectedStudentId = $_POST['selectedStudentId'];
-}
-
-// Prepare and execute the SQL query
-$sql = "SELECT COUNT(*) AS count FROM tblattendance WHERE student_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $selectedStudentId);
-$stmt->execute();
-
-// Bind the result variable
-$stmt->bind_result($count);
-
-// Fetch the result
-$stmt->fetch();*/
-
 while ($row = $studentsResult->fetch_assoc()) {
     $students[] = $row;
 }
@@ -57,6 +37,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
     $participation_score = floatval($_POST["participation_score"]);
+    $parcipation_total = floatval($_POST["parcipation_total"]);
+
+    // Calculate adjusted participation score
+    $adjustedParticipationScore = ($participation_score / $parcipation_total) * 10;
 
     // Retrieve quiz scores and totals
     $quiz_scores = $quiz_totals = $portfolio_scores = $portfolio_totals = [];
@@ -72,19 +56,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $midterm_score = floatval($_POST["midterm_score"]);
     $midterm_total = floatval($_POST["midterm_total"]);
 
+    // Calculate overall quiz score and overall quiz total
+    $overallQuizScore = array_sum($quiz_scores);
+    $overallQuizTotal = array_sum($quiz_totals);
+
+    // Calculate adjusted quiz score
+    $adjustedQuizScore = ($overallQuizScore / $overallQuizTotal) * 15;
+
+    // Calculate overall portfolio score and overall portfolio total
+    $overallPortfolioScore = array_sum($portfolio_scores);
+    $overallPortfolioTotal = array_sum($portfolio_totals);
+
+    // Calculate adjusted portfolio score
+    $adjustedPortfolioScore = ($overallPortfolioScore / $overallPortfolioTotal) * 25;
+
+    // Calculate adjusted midterm score
+    $adjustedMidtermScore = ($midterm_score / $midterm_total) * 20;
+
     // Insert data into the database
     $sql = "INSERT INTO LectureData (student_name, student_number, attendance_score, participation_score, ";
+    $sql .= "parcipation_total, weighted_participation, ";
     $sql .= "quiz1_score, quiz1_total, quiz2_score, quiz2_total, quiz3_score, quiz3_total, quiz4_score, quiz4_total, quiz5_score, quiz5_total, quiz6_score, quiz6_total, quiz7_score, quiz7_total, quiz8_score, quiz8_total, quiz9_score, quiz9_total, quiz10_score, quiz10_total, ";
     $sql .= "portfolio1_score, portfolio1_total, portfolio2_score, portfolio2_total, portfolio3_score, portfolio3_total, portfolio4_score, portfolio4_total, portfolio5_score, portfolio5_total, portfolio6_score, portfolio6_total, portfolio7_score, portfolio7_total, portfolio8_score, portfolio8_total, portfolio9_score, portfolio9_total, portfolio10_score, portfolio10_total, ";
-    $sql .= "midterm_score, midterm_total) VALUES ('$student_name', $student_number, $totalAttendance, $participation_score, ";
-    $sql .= implode(", ", $quiz_scores) . ", " . implode(", ", $quiz_totals) . ", " . implode(", ", $portfolio_scores) . ", " . implode(", ", $portfolio_totals) . ", $midterm_score, $midterm_total)";
-
+    $sql .= "midterm_score, midterm_total, weighted_midterm, ";
+    $sql .= "weighted_quiz, weighted_portfolio) VALUES ('$student_name', $student_number, $totalAttendance, $participation_score, ";
+    $sql .= "$parcipation_total, $adjustedParticipationScore, ";
+    $sql .= implode(", ", $quiz_scores) . ", " . implode(", ", $quiz_totals) . ", " . implode(", ", $portfolio_scores) . ", " . implode(", ", $portfolio_totals) . ", $midterm_score, $midterm_total, $adjustedMidtermScore, ";
+    $sql .= "$adjustedQuizScore, $adjustedPortfolioScore)";
+    
     if ($conn->query($sql) === TRUE) {
         echo "Data inserted successfully";
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
+
 
 // Fetch attendance count for the selected student (AJAX request)
 if (isset($_GET['fetch_attendance']) && $_GET['fetch_attendance'] == 1) {
@@ -176,7 +182,7 @@ $conn->close();
                     <th rowspan="2">Student Name</th>
                     <th rowspan="2">Student Number</th>
                     <th rowspan="2">Attendance</th>
-                    <th rowspan="2">Participation</th>
+                    <th colspan="2">Participation</th>
                     <?php for ($i = 1; $i <= 10; $i++) : ?>
                         <th colspan="2">Quiz <?php echo $i ?></th>
                     <?php endfor; ?>
@@ -196,6 +202,8 @@ $conn->close();
                     <?php endfor; ?>
                     <th>Score</th>
                     <th class="total">Total</th>
+                    <th>Score</th>
+                    <th class="total">Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -211,7 +219,12 @@ $conn->close();
                     </td>
                     <td><input type="text" name="student_number" id="studentNumber" readonly></td>
                     <td><input type="number" step="0.01" name="attendance_score" id="attendanceScore" value="<?php echo $totalAttendance; ?>" required></td>
-                    <td><input type="number" step="0.01" name="participation_score" required></td>
+                    <td>
+                    <input type="number" step="0.01" name="participation_score" id="participationScore" required>
+                    </td>
+                    <td>
+                     <input type="number" step="0.01" name="parcipation_total" id="parcipationTotal" required>
+                     </td>
                     <?php for ($i = 1; $i <= 10; $i++) : ?>
                         <td><input type="number" step="0.01" name="quiz<?php echo $i ?>_score" required></td>
                         <td><input type="number" step="0.01" name="quiz<?php echo $i ?>_total" required></td>

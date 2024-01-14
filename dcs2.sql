@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2024 at 06:29 AM
+-- Generation Time: Jan 14, 2024 at 02:51 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -96,6 +96,8 @@ CREATE TABLE `lecturedata` (
   `student_number` int(11) NOT NULL,
   `attendance_score` float NOT NULL,
   `participation_score` float NOT NULL,
+  `parcipation_total` float DEFAULT NULL,
+  `weighted_participation` decimal(10,2) DEFAULT NULL,
   `quiz1_score` float NOT NULL,
   `quiz1_total` float NOT NULL,
   `quiz2_score` float NOT NULL,
@@ -116,6 +118,7 @@ CREATE TABLE `lecturedata` (
   `quiz9_total` float NOT NULL,
   `quiz10_score` float NOT NULL,
   `quiz10_total` float NOT NULL,
+  `weighted_quiz` decimal(10,2) DEFAULT NULL,
   `portfolio1_score` float NOT NULL,
   `portfolio1_total` float NOT NULL,
   `portfolio2_score` float NOT NULL,
@@ -136,18 +139,33 @@ CREATE TABLE `lecturedata` (
   `portfolio9_total` float NOT NULL,
   `portfolio10_score` float NOT NULL,
   `portfolio10_total` float NOT NULL,
+  `weighted_portfolio` decimal(10,2) DEFAULT NULL,
   `midterm_score` float NOT NULL,
-  `midterm_total` float NOT NULL
+  `midterm_total` float NOT NULL,
+  `weighted_midterm` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `lecturedata`
 --
 
-INSERT INTO `lecturedata` (`id`, `student_name`, `student_number`, `attendance_score`, `participation_score`, `quiz1_score`, `quiz1_total`, `quiz2_score`, `quiz2_total`, `quiz3_score`, `quiz3_total`, `quiz4_score`, `quiz4_total`, `quiz5_score`, `quiz5_total`, `quiz6_score`, `quiz6_total`, `quiz7_score`, `quiz7_total`, `quiz8_score`, `quiz8_total`, `quiz9_score`, `quiz9_total`, `quiz10_score`, `quiz10_total`, `portfolio1_score`, `portfolio1_total`, `portfolio2_score`, `portfolio2_total`, `portfolio3_score`, `portfolio3_total`, `portfolio4_score`, `portfolio4_total`, `portfolio5_score`, `portfolio5_total`, `portfolio6_score`, `portfolio6_total`, `portfolio7_score`, `portfolio7_total`, `portfolio8_score`, `portfolio8_total`, `portfolio9_score`, `portfolio9_total`, `portfolio10_score`, `portfolio10_total`, `midterm_score`, `midterm_total`) VALUES
-(5, '2', 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
-(6, 'Robinn May Dominguez', 202010123, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
-(7, 'Vice Mariano Serkis', 202010125, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
+INSERT INTO `lecturedata` (`id`, `student_name`, `student_number`, `attendance_score`, `participation_score`, `parcipation_total`, `weighted_participation`, `quiz1_score`, `quiz1_total`, `quiz2_score`, `quiz2_total`, `quiz3_score`, `quiz3_total`, `quiz4_score`, `quiz4_total`, `quiz5_score`, `quiz5_total`, `quiz6_score`, `quiz6_total`, `quiz7_score`, `quiz7_total`, `quiz8_score`, `quiz8_total`, `quiz9_score`, `quiz9_total`, `quiz10_score`, `quiz10_total`, `weighted_quiz`, `portfolio1_score`, `portfolio1_total`, `portfolio2_score`, `portfolio2_total`, `portfolio3_score`, `portfolio3_total`, `portfolio4_score`, `portfolio4_total`, `portfolio5_score`, `portfolio5_total`, `portfolio6_score`, `portfolio6_total`, `portfolio7_score`, `portfolio7_total`, `portfolio8_score`, `portfolio8_total`, `portfolio9_score`, `portfolio9_total`, `portfolio10_score`, `portfolio10_total`, `weighted_portfolio`, `midterm_score`, `midterm_total`, `weighted_midterm`) VALUES
+(5, '2', 2, 2, 2, NULL, NULL, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0.00, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, NULL, 2, 2, NULL),
+(6, 'Robinn May Dominguez', 202010123, 2, 2, NULL, NULL, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0.00, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, NULL, 2, 2, NULL),
+(7, 'Vice Mariano Serkis', 202010125, 1, 2, NULL, NULL, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0.00, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, NULL, 2, 2, NULL),
+(8, 'Robinn May Dominguez', 202010123, 3, 3, NULL, NULL, 3, 3, 33, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
+(9, 'Victor Anastacio Vermosa', 202010124, 2, 1, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
+(10, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
+(11, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 30.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
+(12, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 30.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
+(13, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 33, 3, NULL),
+(14, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 33, 3, NULL),
+(15, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 33, 3, NULL),
+(16, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 7.50, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
+(17, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 7.50, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
+(18, 'Robinn May Dominguez', 202010123, 3, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 25.00, 3, 3, 20.00),
+(19, 'Robinn May Dominguez', 202010123, 3, 3, 3, 10.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 25.00, 3, 3, 20.00),
+(20, 'Victor Anastacio Vermosa', 202010124, 2, 3, 3, 10.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 25.00, 3, 3, 20.00);
 
 -- --------------------------------------------------------
 
@@ -545,7 +563,7 @@ ALTER TABLE `finalsdata`
 -- AUTO_INCREMENT for table `lecturedata`
 --
 ALTER TABLE `lecturedata`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `members`

@@ -91,6 +91,13 @@
 </head>
 
 <body>
+    <form>
+        <!-- Dropdown for selecting exam type -->
+        <label for="examType">Select Exam Type:</label>
+        <select id="examType" name="examType" class="exam-dropdown" onchange="gradingForm.handleExamTypeChange()">
+            <option value="Midterm">Midterm</option>
+            <option value="Finals">Finals</option>
+        </select>
 
     <form>
         <label for="grading">Lecture with lab ("Lecture"):</label>
@@ -225,6 +232,28 @@
                 // Initialization code goes here
             },
 
+            handleExamTypeChange: function () {
+                const selectedExamType = document.getElementById("examType").value;
+                this.hideAllExamSections();
+
+                if (selectedExamType === "Midterm") {
+                    this.showExamSection("midtermInputs");
+                } else if (selectedExamType === "Finals") {
+                    this.showExamSection("finalsInputs");
+                }
+            },
+
+            hideAllExamSections: function () {
+                const examSections = ["midtermInputs", "finalsInputs"];
+                examSections.forEach(section => {
+                    document.getElementById(section).classList.add("hidden");
+                });
+            },
+
+            showExamSection: function (sectionId) {
+                document.getElementById(sectionId).classList.remove("hidden");
+            },
+
             handleGradingChange: function () {
                 const selectedValue = document.getElementById("grading").value;
                 this.hideAllSections();
@@ -237,13 +266,11 @@
                     this.showSection("quizInputs");
                 } else if (selectedValue === "OutputPortfolio") {
                     this.showSection("portfolioInputs");
-                } else if (selectedValue === "Midterm") {
-                    this.showSection("midtermInputs");
                 }
             },
 
             hideAllSections: function () {
-                const sections = ["attendanceInputs", "classParticipationInputs", "quizInputs", "portfolioInputs", "midtermInputs"];
+                const sections = ["attendanceInputs", "classParticipationInputs", "quizInputs", "portfolioInputs", "midtermInputs", "finalsInputs"];
                 sections.forEach(section => {
                     document.getElementById(section).classList.add("hidden");
                 });
@@ -295,126 +322,96 @@
             },
 
             generateFields: function (type) {
-                const numberOfItems = document.getElementById("numberOf" + (type === 'quiz' ? 'Quizzes' : (type === 'portfolio' ? 'Portfolios' : 'Midterms'))).value;
-                const fieldsContainer = document.getElementById(type + "Fields");
-                fieldsContainer.innerHTML = "";
-
-                for (let i = 1; i <= numberOfItems; i++) {
-                    const itemLabel = document.createElement("label");
-                    itemLabel.textContent = type.charAt(0).toUpperCase() + type.slice(1) + " " + i + " Score:";
-                    itemLabel.classList.add("quiz-portfolio-label");
-
-                    const itemScoreInput = document.createElement("input");
-                    itemScoreInput.type = "number";
-                    itemScoreInput.name = type + i + "Score";
-                    itemScoreInput.inputMode = "numeric";
-                    itemScoreInput.classList.add("quiz-portfolio-input");
-                    itemScoreInput.addEventListener("input", () => {
-                        this.computeOverall(type);
-                    });
-
-                    const itemTotalLabel = document.createElement("label");
-                    itemTotalLabel.textContent = type.charAt(0).toUpperCase() + type.slice(1) + " " + i + " Total:";
-                    itemTotalLabel.classList.add("quiz-portfolio-label");
-
-                    const itemTotalInput = document.createElement("input");
-                    itemTotalInput.type = "number";
-                    itemTotalInput.name = type + i + "Total";
-                    itemTotalInput.inputMode = "numeric";
-                    itemTotalInput.classList.add("quiz-portfolio-input");
-                    itemTotalInput.addEventListener("input", () => {
-                        this.computeOverall(type);
-                    });
-
-                    const itemContainer = document.createElement("div");
-                    itemContainer.classList.add("form-group", "side-by-side");
-                    itemContainer.appendChild(itemLabel);
-                    itemContainer.appendChild(itemScoreInput);
-                    itemContainer.appendChild(itemTotalLabel);
-                    itemContainer.appendChild(itemTotalInput);
-
-                    fieldsContainer.appendChild(itemContainer);
-                }
-
-                const overallScoreId = "overall" + (type === 'quiz' ? 'Quiz' : (type === 'portfolio' ? 'Portfolio' : 'Midterm')) + "Score";
-                const overallTotalId = "overall" + (type === 'quiz' ? 'Quiz' : (type === 'portfolio' ? 'Portfolio' : 'Midterm')) + "Total";
-                const overallWeightedId = "overall" + (type === 'quiz' ? 'Quiz' : (type === 'portfolio' ? 'Portfolio' : 'Midterm')) + "Weighted";
-
-                if (!document.getElementById(overallScoreId)) {
-                    const overallScoreInput = document.createElement("input");
-                    overallScoreInput.type = "number";
-                    overallScoreInput.id = overallScoreId;
-                    overallScoreInput.name = overallScoreId;
-                    overallScoreInput.readOnly = true;
-                    overallScoreInput.classList.add("quiz-portfolio-input");
-
-                    const overallTotalInput = document.createElement("input");
-                    overallTotalInput.type = "number";
-                    overallTotalInput.id = overallTotalId;
-                    overallTotalInput.name =  overallTotalId;
-                    overallTotalInput.readOnly = true;
-                    overallTotalInput.classList.add("quiz-portfolio-input");
-
-                    const overallWeightedInput = document.createElement("input");
-                    overallWeightedInput.type = "number";
-                    overallWeightedInput.id = overallWeightedId;
-                    overallWeightedInput.name = overallWeightedId;
-                    overallWeightedInput.readOnly = true;
-                    overallWeightedInput.classList.add("quiz-portfolio-input");
-
-                    fieldsContainer.appendChild(document.createElement("hr"));
-                    fieldsContainer.appendChild(document.createElement("br"));
-                    fieldsContainer.appendChild(document.createTextNode("Overall " + type.charAt(0).toUpperCase() + type.slice(1) + " Information:"));
-                    fieldsContainer.appendChild(document.createElement("br"));
-                    fieldsContainer.appendChild(document.createElement("br"));
-                    fieldsContainer.appendChild(document.createTextNode("Overall Score:"));
-                    fieldsContainer.appendChild(overallScoreInput);
-                    fieldsContainer.appendChild(document.createTextNode("Overall Total:"));
-                    fieldsContainer.appendChild(overallTotalInput);
-                    fieldsContainer.appendChild(document.createElement("br"));
-                    fieldsContainer.appendChild(document.createTextNode("Weighted " + (type === 'quiz' ? '15%' : (type === 'portfolio' ? '15%' : '20%')) + ":"));
-                    fieldsContainer.appendChild(overallWeightedInput);
-
-                    this.computeOverall(type);
-                }
-            },
-
-            computeOverall: function (type) {
-    const numberOfItemsId = "numberOf" + (type === 'quiz' ? 'Quizzes' : (type === 'portfolio' ? 'Portfolios' : 'Midterms'));
-    const numberOfItemsInput = document.getElementById(numberOfItemsId);
-
-    if (!numberOfItemsInput) {
-        console.error('Number of items input not found:', numberOfItemsId);
-        return;
-    }
-
-    const numberOfItems = parseFloat(numberOfItemsInput.value) || 0;
-    let overallScore = 0;
-    let overallTotal = 0;
+    const numberOfItems = document.getElementById("numberOf" + (type === 'quiz' ? 'Quizzes' : (type === 'portfolio' ? 'Portfolios' : 'Midterms'))).value;
+    const fieldsContainer = document.getElementById(type + "Fields");
+    fieldsContainer.innerHTML = "";
 
     for (let i = 1; i <= numberOfItems; i++) {
-        const itemScoreInputId = type + i + "Score";
-        const itemTotalInputId = type + i + "Total";
+        const itemScoreLabel = document.createElement("label");
+        itemScoreLabel.textContent = type.charAt(0).toUpperCase() + type.slice(1) + " " + i + " Score:";
+        itemScoreLabel.classList.add("quiz-portfolio-label");
 
-        const itemScoreInput = this.getElementCaseInsensitive(itemScoreInputId);
-        const itemTotalInput = this.getElementCaseInsensitive(itemTotalInputId);
+        const itemScoreInput = document.createElement("input");
+        itemScoreInput.type = "number";
+        itemScoreInput.id = type + i + "Score";
+        itemScoreInput.name = type + i + "Score";
+        itemScoreInput.inputMode = "numeric";
+        itemScoreInput.classList.add("quiz-portfolio-input");
+        itemScoreInput.addEventListener("input", () => {
+            this.computeOverall(type);
+        });
 
-        if (itemScoreInput && itemTotalInput) {
-            const itemScore = parseFloat(itemScoreInput.value) || 0;
-            const itemTotal = parseFloat(itemTotalInput.value) || 0;
+        const itemTotalLabel = document.createElement("label");
+        itemTotalLabel.textContent = type.charAt(0).toUpperCase() + type.slice(1) + " " + i + " Total:";
+        itemTotalLabel.classList.add("quiz-portfolio-label");
 
-            overallScore += itemScore;
-            overallTotal += itemTotal;
-        } else {
-            console.error('One or more elements not found for item:', i);
-            console.log('Item Score Input Element:', itemScoreInput);
-            console.log('Item Total Input Element:', itemTotalInput);
-        }
+        const itemTotalInput = document.createElement("input");
+        itemTotalInput.type = "number";
+        itemTotalInput.id = type + i + "Total";
+        itemTotalInput.name = type + i + "Total";
+        itemTotalInput.inputMode = "numeric";
+        itemTotalInput.classList.add("quiz-portfolio-input");
+        itemTotalInput.addEventListener("input", () => {
+            this.computeOverall(type);
+        });
+
+        const itemContainer = document.createElement("div");
+        itemContainer.classList.add("form-group", "side-by-side");
+        itemContainer.appendChild(itemScoreLabel);
+        itemContainer.appendChild(itemScoreInput);
+        itemContainer.appendChild(itemTotalLabel);
+        itemContainer.appendChild(itemTotalInput);
+
+        fieldsContainer.appendChild(itemContainer);
     }
 
-    const weightedPercentage = type === 'quiz' ? 15 : (type === 'portfolio' ? 15 : 20);
-    const weightedValue = overallTotal !== 0 ? (overallScore / overallTotal) * weightedPercentage : 0;
+    const overallScoreId = "overall" + (type === 'quiz' ? 'Quiz' : (type === 'portfolio' ? 'Portfolio' : 'Midterm')) + "Score";
+    const overallTotalId = "overall" + (type === 'quiz' ? 'Quiz' : (type === 'portfolio' ? 'Portfolio' : 'Midterm')) + "Total";
+    const overallWeightedId = "overall" + (type === 'quiz' ? 'Quiz' : (type === 'portfolio' ? 'Portfolio' : 'Midterm')) + "Weighted";
 
+    console.log('Overall Score Element:', document.getElementById(overallScoreId));
+    console.log('Overall Total Element:', document.getElementById(overallTotalId));
+
+    if (!document.getElementById(overallScoreId)) {
+        const overallScoreInput = document.createElement("input");
+        overallScoreInput.type = "number";
+        overallScoreInput.id = overallScoreId;
+        overallScoreInput.name = overallScoreId;
+        overallScoreInput.readOnly = true;
+        overallScoreInput.classList.add("quiz-portfolio-input");
+
+        const overallTotalInput = document.createElement("input");
+        overallTotalInput.type = "number";
+        overallTotalInput.id = overallTotalId;
+        overallTotalInput.name = overallTotalId;
+        overallTotalInput.readOnly = true;
+        overallTotalInput.classList.add("quiz-portfolio-input");
+
+        const overallWeightedInput = document.createElement("input");
+        overallWeightedInput.type = "number";
+        overallWeightedInput.id = overallWeightedId;
+        overallWeightedInput.name = overallWeightedId;
+        overallWeightedInput.readOnly = true;
+        overallWeightedInput.classList.add("quiz-portfolio-input");
+
+        fieldsContainer.appendChild(document.createElement("hr"));
+        fieldsContainer.appendChild(document.createElement("br"));
+        fieldsContainer.appendChild(document.createTextNode("Overall " + type.charAt(0).toUpperCase() + type.slice(1) + " Information:"));
+        fieldsContainer.appendChild(document.createElement("br"));
+        fieldsContainer.appendChild(document.createElement("br"));
+        fieldsContainer.appendChild(document.createTextNode("Overall Score:"));
+        fieldsContainer.appendChild(overallScoreInput);
+        fieldsContainer.appendChild(document.createTextNode("Overall Total:"));
+        fieldsContainer.appendChild(overallTotalInput);
+        fieldsContainer.appendChild(document.createElement("br"));
+        fieldsContainer.appendChild(document.createTextNode("Weighted " + (type === 'quiz' ? '15%' : (type === 'portfolio' ? '15%' : '20%')) + ":"));
+        fieldsContainer.appendChild(overallWeightedInput);
+
+        this.computeOverall(type);
+}
+},
+
+resetOverall: function (type) {
     const overallScoreId = "overall" + type.charAt(0).toUpperCase() + type.slice(1) + "Score";
     const overallTotalId = "overall" + type.charAt(0).toUpperCase() + type.slice(1) + "Total";
     const overallWeightedId = "overall" + type.charAt(0).toUpperCase() + type.slice(1) + "Weighted";
@@ -423,19 +420,79 @@
     const overallTotalInput = document.getElementById(overallTotalId);
     const overallWeightedInput = document.getElementById(overallWeightedId);
 
-    if (overallScoreInput && overallTotalInput && overallWeightedInput) {
-        overallScoreInput.value = isNaN(overallScore) ? '0.00' : overallScore.toFixed(2);
-        overallTotalInput.value = isNaN(overallTotal) ? '0.00' : overallTotal.toFixed(2);
-        overallWeightedInput.value = weightedValue.toFixed(2);
-    } else {
-        console.error('One or more overall elements not found:', {
-            overallScoreInput,
-            overallTotalInput,
-            overallWeightedInput,
-        });
+    if (overallScoreInput) {
+        overallScoreInput.value = "";
     }
-}
+
+    if (overallTotalInput) {
+        overallTotalInput.value = "";
+    }
+
+    if (overallWeightedInput) {
+        overallWeightedInput.value = "";
+    }
+},
+
+computeOverall: function (type) {
+        const numberOfItemsInput = document.getElementById("numberOf" + (type === 'quiz' ? 'Quizzes' : (type === 'portfolio' ? 'Portfolios' : 'Midterms')));
+        const numberOfItems = parseInt(numberOfItemsInput.value);
+
+        if (!Number.isInteger(numberOfItems) || numberOfItems <= 0) {
+            console.error('Invalid number of items:', numberOfItems);
+            return;
         }
+
+        let overallScore = 0;
+        let overallTotal = 0;
+
+        const itemScoreInputs = [];
+        const itemTotalInputs = [];
+
+        for (let i = 1; i <= numberOfItems; i++) {
+            const itemScoreId = type + "Score" + i;
+            const itemTotalId = type + "Total" + i;
+
+            const itemScoreInput = document.getElementById(itemScoreId);
+            const itemTotalInput = document.getElementById(itemTotalId);
+
+            console.log(`Item ${i} Score Input Element:`, itemScoreInput);
+            console.log(`Item ${i} Total Input Element:`, itemTotalInput);
+
+            if (itemScoreInput && itemTotalInput) {
+                const itemScore = parseFloat(itemScoreInput.value) || 0;
+                const itemTotal = parseFloat(itemTotalInput.value) || 0;
+
+                overallScore += itemScore;
+                overallTotal += itemTotal;
+
+                itemScoreInputs.push(itemScoreInput);
+                itemTotalInputs.push(itemTotalInput);
+            } else {
+                console.error(`One or more elements not found for item: ${i}`);
+            }
+        }
+
+        if (overallTotal !== 0) {
+            const weightedPercentage = type === 'quiz' ? 15 : (type === 'portfolio' ? 15 : 20);
+            const weightedValue = (overallScore / overallTotal) * weightedPercentage;
+
+            const overallScoreId = "overall" + type.charAt(0).toUpperCase() + type.slice(1) + "Score";
+            const overallTotalId = "overall" + type.charAt(0).toUpperCase() + type.slice(1) + "Total";
+            const overallWeightedId = "overall" + type.charAt(0).toUpperCase() + type.slice(1) + "Weighted";
+
+            document.getElementById(overallScoreId).value = overallScore.toFixed(2);
+            document.getElementById(overallTotalId).value = overallTotal.toFixed(2);
+            document.getElementById(overallWeightedId).value = weightedValue.toFixed(2);
+
+            // Optional: You can iterate over the arrays and perform any additional actions if needed.
+            for (let i = 0; i < itemScoreInputs.length; i++) {
+                // Do something with itemScoreInputs[i] and itemTotalInputs[i]
+            }
+        } else {
+            console.error('Overall total is zero. Cannot calculate weighted value.');
+        }
+    }
+};
         // Initialize the grading form
         gradingForm.init();
     </script>

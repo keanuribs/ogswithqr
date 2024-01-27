@@ -169,6 +169,93 @@
         <!-- ... (other midterm form elements) -->
     </div>
 
+    <div id="classParticipationFormFinals" class="hidden">
+      <h2>Class Participation Form - Finals</h2>
+      <div class="form-group">
+        <label for="classParticipationScoreFinals">Score:</label>
+        <input type="number" id="classParticipationScoreFinals" name="classParticipationScoreFinals" inputmode="numeric">
+
+        <label for="classParticipationTotalFinals">Number of Total:</label>
+        <input type="number" id="classParticipationTotalFinals" name="classParticipationTotalFinals" inputmode="numeric">
+      </div>
+
+      <div class="form-group">
+        <label for="classParticipationWeightedFinals">Weighted 10%:</label>
+        <input type="number" id="classParticipationWeightedFinals" name="classParticipationWeightedFinals" inputmode="numeric" readonly>
+      </div>
+    </div>
+
+    <div id="finalQuizForm" class="hidden">
+      <h2>Final Quiz Form</h2>
+    
+      <div class="form-group">
+        <label for="finalQuizLength">Number of Quizzes:</label>
+        <input type="number" id="finalQuizLength" name="finalQuizLength" inputmode="numeric">
+      </div>
+    
+      <div id="finalQuizScoreTotalContainer" class="hidden">
+        <!-- Final Quiz score and total fields will be dynamically added here -->
+    </div>
+      
+      <div class="form-group">
+        <label for="finalQuizOverallScore">Overall Score:</label>
+        <input type="number" id="finalQuizOverallScore" name="finalQuizOverallScore" inputmode="numeric">
+    
+        <label for="finalQuizOverallTotal">Overall Total:</label>
+        <input type="number" id="finalQuizOverallTotal" name="finalQuizOverallTotal" inputmode="numeric">
+      </div>
+    
+      <div class="form-group">
+        <label for="finalQuizWeighted">Weighted 15%:</label>
+        <input type="number" id="finalQuizWeighted" name="finalQuizWeighted" inputmode="numeric" readonly>
+      </div>
+    </div>
+    
+    <div id="finalPortfolioForm" class="hidden">
+      <h2>Final Portfolio Form</h2>
+      
+      <div class="form-group">
+        <label for="finalPortfolioLength">Number of Portfolios:</label>
+        <input type="number" id="finalPortfolioLength" name="finalPortfolioLength" inputmode="numeric">
+      </div>
+      
+      <div id="finalPortfolioScoreTotalContainer" class="hidden">
+        <!-- Final Portfolio score and total fields will be dynamically added here -->
+      </div>
+    
+      <div class="form-group">
+        <label for="finalPortfolioOverallScore">Overall Score:</label>
+        <input type="number" id="finalPortfolioOverallScore" name="finalPortfolioOverallScore" inputmode="numeric">
+        
+        <label for="finalPortfolioOverallTotal">Overall Total:</label>
+        <input type="number" id="finalPortfolioOverallTotal" name="finalPortfolioOverallTotal" inputmode="numeric">
+      </div>
+      
+      <div class="form-group">
+        <label for="finalPortfolioWeighted">Weighted 25%:</label>
+        <input type="number" id="finalPortfolioWeighted" name="finalPortfolioWeighted" inputmode="numeric" readonly>
+      </div>
+    </div>
+
+    <div id="finalExamForm" class="hidden">
+      <h2>Last Part of the Lecture Final Exam Form</h2>
+  
+      <div class="form-group">
+          <label for="finalExamScore">Score:</label>
+          <input type="number" id="finalExamScore" name="finalExamScore" inputmode="numeric">
+      </div>
+  
+      <div class="form-group">
+          <label for="finalExamQuestions">Number of Questions:</label>
+          <input type="number" id="finalExamQuestions" name="finalExamQuestions" inputmode="numeric">
+      </div>
+  
+      <div class="form-group">
+          <label for="finalExamWeighted">Weighted 20%:</label>
+          <input type="number" id="finalExamWeighted" name="finalExamWeighted" inputmode="numeric" readonly>
+      </div>
+  </div>
+
   <div id="labForm" class="hidden">
     <label for="examTypeLab">Select Exam Type:</label>
     <select id="examTypeLab">

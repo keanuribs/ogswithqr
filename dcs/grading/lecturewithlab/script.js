@@ -1,173 +1,186 @@
 var examApp = {
-    showSelectedSession: function () {
-      var sessionDropdown = document.getElementById("sessionType");
-      var selectedSession = sessionDropdown.options[sessionDropdown.selectedIndex].text;
-  
-      var lectureForm = document.getElementById("lectureForm");
-      var labForm = document.getElementById("labForm");
-  
-      if (selectedSession === "Lecture") {
-        lectureForm.style.display = "block";
-        labForm.style.display = "none";
-      } else if (selectedSession === "Lab") {
-        lectureForm.style.display = "none";
-        labForm.style.display = "block";
-      }
-    },
-  
-    updateThirdDropdownOptions: function (type, selectedExam) {
-      var examComponentDropdown;
-  
-      if (type === "lecture") {
-        examComponentDropdown = document.getElementById("examComponent");
-      } else if (type === "lab") {
-        examComponentDropdown = document.getElementById("examComponentLab");
-      }
-  
-      var midtermOptions = ["attendance", "classParticipation", "quiz", "portfolio", "midtermExam"];
-      var finalsOptions = ["classParticipationFinals", "quizFinals", "portfolioFinals", "finalsExam"];
-      var optionsToDisplay = (selectedExam === "Midterm") ? midtermOptions : finalsOptions;
-  
-      // Clear existing options
-      examComponentDropdown.innerHTML = "";
-  
-      // Add new options
-      for (var i = 0; i < optionsToDisplay.length; i++) {
-        var option = document.createElement("option");
-        option.value = optionsToDisplay[i];
-        option.text = optionsToDisplay[i];
-        examComponentDropdown.add(option);
-      }
-  
-      // Show the first option by default
-      examComponentDropdown.selectedIndex = 0;
-  
-      // Trigger the onchange event to update the form based on the default selection
-      examApp.showForm(type);
-    },
-  
-    showSelectedExam: function (type) {
-      var examDropdown;
-      var selectedExam;
-      var selectedExamElement;
-  
-      if (type === "lecture") {
+  showSelectedSession: function () {
+    var sessionDropdown = document.getElementById("sessionType");
+    var selectedSession = sessionDropdown.options[sessionDropdown.selectedIndex].text;
+
+    var lectureForm = document.getElementById("lectureForm");
+    var labForm = document.getElementById("labForm");
+
+    if (selectedSession === "Lecture") {
+      lectureForm.style.display = "block";
+      labForm.style.display = "none";
+    } else if (selectedSession === "Lab") {
+      lectureForm.style.display = "none";
+      labForm.style.display = "block";
+    }
+  },
+
+  showSelectedExam: function (type) {
+    var examDropdown;
+    var selectedExam;
+    var selectedExamElement;
+
+    if (type === "lecture") {
         examDropdown = document.getElementById("examType");
         selectedExamElement = document.getElementById("selectedExam");
-      } else if (type === "lab") {
+    } else if (type === "lab") {
         examDropdown = document.getElementById("examTypeLab");
         selectedExamElement = document.getElementById("selectedExamLab");
-      }
-  
-      selectedExam = examDropdown.options[examDropdown.selectedIndex].text;
-      selectedExamElement.innerHTML = "You selected: " + selectedExam;
-  
-      // Update options for the third dropdown based on the selected exam
-      examApp.updateThirdDropdownOptions(type, selectedExam);
-    },
-  
-    showForm: function (type) {
-        var examComponentDropdown;
-        var attendanceForm;
-        var classParticipationForm;
-        var classParticipationFormFinals;
-        var quizForm;
-        var finalQuizForm; // Adjusted this line
-        var finalPortfolioForm;
-        var portfolioForm;
-        var midtermForm;
-        var finalExamForm;
-    
-        if (type === "lecture") {
-            examComponentDropdown = document.getElementById("examComponent");
-            attendanceForm = document.getElementById("attendanceForm");
-            classParticipationForm = document.getElementById("classParticipationForm");
-            classParticipationFormFinals = document.getElementById("classParticipationFormFinals");
-            quizForm = document.getElementById("quizForm");
-            finalQuizForm = document.getElementById("finalQuizForm"); // Adjusted this line
-            portfolioForm = document.getElementById("portfolioForm");
-            finalPortfolioForm = document.getElementById("finalPortfolioForm");
-            midtermForm = document.getElementById("midtermForm");
-            finalExamForm = document.getElementById("finalExamForm");
-        } else if (type === "lab") {
-            examComponentDropdown = document.getElementById("examComponentLab");
-            // ... (other form assignments for lab)
-        }
-    
-        var selectedComponent = examComponentDropdown.options[examComponentDropdown.selectedIndex].value;
-    
-        // Hide all forms initially
+        
+        // Display the second dropdown for lab exams
+        var labExamTypeDropdown = document.getElementById("examTypeLab");
+        labExamTypeDropdown.style.display = "block";
+    }
+
+    selectedExam = examDropdown.options[examDropdown.selectedIndex].text;
+    selectedExamElement.innerHTML = "You selected: " + selectedExam;
+
+    // Update options for the third dropdown based on the selected exam
+    examApp.updateThirdDropdownOptions(type, selectedExam);
+},
+updateThirdDropdownOptions: function (type, selectedExam) {
+  var examComponentDropdown;
+
+  if (type === "lecture") {
+    examComponentDropdown = document.getElementById("examComponent");
+  } else if (type === "lab") {
+    examComponentDropdown = document.getElementById("examComponentLab");
+  }
+
+  var optionsToDisplay;
+
+  if (type === "lecture") {
+    optionsToDisplay = (selectedExam === "Midterm") ?
+      ["attendance", "classParticipation", "quiz", "portfolio", "midtermExam"] :
+      ["classParticipationFinals", "quizFinals", "portfolioFinals", "finalsExam"];
+  } else if (type === "lab") {
+    optionsToDisplay = (selectedExam === "Midterm") ?
+      ["attendanceLab", "participationLab", "labReportsLab", "practicalExamLab"] :
+      ["labReportsFinals", "practicalExamFinals"];
+  }
+
+  // Clear existing options
+  examComponentDropdown.innerHTML = "";
+
+  // Add new options
+  for (var i = 0; i < optionsToDisplay.length; i++) {
+    var option = document.createElement("option");
+    option.value = optionsToDisplay[i];
+    option.text = optionsToDisplay[i];
+    examComponentDropdown.add(option);
+  }
+
+  // Show the first option by default
+  examComponentDropdown.selectedIndex = 0;
+
+  // Trigger the onchange event to update the form based on the default selection
+  examApp.showForm(type);
+},
+
+  showForm: function (type) {
+    var examComponentDropdown;
+    var attendanceForm;
+    var classParticipationForm;
+    var classParticipationFormFinals;
+    var quizForm;
+    var finalQuizForm; // Adjusted this line
+    var finalPortfolioForm;
+    var portfolioForm;
+    var midtermForm;
+    var finalExamForm;
+    var labAttendanceForm; // Corrected this line
+
+    if (type === "lecture") {
+      examComponentDropdown = document.getElementById("examComponent");
+      attendanceForm = document.getElementById("attendanceForm");
+      classParticipationForm = document.getElementById("classParticipationForm");
+      classParticipationFormFinals = document.getElementById("classParticipationFormFinals");
+      quizForm = document.getElementById("quizForm");
+      finalQuizForm = document.getElementById("finalQuizForm"); // Adjusted this line
+      portfolioForm = document.getElementById("portfolioForm");
+      finalPortfolioForm = document.getElementById("finalPortfolioForm");
+      midtermForm = document.getElementById("midtermForm");
+      finalExamForm = document.getElementById("finalExamForm");
+    } else if (type === "lab") {
+      examComponentDropdown = document.getElementById("examComponentLab");
+      labAttendanceForm = document.getElementById("labAttendanceForm"); // Corrected this line
+      // ... (other form assignments for lab)
+    }
+
+    var selectedComponent = examComponentDropdown.options[examComponentDropdown.selectedIndex].value;
+
+    // Hide all forms initially
+    if (attendanceForm) {
+      attendanceForm.style.display = "none";
+    }
+    if (classParticipationForm) {
+      classParticipationForm.style.display = "none";
+    }
+    if (classParticipationFormFinals) {
+      classParticipationFormFinals.style.display = "none";
+    }
+    if (quizForm) {
+      quizForm.style.display = "none";
+    }
+    if (finalQuizForm) {
+      finalQuizForm.style.display = "none"; // Adjusted this line
+    }
+    if (portfolioForm) {
+      portfolioForm.style.display = "none";
+    }
+    if (finalPortfolioForm) {
+      finalPortfolioForm.style.display = "none";
+    }
+    if (midtermForm) {
+      midtermForm.style.display = "none";
+    }
+    if (finalExamForm) {
+      finalExamForm.style.display = "none";
+    }
+
+    // Show the selected form
+    if (type === "lecture") {
+      if (selectedComponent === "attendance") {
         if (attendanceForm) {
-            attendanceForm.style.display = "none";
+          attendanceForm.style.display = "block";
         }
+      } else if (selectedComponent === "classParticipation") {
         if (classParticipationForm) {
-            classParticipationForm.style.display = "none";
+          classParticipationForm.style.display = "block";
         }
+      } else if (selectedComponent === "classParticipationFinals") {
         if (classParticipationFormFinals) {
-            classParticipationFormFinals.style.display = "none";
+          classParticipationFormFinals.style.display = "block";
         }
+      } else if (selectedComponent === "quiz") {
         if (quizForm) {
-            quizForm.style.display = "none";
+          quizForm.style.display = "block";
         }
+      } else if (selectedComponent === "quizFinals") { // Adjusted to match the value in the HTML
         if (finalQuizForm) {
-            finalQuizForm.style.display = "none"; // Adjusted this line
+          finalQuizForm.style.display = "block"; // Adjusted this line
         }
+      } else if (selectedComponent === "portfolio") {
         if (portfolioForm) {
-            portfolioForm.style.display = "none";
+          portfolioForm.style.display = "block";
         }
+      } else if (selectedComponent === "portfolioFinals") {
         if (finalPortfolioForm) {
-            finalPortfolioForm.style.display = "none";
+          finalPortfolioForm.style.display = "block";
         }
+      } else if (selectedComponent === "midtermExam") {
         if (midtermForm) {
-            midtermForm.style.display = "none";
+          midtermForm.style.display = "block";
         }
+      } else if (selectedComponent === "finalsExam") {
         if (finalExamForm) {
-            finalExamForm.style.display = "none";
+          finalExamForm.style.display = "block";
         }
-    
-        // Show the selected form
-        if (type === "lecture") {
-            if (selectedComponent === "attendance") {
-                if (attendanceForm) {
-                    attendanceForm.style.display = "block";
-                }
-            } else if (selectedComponent === "classParticipation") {
-                if (classParticipationForm) {
-                    classParticipationForm.style.display = "block";
-                }
-            } else if (selectedComponent === "classParticipationFinals") {
-                if (classParticipationFormFinals) {
-                    classParticipationFormFinals.style.display = "block";
-                }
-            } else if (selectedComponent === "quiz") {
-                if (quizForm) {
-                    quizForm.style.display = "block";
-                }
-            } else if (selectedComponent === "quizFinals") { // Adjusted to match the value in the HTML
-                if (finalQuizForm) {
-                    finalQuizForm.style.display = "block"; // Adjusted this line
-                }
-            } else if (selectedComponent === "portfolio") {
-                if (portfolioForm) {
-                    portfolioForm.style.display = "block";
-                }
-            } else if (selectedComponent === "portfolioFinals") {
-                if (finalPortfolioForm) {
-                    finalPortfolioForm.style.display = "block";
-                }
-            } else if (selectedComponent === "midtermExam") {
-                if (midtermForm) {
-                    midtermForm.style.display = "block";
-                }
-            } else if (selectedComponent === "finalsExam") {
-                if (finalExamForm) {
-                    finalExamForm.style.display = "block";
-                }
-            }
-        } else if (type === "lab") {
-            // ... (other form display for lab)
-        }
-    },
+      }
+    } else if (type === "lab") {
+      
+    }
+  },
   
     handleQuizLengthInput: function () {
       var quizLengthInput = document.getElementById("quizLength");

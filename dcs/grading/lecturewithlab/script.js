@@ -21,15 +21,15 @@ var examApp = {
     var selectedExamElement;
 
     if (type === "lecture") {
-        examDropdown = document.getElementById("examType");
-        selectedExamElement = document.getElementById("selectedExam");
+      examDropdown = document.getElementById("examType");
+      selectedExamElement = document.getElementById("selectedExam");
     } else if (type === "lab") {
-        examDropdown = document.getElementById("examTypeLab");
-        selectedExamElement = document.getElementById("selectedExamLab");
-        
-        // Display the second dropdown for lab exams
-        var labExamTypeDropdown = document.getElementById("examTypeLab");
-        labExamTypeDropdown.style.display = "block";
+      examDropdown = document.getElementById("examTypeLab");
+      selectedExamElement = document.getElementById("selectedExamLab");
+
+      // Display the second dropdown for lab exams
+      var labExamTypeDropdown = document.getElementById("examTypeLab");
+      labExamTypeDropdown.style.display = "block";
     }
 
     selectedExam = examDropdown.options[examDropdown.selectedIndex].text;
@@ -37,45 +37,46 @@ var examApp = {
 
     // Update options for the third dropdown based on the selected exam
     examApp.updateThirdDropdownOptions(type, selectedExam);
-},
-updateThirdDropdownOptions: function (type, selectedExam) {
-  var examComponentDropdown;
+  },
 
-  if (type === "lecture") {
-    examComponentDropdown = document.getElementById("examComponent");
-  } else if (type === "lab") {
-    examComponentDropdown = document.getElementById("examComponentLab");
-  }
+  updateThirdDropdownOptions: function (type, selectedExam) {
+    var examComponentDropdown;
 
-  var optionsToDisplay;
+    if (type === "lecture") {
+      examComponentDropdown = document.getElementById("examComponent");
+    } else if (type === "lab") {
+      examComponentDropdown = document.getElementById("examComponentLab");
+    }
 
-  if (type === "lecture") {
-    optionsToDisplay = (selectedExam === "Midterm") ?
-      ["attendance", "classParticipation", "quiz", "portfolio", "midtermExam"] :
-      ["classParticipationFinals", "quizFinals", "portfolioFinals", "finalsExam"];
-  } else if (type === "lab") {
-    optionsToDisplay = (selectedExam === "Midterm") ?
-      ["attendanceLab", "participationLab", "labReportsLab", "practicalExamLab"] :
-      ["labReportsFinals", "practicalExamFinals"];
-  }
+    var optionsToDisplay;
 
-  // Clear existing options
-  examComponentDropdown.innerHTML = "";
+    if (type === "lecture") {
+      optionsToDisplay = (selectedExam === "Midterm") ?
+        ["attendance", "classParticipation", "quiz", "portfolio", "midtermExam"] :
+        ["classParticipationFinals", "quizFinals", "portfolioFinals", "finalsExam"];
+    } else if (type === "lab") {
+      optionsToDisplay = (selectedExam === "Midterm") ?
+        ["labAttendance/LabClassParticipation", "labReports", "labPracticalExam"] :
+        ["labFinalsReports", "labFinalsPracticalExam"];
+    }
 
-  // Add new options
-  for (var i = 0; i < optionsToDisplay.length; i++) {
-    var option = document.createElement("option");
-    option.value = optionsToDisplay[i];
-    option.text = optionsToDisplay[i];
-    examComponentDropdown.add(option);
-  }
+    // Clear existing options
+    examComponentDropdown.innerHTML = "";
 
-  // Show the first option by default
-  examComponentDropdown.selectedIndex = 0;
+    // Add new options
+    for (var i = 0; i < optionsToDisplay.length; i++) {
+      var option = document.createElement("option");
+      option.value = optionsToDisplay[i];
+      option.text = optionsToDisplay[i];
+      examComponentDropdown.add(option);
+    }
 
-  // Trigger the onchange event to update the form based on the default selection
-  examApp.showForm(type);
-},
+    // Show the first option by default
+    examComponentDropdown.selectedIndex = 0;
+
+    // Trigger the onchange event to update the form based on the default selection
+    examApp.showForm(type);
+  },
 
   showForm: function (type) {
     var examComponentDropdown;
@@ -83,12 +84,17 @@ updateThirdDropdownOptions: function (type, selectedExam) {
     var classParticipationForm;
     var classParticipationFormFinals;
     var quizForm;
-    var finalQuizForm; // Adjusted this line
+    var finalQuizForm;
     var finalPortfolioForm;
     var portfolioForm;
     var midtermForm;
     var finalExamForm;
-    var labAttendanceForm; // Corrected this line
+    var labAttendanceForm;
+    var labReportForm;
+    var labFinalsReportsForm;
+    var labPracticalExamForm;
+    var labFinalsPracticalExamForm;
+
 
     if (type === "lecture") {
       examComponentDropdown = document.getElementById("examComponent");
@@ -96,50 +102,44 @@ updateThirdDropdownOptions: function (type, selectedExam) {
       classParticipationForm = document.getElementById("classParticipationForm");
       classParticipationFormFinals = document.getElementById("classParticipationFormFinals");
       quizForm = document.getElementById("quizForm");
-      finalQuizForm = document.getElementById("finalQuizForm"); // Adjusted this line
+      finalQuizForm = document.getElementById("finalQuizForm");
       portfolioForm = document.getElementById("portfolioForm");
       finalPortfolioForm = document.getElementById("finalPortfolioForm");
       midtermForm = document.getElementById("midtermForm");
       finalExamForm = document.getElementById("finalExamForm");
-    } else if (type === "lab") {
-      examComponentDropdown = document.getElementById("examComponentLab");
-      labAttendanceForm = document.getElementById("labAttendanceForm"); // Corrected this line
-      // ... (other form assignments for lab)
-    }
 
-    var selectedComponent = examComponentDropdown.options[examComponentDropdown.selectedIndex].value;
+      var selectedComponent = examComponentDropdown.options[examComponentDropdown.selectedIndex].value;
 
-    // Hide all forms initially
-    if (attendanceForm) {
-      attendanceForm.style.display = "none";
-    }
-    if (classParticipationForm) {
-      classParticipationForm.style.display = "none";
-    }
-    if (classParticipationFormFinals) {
-      classParticipationFormFinals.style.display = "none";
-    }
-    if (quizForm) {
-      quizForm.style.display = "none";
-    }
-    if (finalQuizForm) {
-      finalQuizForm.style.display = "none"; // Adjusted this line
-    }
-    if (portfolioForm) {
-      portfolioForm.style.display = "none";
-    }
-    if (finalPortfolioForm) {
-      finalPortfolioForm.style.display = "none";
-    }
-    if (midtermForm) {
-      midtermForm.style.display = "none";
-    }
-    if (finalExamForm) {
-      finalExamForm.style.display = "none";
-    }
+      // Hide all forms initially
+      if (attendanceForm) {
+        attendanceForm.style.display = "none";
+      }
+      if (classParticipationForm) {
+        classParticipationForm.style.display = "none";
+      }
+      if (classParticipationFormFinals) {
+        classParticipationFormFinals.style.display = "none";
+      }
+      if (quizForm) {
+        quizForm.style.display = "none";
+      }
+      if (finalQuizForm) {
+        finalQuizForm.style.display = "none";
+      }
+      if (portfolioForm) {
+        portfolioForm.style.display = "none";
+      }
+      if (finalPortfolioForm) {
+        finalPortfolioForm.style.display = "none";
+      }
+      if (midtermForm) {
+        midtermForm.style.display = "none";
+      }
+      if (finalExamForm) {
+        finalExamForm.style.display = "none";
+      }
 
-    // Show the selected form
-    if (type === "lecture") {
+      // Show the selected form
       if (selectedComponent === "attendance") {
         if (attendanceForm) {
           attendanceForm.style.display = "block";
@@ -156,9 +156,9 @@ updateThirdDropdownOptions: function (type, selectedExam) {
         if (quizForm) {
           quizForm.style.display = "block";
         }
-      } else if (selectedComponent === "quizFinals") { // Adjusted to match the value in the HTML
+      } else if (selectedComponent === "quizFinals") {
         if (finalQuizForm) {
-          finalQuizForm.style.display = "block"; // Adjusted this line
+          finalQuizForm.style.display = "block";
         }
       } else if (selectedComponent === "portfolio") {
         if (portfolioForm) {
@@ -178,8 +178,121 @@ updateThirdDropdownOptions: function (type, selectedExam) {
         }
       }
     } else if (type === "lab") {
-      
+    examComponentDropdown = document.getElementById("examComponentLab");
+    labAttendanceForm = document.getElementById("labAttendanceForm");
+    labReportForm = document.getElementById("labReportForm");
+    labFinalsReportsForm = document.getElementById("labFinalsReportsForm");
+    labPracticalExamForm = document.getElementById("labPracticalExamForm");
+    labFinalsPracticalExamForm = document.getElementById("labFinalsPracticalExamForm");
+
+    var selectedComponent = examComponentDropdown.options[examComponentDropdown.selectedIndex].value;
+    // Hide all lab forms initially
+    if (labAttendanceForm) {
+        labAttendanceForm.style.display = "none";
     }
+    if (labReportForm) {
+        labReportForm.style.display = "none";
+    }
+    if (labPracticalExamForm) {
+        labPracticalExamForm.style.display = "none";
+    }
+    if (labFinalsReportsForm) {
+        labFinalsReportsForm.style.display = "none";
+    }
+    if (labFinalsPracticalExamForm) {
+      labFinalsPracticalExamForm.style.display = "none";
+    }
+
+    // Show the selected lab form when dropdown changes
+    examComponentDropdown.addEventListener("change", function () {
+        var selectedComponentLab = examComponentDropdown.value;
+
+        if (selectedComponentLab === "labAttendance/LabClassParticipation") {
+            if (labAttendanceForm) {
+                labAttendanceForm.style.display = "block";
+            }
+            if (labReportForm) {
+                labReportForm.style.display = "none";
+            }
+            if (labPracticalExamForm) {
+                labPracticalExamForm.style.display = "none";
+            }
+            if (labFinalsReportsForm) {
+                labFinalsReportsForm.style.display = "none";
+            }
+            if (labFinalsPracticalExamForm) {
+              labFinalsPracticalExamForm.style.display = "none";
+            }
+        } else if (selectedComponentLab === "labReports") {
+            if (labAttendanceForm) {
+                labAttendanceForm.style.display = "none";
+            }
+            if (labReportForm) {
+                labReportForm.style.display = "block"; // Show lab report form
+            }
+            if (labPracticalExamForm) {
+                labPracticalExamForm.style.display = "none";
+            }
+            if (labFinalsReportsForm) {
+                labFinalsReportsForm.style.display = "none";
+            }
+            if (labFinalsPracticalExamForm) {
+              labFinalsPracticalExamForm.style.display = "none";
+            }
+          } else if (selectedComponentLab === "labFinalsReports") {
+              if (labAttendanceForm) {
+                  labAttendanceForm.style.display = "none";
+              }
+              if (labReportForm) {
+                  labReportForm.style.display = "none";
+              }
+              if (labPracticalExamForm) {
+                  labPracticalExamForm.style.display = "none";
+              }
+              if (labFinalsReportsForm) {
+                  labFinalsReportsForm.style.display = "block"; // Show lab finals reports form
+              }
+              if (labFinalsPracticalExamForm) {
+                labFinalsPracticalExamForm.style.display = "none";
+              }
+          } else if (selectedComponentLab === "labPracticalExam") {
+            if (labAttendanceForm) {
+                labAttendanceForm.style.display = "none";
+            }
+            if (labReportForm) {
+                labReportForm.style.display = "none";
+            }
+            if (labPracticalExamForm) {
+                labPracticalExamForm.style.display = "block"; // Show practical Exam form
+            }
+            if (labFinalsReportsForm) {
+                labFinalsReportsForm.style.display = "none";
+            }
+            if (labFinalsPracticalExamForm) {
+              labFinalsPracticalExamForm.style.display = "none";
+            }
+          } else if (selectedComponentLab === "labFinalsPracticalExam") {
+            if (labAttendanceForm) {
+                labAttendanceForm.style.display = "none";
+            }
+            if (labReportForm) {
+                labReportForm.style.display = "none";
+            }
+            if (labPracticalExamForm) {
+                labPracticalExamForm.style.display = "block"; // Show practical Exam form
+            }
+            if (labFinalsReportsForm) {
+                labFinalsReportsForm.style.display = "none";
+            }
+            if (labFinalsPracticalExamForm) {
+              labFinalsPracticalExamForm.style.display = "block";
+            }
+            
+        }
+        // ... (other form showing logic for lab)
+    });
+}
+
   },
   
     handleQuizLengthInput: function () {
@@ -482,26 +595,320 @@ updateThirdDropdownOptions: function (type, selectedExam) {
         }
       });
     },
-    handleFinalExamInput: function () {
-        var finalExamScoreInput = document.getElementById("finalExamScore");
-        var finalExamQuestionsInput = document.getElementById("finalExamQuestions");
-        var finalExamWeightedInput = document.getElementById("finalExamWeighted");
+    handleLabReportsInput: function () {
+      var labReportsLengthInput = document.getElementById("labReportsLength");
+      var labReportsScoreTotalContainer = document.getElementById("labReportsScoreTotalContainer");
+      var labReportsOverallScoreInput = document.getElementById("labReportsOverallScore");
+      var labReportsOverallTotalInput = document.getElementById("labReportsOverallTotal");
+      var labReportsWeightedInput = document.getElementById("labReportsWeighted");
     
-        finalExamScoreInput.addEventListener("input", function () {
-            var score = parseFloat(finalExamScoreInput.value);
-            var questions = parseFloat(finalExamQuestionsInput.value);
+      if (labReportsLengthInput) {
+        labReportsLengthInput.addEventListener("input", function () {
+          var labReportsLength = parseInt(labReportsLengthInput.value);
     
-            if (!isNaN(score) && !isNaN(questions) && questions > 0) {
-                // Calculate weighted percentage (assuming total score is out of 100)
-                var weightedPercentage = (score / questions) * 20;
-                finalExamWeightedInput.value = weightedPercentage.toFixed(2);
+          if (!isNaN(labReportsLength) && labReportsLength > 0) {
+            // Clear existing content in the container
+            labReportsScoreTotalContainer.innerHTML = ""; // This line is causing the error
+    
+            for (var i = 1; i <= labReportsLength; i++) {
+              var labScoreId = "labReportsScore" + i;
+              var labTotalId = "labReportsTotal" + i;
+    
+              var scoreLabel = document.createElement("label");
+              scoreLabel.setAttribute("for", labScoreId);
+              scoreLabel.textContent = "Lab Report " + i + " Score:";
+    
+              var scoreInput = document.createElement("input");
+              scoreInput.setAttribute("type", "number");
+              scoreInput.setAttribute("id", labScoreId);
+              scoreInput.setAttribute("name", labScoreId);
+              scoreInput.setAttribute("inputmode", "numeric");
+    
+              var totalLabel = document.createElement("label");
+              totalLabel.setAttribute("for", labTotalId);
+              totalLabel.textContent = "Total " + i + ":";
+    
+              var totalInput = document.createElement("input");
+              totalInput.setAttribute("type", "number");
+              totalInput.setAttribute("id", labTotalId);
+              totalInput.setAttribute("name", labTotalId);
+              totalInput.setAttribute("inputmode", "numeric");
+    
+              labReportsScoreTotalContainer.appendChild(scoreLabel);
+              labReportsScoreTotalContainer.appendChild(scoreInput);
+              labReportsScoreTotalContainer.appendChild(totalLabel);
+              labReportsScoreTotalContainer.appendChild(totalInput);
+            }
+    
+            labReportsScoreTotalContainer.style.display = "flex";
+    
+            var overallScore = 0;
+            var overallTotal = 0;
+    
+            // Loop through created input fields and calculate overall score and total
+            for (var j = 1; j <= labReportsLength; j++) {
+              var scoreInputId = "labReportsScore" + j;
+              var totalInputId = "labReportsTotal" + j;
+    
+              var scoreInput = document.getElementById(scoreInputId);
+              var totalInput = document.getElementById(totalInputId);
+    
+              if (!isNaN(scoreInput.value) && !isNaN(totalInput.value)) {
+                overallScore += parseFloat(scoreInput.value);
+                overallTotal += parseFloat(totalInput.value);
+              }
+            }
+    
+            labReportsOverallScoreInput.value = !isNaN(overallScore) ? overallScore : 0;
+            labReportsOverallTotalInput.value = !isNaN(overallTotal) ? overallTotal : 0;
+    
+            var weightedPercentage = (overallScore / overallTotal) * 50;
+            labReportsWeightedInput.value = !isNaN(weightedPercentage) ? weightedPercentage.toFixed(2) : 0;
+          } else {
+            labReportsScoreTotalContainer.style.display = "none";
+            labReportsOverallScoreInput.value = 0;
+            labReportsOverallTotalInput.value = 0;
+            labReportsWeightedInput.value = 0;
+          }
+        });
+      }
+    },
+
+    handleLabPracticalExamInput: function () {
+      var labPracticalExamLengthInput = document.getElementById("labPracticalExamLength");
+      var labPracticalExamScoreTotalContainer = document.getElementById("labPracticalExamScoreTotalContainer");
+      var labPracticalExamOverallScoreInput = document.getElementById("labPracticalExamOverallScore");
+      var labPracticalExamOverallTotalInput = document.getElementById("labPracticalExamOverallTotal");
+      var labPracticalExamWeightedInput = document.getElementById("labPracticalExamWeighted");
+  
+      if (labPracticalExamLengthInput) {
+          labPracticalExamLengthInput.addEventListener("input", function () {
+              var labPracticalExamLength = parseInt(labPracticalExamLengthInput.value);
+  
+              if (!isNaN(labPracticalExamLength) && labPracticalExamLength > 0) {
+                  // Clear existing content in the container
+                  labPracticalExamScoreTotalContainer.innerHTML = "";
+  
+                  for (var i = 1; i <= labPracticalExamLength; i++) {
+                      var practicalExamScoreId = "labPracticalExamScore" + i;
+                      var practicalExamTotalId = "labPracticalExamTotal" + i;
+  
+                      var scoreLabel = document.createElement("label");
+                      scoreLabel.setAttribute("for", practicalExamScoreId);
+                      scoreLabel.textContent = "Practical Exam " + i + " Score:";
+  
+                      var scoreInput = document.createElement("input");
+                      scoreInput.setAttribute("type", "number");
+                      scoreInput.setAttribute("id", practicalExamScoreId);
+                      scoreInput.setAttribute("name", practicalExamScoreId);
+                      scoreInput.setAttribute("inputmode", "numeric");
+  
+                      var totalLabel = document.createElement("label");
+                      totalLabel.setAttribute("for", practicalExamTotalId);
+                      totalLabel.textContent = "Total " + i + ":";
+  
+                      var totalInput = document.createElement("input");
+                      totalInput.setAttribute("type", "number");
+                      totalInput.setAttribute("id", practicalExamTotalId);
+                      totalInput.setAttribute("name", practicalExamTotalId);
+                      totalInput.setAttribute("inputmode", "numeric");
+  
+                      labPracticalExamScoreTotalContainer.appendChild(scoreLabel);
+                      labPracticalExamScoreTotalContainer.appendChild(scoreInput);
+                      labPracticalExamScoreTotalContainer.appendChild(totalLabel);
+                      labPracticalExamScoreTotalContainer.appendChild(totalInput);
+                  }
+  
+                  labPracticalExamScoreTotalContainer.style.display = "flex";
+  
+                  var overallScore = 0;
+                  var overallTotal = 0;
+  
+                  // Loop through created input fields and calculate overall score and total
+                  for (var j = 1; j <= labPracticalExamLength; j++) {
+                      var scoreInputId = "labPracticalExamScore" + j;
+                      var totalInputId = "labPracticalExamTotal" + j;
+  
+                      var scoreInput = document.getElementById(scoreInputId);
+                      var totalInput = document.getElementById(totalInputId);
+  
+                      if (!isNaN(scoreInput.value) && !isNaN(totalInput.value)) {
+                          overallScore += parseFloat(scoreInput.value);
+                          overallTotal += parseFloat(totalInput.value);
+                      }
+                  }
+  
+                  labPracticalExamOverallScoreInput.value = !isNaN(overallScore) ? overallScore : 0;
+                  labPracticalExamOverallTotalInput.value = !isNaN(overallTotal) ? overallTotal : 0;
+  
+                  var weightedPercentage = (overallScore / overallTotal) * 30;
+                  labPracticalExamWeightedInput.value = !isNaN(weightedPercentage) ? weightedPercentage.toFixed(2) : 0;
+              } else {
+                  labPracticalExamScoreTotalContainer.style.display = "none";
+                  labPracticalExamOverallScoreInput.value = 0;
+                  labPracticalExamOverallTotalInput.value = 0;
+                  labPracticalExamWeightedInput.value = 0;
+              }
+          });
+      }
+  },
+  handleLabFinalsReportsInput: function () {
+    var labFinalsReportsLengthInput = document.getElementById("labFinalsReportsLength");
+    var labFinalsReportsScoreTotalContainer = document.getElementById("labFinalsReportsScoreTotalContainer");
+    var labFinalsReportsOverallScoreInput = document.getElementById("labFinalsReportsOverallScore");
+    var labFinalsReportsOverallTotalInput = document.getElementById("labFinalsReportsOverallTotal");
+    var labFinalsReportsWeightedInput = document.getElementById("labFinalsReportsWeighted");
+
+    if (labFinalsReportsLengthInput) {
+        labFinalsReportsLengthInput.addEventListener("input", function () {
+            var labFinalsReportsLength = parseInt(labFinalsReportsLengthInput.value);
+
+            if (!isNaN(labFinalsReportsLength) && labFinalsReportsLength > 0) {
+                // Clear existing content in the container
+                labFinalsReportsScoreTotalContainer.innerHTML = "";
+
+                for (var i = 1; i <= labFinalsReportsLength; i++) {
+                    var finalsReportsScoreId = "labFinalsReportsScore" + i;
+                    var finalsReportsTotalId = "labFinalsReportsTotal" + i;
+
+                    var scoreLabel = document.createElement("label");
+                    scoreLabel.setAttribute("for", finalsReportsScoreId);
+                    scoreLabel.textContent = "Lab Report " + i + " Score:";
+
+                    var scoreInput = document.createElement("input");
+                    scoreInput.setAttribute("type", "number");
+                    scoreInput.setAttribute("id", finalsReportsScoreId);
+                    scoreInput.setAttribute("name", finalsReportsScoreId);
+                    scoreInput.setAttribute("inputmode", "numeric");
+
+                    var totalLabel = document.createElement("label");
+                    totalLabel.setAttribute("for", finalsReportsTotalId);
+                    totalLabel.textContent = "Total " + i + ":";
+
+                    var totalInput = document.createElement("input");
+                    totalInput.setAttribute("type", "number");
+                    totalInput.setAttribute("id", finalsReportsTotalId);
+                    totalInput.setAttribute("name", finalsReportsTotalId);
+                    totalInput.setAttribute("inputmode", "numeric");
+
+                    labFinalsReportsScoreTotalContainer.appendChild(scoreLabel);
+                    labFinalsReportsScoreTotalContainer.appendChild(scoreInput);
+                    labFinalsReportsScoreTotalContainer.appendChild(totalLabel);
+                    labFinalsReportsScoreTotalContainer.appendChild(totalInput);
+                }
+
+                labFinalsReportsScoreTotalContainer.style.display = "flex";
+
+                var overallScore = 0;
+                var overallTotal = 0;
+
+                // Loop through created input fields and calculate overall score and total
+                for (var j = 1; j <= labFinalsReportsLength; j++) {
+                    var scoreInputId = "labFinalsReportsScore" + j;
+                    var totalInputId = "labFinalsReportsTotal" + j;
+
+                    var scoreInput = document.getElementById(scoreInputId);
+                    var totalInput = document.getElementById(totalInputId);
+
+                    if (!isNaN(scoreInput.value) && !isNaN(totalInput.value)) {
+                        overallScore += parseFloat(scoreInput.value);
+                        overallTotal += parseFloat(totalInput.value);
+                    }
+                }
+
+                labFinalsReportsOverallScoreInput.value = !isNaN(overallScore) ? overallScore : 0;
+                labFinalsReportsOverallTotalInput.value = !isNaN(overallTotal) ? overallTotal : 0;
+
+                var weightedPercentage = (overallScore / overallTotal) * 50;
+                labFinalsReportsWeightedInput.value = !isNaN(weightedPercentage) ? weightedPercentage.toFixed(2) : 0;
             } else {
-                // Reset weighted percentage if inputs are invalid
-                finalExamWeightedInput.value = 0;
+                labFinalsReportsScoreTotalContainer.style.display = "none";
+                labFinalsReportsOverallScoreInput.value = 0;
+                labFinalsReportsOverallTotalInput.value = 0;
+                labFinalsReportsWeightedInput.value = 0;
             }
         });
-    },
-    
+    }
+},
+handleLabFinalsPracticalExamInput: function () {
+  var labFinalsPracticalExamLengthInput = document.getElementById("labFinalsPracticalExamLength");
+  var labFinalsPracticalExamScoreTotalContainer = document.getElementById("labFinalsPracticalExamScoreTotalContainer");
+  var labFinalsPracticalExamOverallScoreInput = document.getElementById("labFinalsPracticalExamOverallScore");
+  var labFinalsPracticalExamOverallTotalInput = document.getElementById("labFinalsPracticalExamOverallTotal");
+  var labFinalsPracticalExamWeightedInput = document.getElementById("labFinalsPracticalExamWeighted");
+
+  if (labFinalsPracticalExamLengthInput) {
+      labFinalsPracticalExamLengthInput.addEventListener("input", function () {
+          var labFinalsPracticalExamLength = parseInt(labFinalsPracticalExamLengthInput.value);
+
+          if (!isNaN(labFinalsPracticalExamLength) && labFinalsPracticalExamLength > 0) {
+              // Clear existing content in the container
+              labFinalsPracticalExamScoreTotalContainer.innerHTML = "";
+
+              for (var i = 1; i <= labFinalsPracticalExamLength; i++) {
+                  var practicalExamScoreId = "labFinalsPracticalExamScore" + i;
+                  var practicalExamTotalId = "labFinalsPracticalExamTotal" + i;
+
+                  var scoreLabel = document.createElement("label");
+                  scoreLabel.setAttribute("for", practicalExamScoreId);
+                  scoreLabel.textContent = "Practical Exam " + i + " Score:";
+
+                  var scoreInput = document.createElement("input");
+                  scoreInput.setAttribute("type", "number");
+                  scoreInput.setAttribute("id", practicalExamScoreId);
+                  scoreInput.setAttribute("name", practicalExamScoreId);
+                  scoreInput.setAttribute("inputmode", "numeric");
+
+                  var totalLabel = document.createElement("label");
+                  totalLabel.setAttribute("for", practicalExamTotalId);
+                  totalLabel.textContent = "Total " + i + ":";
+
+                  var totalInput = document.createElement("input");
+                  totalInput.setAttribute("type", "number");
+                  totalInput.setAttribute("id", practicalExamTotalId);
+                  totalInput.setAttribute("name", practicalExamTotalId);
+                  totalInput.setAttribute("inputmode", "numeric");
+
+                  labFinalsPracticalExamScoreTotalContainer.appendChild(scoreLabel);
+                  labFinalsPracticalExamScoreTotalContainer.appendChild(scoreInput);
+                  labFinalsPracticalExamScoreTotalContainer.appendChild(totalLabel);
+                  labFinalsPracticalExamScoreTotalContainer.appendChild(totalInput);
+              }
+
+              labFinalsPracticalExamScoreTotalContainer.style.display = "flex";
+
+              var overallScore = 0;
+              var overallTotal = 0;
+
+              // Loop through created input fields and calculate overall score and total
+              for (var j = 1; j <= labFinalsPracticalExamLength; j++) {
+                  var scoreInputId = "labFinalsPracticalExamScore" + j;
+                  var totalInputId = "labFinalsPracticalExamTotal" + j;
+
+                  var scoreInput = document.getElementById(scoreInputId);
+                  var totalInput = document.getElementById(totalInputId);
+
+                  if (!isNaN(scoreInput.value) && !isNaN(totalInput.value)) {
+                      overallScore += parseFloat(scoreInput.value);
+                      overallTotal += parseFloat(totalInput.value);
+                  }
+              }
+
+              labFinalsPracticalExamOverallScoreInput.value = !isNaN(overallScore) ? overallScore : 0;
+              labFinalsPracticalExamOverallTotalInput.value = !isNaN(overallTotal) ? overallTotal : 0;
+
+              var weightedPercentage = (overallScore / overallTotal) * 30;
+              labFinalsPracticalExamWeightedInput.value = !isNaN(weightedPercentage) ? weightedPercentage.toFixed(2) : 0;
+          } else {
+              labFinalsPracticalExamScoreTotalContainer.style.display = "none";
+              labFinalsPracticalExamOverallScoreInput.value = 0;
+              labFinalsPracticalExamOverallTotalInput.value = 0;
+              labFinalsPracticalExamWeightedInput.value = 0;
+          }
+      });
+  }
+},
+
   };
   
 // Initial call to hide/show forms based on the default selection
@@ -517,7 +924,10 @@ examApp.handleFinalQuizInput();
 examApp.handlePortfolioLengthInput();
 examApp.handleFinalPortfolioInput();
 examApp.handleMidtermInput();
-examApp.handleFinalExamInput();
+examApp.handleLabReportsInput();
+examApp.handleLabPracticalExamInput();
+examApp.handleLabFinalsReportsInput();
+examApp.handleLabFinalsPracticalExamInput();
 
 // Initial call to hide/show forms based on the default selection
 examApp.showSelectedSession();

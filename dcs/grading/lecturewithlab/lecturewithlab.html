@@ -285,24 +285,136 @@
     <select id="examComponentLab">
       <!-- Options for Midterm -->
       <optgroup id="midtermOptionsLab" label="Midterm">
-        <option value="labAttendance">Lab Attendance</option>
-        <option value="labExperiment">Lab Experiment</option>
+        <option value="labAttendance/labClassparticipation">Laboratory Attendance / ClassParticipation</option>
+        <option value="labReports">Laboratory Reports</option>
+        <option value="labPracticalExam">Practical Exam</option>
       </optgroup>
 
       <!-- Options for Finals -->
       <optgroup id="finalsOptionsLab" label="Finals">
-        <option value="labFinalsExam">Class Participation</option>
-        <option value="labFinalsExam">Quiz</option>
-        <option value="labFinalsExam">Portfolio</option>
-        <option value="labFinalsExam">Finals Exam</option>
+        <option value="labFinalsReports">Laboratory Reports</option>
+        <option value="labFinalsPracticalExam">Practical Exam</option>
       </optgroup>
     </select>
 
     <div id="labAttendanceForm" class="hidden">
       <h2>Lab Attendance Form</h2>
-      <!-- Add your lab attendance form fields here -->
+      <div class="form-group">
+        <label for="user1Name">Name:</label>
+        <input type="text" id="user1Name" name="user1Name" placeholder="User 1 Name">
+    
+        <label for="user1StudentNumber">Student Number:</label>
+        <input type="text" id="user1StudentNumber" name="user1StudentNumber" placeholder="User 1 Student Number">
+      </div>
+    
+      <div class="form-group">
+        <label for="user1Score">Score:</label>
+        <input type="number" id="user1Score" name="user1Score" placeholder="Score">
+    
+        <label for="user1Total">Total:</label>
+        <input type="number" id="user1Total" name="user1Total" placeholder="Total">
+      </div>
+    
+      <div class="form-group">
+        <label for="user1Weighted">Weighted 20%:</label>
+        <input type="number" id="user1Weighted" name="user1Weighted" inputmode="numeric" readonly>
+      </div>
+    </div>
+
+    <div id="labReportForm" class="hidden">
+      <h2>Lab Reports Form</h2>
+      <div class="form-group">
+        <label for="labReportsLength">Number of Lab Reports:</label>
+        <input type="text" id="labReportsLength" name="labReportsLength" inputmode="numeric">
+      </div>
+
+      <div id="labReportsScoreTotalContainer"></div>
+    
+      <div class="form-group">
+        <label for="labReportsOverallScore">Overall Score:</label>
+        <input type="number" id="labReportsOverallScore" name="labReportsOverallScore" inputmode="numeric">
+    
+        <label for="labReportsOverallTotal">Overall Total:</label>
+        <input type="number" id="labReportsOverallTotal" name="labReportsOverallTotal" inputmode="numeric">
+      </div>
+    
+      <div class="form-group">
+        <label for="labReportsWeighted">Weighted 50%:</label>
+        <input type="number" id="labReportsWeighted" name="labReportsWeighted" inputmode="numeric" readonly>
+      </div>
+    </div>
+
+    <div id="labPracticalExamForm" class="hidden">
+      <h2>Practical Exam Form</h2>
+      
+      <div class="form-group">
+        <label for="labPracticalExamLength">Number of Practical Exams:</label>
+        <input type="text" id="labPracticalExamLength" name="labPracticalExamLength" inputmode="numeric">
+      </div>
+      
+      <div id="labPracticalExamScoreTotalContainer"></div>
+    
+      <div class="form-group">
+        <label for="labPracticalExamOverallScore">Overall Score:</label>
+        <input type="number" id="labPracticalExamOverallScore" name="labPracticalExamOverallScore" inputmode="numeric">
+    
+        <label for="labpracticalExamOverallTotal">Overall Total:</label>
+        <input type="number" id="labPracticalExamOverallTotal" name="labPracticalExamOverallTotal" inputmode="numeric">
+      </div>
+    
+      <div class="form-group">
+        <label for="labPracticalExamWeighted">Weighted 30%:</label>
+        <input type="number" id="labPracticalExamWeighted" name="labPracticalExamWeighted" inputmode="numeric" readonly>
+      </div>
+    </div>
+
+    <div id="labFinalsReportsForm" class="hidden">
+      <h2>Lab Finals Reports Form</h2>
+  
+      <div class="form-group">
+          <label for="labFinalsReportsLength">Number of Lab Finals Reports:</label>
+          <input type="number" id="labFinalsReportsLength" name="labFinalsReportsLength" inputmode="numeric">
+      </div>
+  
+      <div id="labFinalsReportsScoreTotalContainer"></div>
+  
+      <div class="form-group">
+          <label for="labFinalsReportsOverallScore">Overall Score:</label>
+          <input type="number" id="labFinalsReportsOverallScore" name="labFinalsReportsOverallScore" inputmode="numeric">
+  
+          <label for="labFinalsReportsOverallTotal">Overall Total:</label>
+          <input type="number" id="labFinalsReportsOverallTotal" name="labFinalsReportsOverallTotal" inputmode="numeric">
+      </div>
+  
+      <div class="form-group">
+          <label for="labFinalsReportsWeighted">Weighted 50%:</label>
+          <input type="number" id="labFinalsReportsWeighted" name="labFinalsReportsWeighted" inputmode="numeric" readonly>
+      </div>
+
+  <div id="labFinalsPracticalExamForm" class="hidden">
+    <h2>Lab Finals Practical Exam Form</h2>
+
+    <div class="form-group">
+        <label for="labFinalsPracticalExamLength">Number of Lab Finals Practical Exams:</label>
+        <input type="number" id="labFinalsPracticalExamLength" name="labFinalsPracticalExamLength" inputmode="numeric">
+    </div>
+
+    <div id="labFinalsPracticalExamScoreTotalContainer"></div>
+
+    <div class="form-group">
+        <label for="labFinalsPracticalExamOverallScore">Overall Score:</label>
+        <input type="number" id="labFinalsPracticalExamOverallScore" name="labFinalsPracticalExamOverallScore" inputmode="numeric">
+
+        <label for="labFinalsPracticalExamOverallTotal">Overall Total:</label>
+        <input type="number" id="labFinalsPracticalExamOverallTotal" name="labFinalsPracticalExamOverallTotal" inputmode="numeric">
+    </div>
+
+    <div class="form-group">
+        <label for="labFinalsPracticalExamWeighted">Weighted 30%:</label>
+        <input type="number" id="labFinalsPracticalExamWeighted" name="labFinalsPracticalExamWeighted" inputmode="numeric" readonly>
     </div>
   </div>
+</div>
 
   <div>
     <button type="submit">Submit</button>

@@ -1,11 +1,3 @@
-<?php
-// Include the database configuration
-include __DIR__ . '/../../config.php';
-
-// Fetch existing students for dropdown
-$studentsQuery = "SELECT id, CONCAT(first_name, ' ', middle_name, ' ', last_name) AS full_name, student_number FROM tblstudents";
-$studentsResult = $conn->query($studentsQuery);
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,42 +69,26 @@ $studentsResult = $conn->query($studentsQuery);
       <h2>Attendance Form</h2>
 
       <div class="form-group">
-  <label for="studentDropdown">Select Student:</label>
-  <select id="studentDropdown" name="selectedStudentId">
-    <?php
-    // Loop through the fetched students and populate the dropdown
-    while ($row = $studentsResult->fetch_assoc()) {
-      echo "<option value='{$row['id']}' data-student-number='{$row['student_number']}'>{$row['full_name']}</option>";
-    }
-    ?>
-  </select>
-  <label for="studentNumber">Student Number:</label>
-  <input type="text" id="studentNumber" name="studentNumber" readonly>
-</div>
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" name="studentName">
 
-<div class="form-group">
-  <label for="attendanceScore">Score:</label>
-  <input type="number" id="attendanceScore" name="attendanceScore" inputmode="numeric">
+        <label for="studentNumber">Student Number:</label>
+        <input type="text" id="studentNumber" name="studentNumber">
+      </div>
 
-  <label for="attendanceTotal">Total:</label>
-  <input type="number" id="attendanceTotal" name="attendanceTotal" inputmode="numeric">
-</div>
+      <div class="form-group">
+        <label for="attendanceScore">Score:</label>
+        <input type="number" id="attendanceScore" name="attendanceScore" inputmode="numeric">
 
-<div class="form-group">
-  <label for="attendanceWeighted">Weighted 10%:</label>
-  <input type="number" id="attendanceWeighted" name="attendanceWeighted" inputmode="numeric" readonly>
-</div>
-</div>
-<script>
-  // Add an event listener to the student dropdown
-  document.getElementById('studentDropdown').addEventListener('change', function () {
-    // Get the selected option
-    var selectedOption = this.options[this.selectedIndex];
+        <label for="attendanceTotal">Total:</label>
+        <input type="number" id="attendanceTotal" name="attendanceTotal" inputmode="numeric">
+      </div>
 
-    // Update the student number input field
-    document.getElementById('studentNumber').value = selectedOption.getAttribute('data-student-number');
-  });
-</script>
+      <div class="form-group">
+        <label for="attendanceWeighted">Weighted 10%:</label>
+        <input type="number" id="attendanceWeighted" name="attendanceWeighted" inputmode="numeric" readonly>
+      </div>
+    </div>
 
     <div id="classParticipationForm" class="hidden">
       <h2>Class Participation Form</h2>

@@ -1,3 +1,11 @@
+<?php
+// Include the database configuration
+include __DIR__ . '/../../config.php';
+
+// Fetch existing students for dropdown
+$studentsQuery = "SELECT id, CONCAT(first_name, ' ', middle_name, ' ', last_name) AS full_name, student_number FROM tblstudents";
+$studentsResult = $conn->query($studentsQuery);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,29 +82,36 @@
     </select>
 
     <div id="attendanceForm" class="hidden">
-      <h2>Attendance Form</h2>
+  <h2>Attendance Form</h2>
 
-      <div class="form-group">
-        <label for="studentName">Student Name:</label>
-        <input type="text" id="studentName" name="studentName">
+  <div class="form-group">
+    <label for="studentDropdown">Select Student:</label>
+    <select id="studentDropdown" name="selectedStudentId">
+      <?php
+      // Loop through the fetched students and populate the dropdown
+      while ($row = $studentsResult->fetch_assoc()) {
+        echo "<option value='{$row['id']}'>{$row['full_name']} ({$row['student_number']})</option>";
+      }
 
-        <label for="studentNumber">Student Number:</label>
-        <input type="text" id="studentNumber" name="studentNumber">
-      </div>
+      // Close the database connection
+      $conn->close();
+      ?>
+    </select>
+  </div>
 
-      <div class="form-group">
-        <label for="attendanceScore">Score:</label>
-        <input type="number" id="attendanceScore" name="attendanceScore" inputmode="numeric">
+  <div class="form-group">
+    <label for="attendanceScore">Score:</label>
+    <input type="number" id="attendanceScore" name="attendanceScore" inputmode="numeric">
 
-        <label for="attendanceTotal">Total:</label>
-        <input type="number" id="attendanceTotal" name="attendanceTotal" inputmode="numeric">
-      </div>
+    <label for="attendanceTotal">Total:</label>
+    <input type="number" id="attendanceTotal" name="attendanceTotal" inputmode="numeric">
+  </div>
 
-      <div class="form-group">
-        <label for="attendanceWeighted">Weighted 10%:</label>
-        <input type="number" id="attendanceWeighted" name="attendanceWeighted" inputmode="numeric" readonly>
-      </div>
-    </div>
+  <div class="form-group">
+    <label for="attendanceWeighted">Weighted 10%:</label>
+    <input type="number" id="attendanceWeighted" name="attendanceWeighted" inputmode="numeric" readonly>
+  </div>
+</div>
 
     <div id="classParticipationForm" class="hidden">
       <h2>Class Participation Form</h2>

@@ -15,6 +15,7 @@ var examApp = {
     }
   },
 
+//for selected first dropdown lecture or lab
   showSelectedExam: function (type) {
     var examDropdown;
     var selectedExam;
@@ -39,6 +40,7 @@ var examApp = {
     examApp.updateThirdDropdownOptions(type, selectedExam);
   },
 
+  //third dropdown shows the forms after choose the lab or lecture then midterm and finals
   updateThirdDropdownOptions: function (type, selectedExam) {
     var examComponentDropdown;
 
@@ -78,6 +80,7 @@ var examApp = {
     examApp.showForm(type);
   },
 
+//displaying and hinding  the functions of dropdown and forms 
   showForm: function (type) {
     var examComponentDropdown;
     var attendanceForm;
@@ -258,7 +261,7 @@ var examApp = {
   });
   
 }
-
+//this one handle the user input of lecture midterm attendance form and compute it based on the user input of score and total
   },
   handleAttendanceInput: function () {
     var attendanceScoreInput = document.getElementById("attendanceScore");
@@ -277,6 +280,7 @@ var examApp = {
       }
     });
 
+    //this one handle the user input of every forms and compute it based on the user input of score and total
     attendanceTotalInput.addEventListener("input", function () {
       var attendanceScore = parseFloat(attendanceScoreInput.value);
       var attendanceTotal = parseFloat(attendanceTotalInput.value);
@@ -289,6 +293,7 @@ var examApp = {
       }
     });
   },
+//this one handle the user input of lab midterm attendance forms and compute it based on the user input of score and total
   handleLabAttendanceInput: function () {
     var labAttendanceScoreInput = document.getElementById("user1Score");
     var labAttendanceTotalInput = document.getElementById("user1Total");
@@ -314,6 +319,8 @@ var examApp = {
       }
     }
   },
+
+//this one handle the user input of lecture midterm class participation forms and compute it based on the user input of score and total
   handleClassParticipationInput: function () {
     var classParticipationScoreInput = document.getElementById("classParticipationScore");
     var classParticipationTotalInput = document.getElementById("classParticipationTotal");
@@ -339,6 +346,7 @@ var examApp = {
         }
     }
 },
+//this one handle the user input of every forms and compute it based on the user input of score and total
 handleClassParticipationInputFinals: function () {
   var classParticipationScoreInput = document.getElementById("classParticipationScoreFinals");
   var classParticipationTotalInput = document.getElementById("classParticipationTotalFinals");
@@ -364,7 +372,8 @@ handleClassParticipationInputFinals: function () {
     }
   }
 },
-  
+
+//this one handle the user input of lecture midterm quiz forms and compute it based on the user input of score and total
 handleQuizLengthInput: function () {
   var quizLengthInput = document.getElementById("quizLength");
   var quizScoreTotalContainer = document.getElementById("quizScoreTotalContainer");
@@ -453,6 +462,7 @@ handleQuizLengthInput: function () {
   });
 },
 
+//this one handle the user input of lecture finals quiz forms and compute it based on the user input of score and total
 handleFinalQuizInput: function () {
   var finalQuizLengthInput = document.getElementById("finalQuizLength");
   var finalQuizScoreTotalContainer = document.getElementById("finalQuizScoreTotalContainer");
@@ -537,7 +547,8 @@ handleFinalQuizInput: function () {
     }
   });
 },
-  
+
+//this one handle the user input of lecture midterm portfolio forms and compute it based on the user input of score and total
     handlePortfolioLengthInput: function () {
       var portfolioLengthInput = document.getElementById("portfolioLength");
       var portfolioScoreTotalContainer = document.getElementById("portfolioScoreTotalContainer");
@@ -625,7 +636,8 @@ handleFinalQuizInput: function () {
         }
       });
     },
-    
+   
+//this one handle the user input of finals lecture portfolio forms and compute it based on the user input of score and total
     handleFinalPortfolioInput: function () {
       var finalPortfolioLengthInput = document.getElementById("finalPortfolioLength");
       var finalPortfolioScoreTotalContainer = document.getElementById("finalPortfolioScoreTotalContainer");
@@ -710,7 +722,8 @@ handleFinalQuizInput: function () {
         }
       });
     },
-    
+
+//this one handle the user input of lecture midterm midterm exam forms and compute it based on the user input of score and total    
     handleMidtermInput: function () {
       var midtermScoreInput = document.getElementById("midtermScore");
       var midtermItemsInput = document.getElementById("midtermItems");
@@ -749,6 +762,7 @@ handleFinalQuizInput: function () {
       });
     },
 
+//this one handle the user input of lecture finals finalexam forms and compute it based on the user input of score and total
     handleFinalExamInput: function () {
       var finalExamScoreInput = document.getElementById("finalExamScore");
       var finalExamQuestionsInput = document.getElementById("finalExamQuestions");
@@ -785,6 +799,8 @@ handleFinalQuizInput: function () {
         }
       });
     },
+  
+  //this one handle the user input of lab midterms lab reports forms and compute it based on the user input of score and total
     handleLabReportsInput: function () {
       var labReportsLengthInput = document.getElementById("labReportsLength");
       var labReportsScoreTotalContainer = document.getElementById("labReportsScoreTotalContainer");
@@ -872,6 +888,7 @@ handleFinalQuizInput: function () {
       }
     },    
 
+    //this one handle the user input of lab midterm labpractical exam forms and compute it based on the user input of score and total
 handleLabPracticalExamInput: function () {
   var labPracticalExamLengthInput = document.getElementById("labPracticalExamLength");
   var labPracticalExamScoreTotalContainer = document.getElementById("labPracticalExamScoreTotalContainer");
@@ -958,7 +975,8 @@ handleLabPracticalExamInput: function () {
     });
   }
 },
-    
+
+//this one handle the user input of lab finals lab reports forms and compute it based on the user input of score and total
 handleLabFinalsReportsInput: function () {
   var labFinalsReportsLengthInput = document.getElementById("labFinalsReportsLength");
   var labFinalsReportsScoreTotalContainer = document.getElementById("labFinalsReportsScoreTotalContainer");
@@ -1046,6 +1064,7 @@ handleLabFinalsReportsInput: function () {
       });
   }
 },
+//this one handle the user input of lab finals practical exam forms and compute it based on the user input of score and total
 handleLabFinalsPracticalExamInput: function () {
   var labFinalsPracticalExamLengthInput = document.getElementById("labFinalsPracticalExamLength");
   var labFinalsPracticalExamScoreTotalContainer = document.getElementById("labFinalsPracticalExamScoreTotalContainer");

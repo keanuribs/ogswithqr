@@ -188,6 +188,7 @@ var examApp = {
               // ... (other form display for lab)
           }
       },
+      //Lecture Midterm Attendance
       handleAttendanceInput: function () {
         var attendanceScoreInput = document.getElementById("attendanceScore");
         var attendanceTotalInput = document.getElementById("attendanceTotal");
@@ -217,7 +218,7 @@ var examApp = {
           }
         });
       },
-    
+      //Lecture Midterm Class Participation
       handleClassParticipationInput: function () {
         var classParticipationScoreInput = document.getElementById("classParticipationScore");
         var classParticipationTotalInput = document.getElementById("classParticipationTotal");
@@ -243,6 +244,7 @@ var examApp = {
             }
         }
     },
+    //Lecture Finals Class Participation
     handleClassParticipationInputFinals: function () {
       var classParticipationScoreInput = document.getElementById("classParticipationScoreFinals");
       var classParticipationTotalInput = document.getElementById("classParticipationTotalFinals");
@@ -268,7 +270,7 @@ var examApp = {
         }
       }
     },
-      
+    //Lecture Midterm Quiz
     handleQuizLengthInput: function () {
       var quizLengthInput = document.getElementById("quizLength");
       var quizScoreTotalContainer = document.getElementById("quizScoreTotalContainer");
@@ -356,7 +358,7 @@ var examApp = {
         }
       });
     },
-    
+    //Lab Finals Quiz
     handleFinalQuizInput: function () {
       var finalQuizLengthInput = document.getElementById("finalQuizLength");
       var finalQuizScoreTotalContainer = document.getElementById("finalQuizScoreTotalContainer");
@@ -441,7 +443,7 @@ var examApp = {
         }
       });
     },
-      
+      //Lab Midterm Portfolio
         handlePortfolioLengthInput: function () {
           var portfolioLengthInput = document.getElementById("portfolioLength");
           var portfolioScoreTotalContainer = document.getElementById("portfolioScoreTotalContainer");
@@ -529,7 +531,8 @@ var examApp = {
             }
           });
         },
-        
+
+        //Lab finals portfolio
         handleFinalPortfolioInput: function () {
           var finalPortfolioLengthInput = document.getElementById("finalPortfolioLength");
           var finalPortfolioScoreTotalContainer = document.getElementById("finalPortfolioScoreTotalContainer");
@@ -614,7 +617,7 @@ var examApp = {
             }
           });
         },
-        
+      //Lecture midterm Exam
         handleMidtermInput: function () {
           var midtermScoreInput = document.getElementById("midtermScore");
           var midtermItemsInput = document.getElementById("midtermItems");
@@ -652,7 +655,7 @@ var examApp = {
             }
           });
         },
-    
+    //lecture finals Exam
         handleFinalExamInput: function () {
           var finalExamScoreInput = document.getElementById("finalExamScore");
           var finalExamQuestionsInput = document.getElementById("finalExamQuestions");

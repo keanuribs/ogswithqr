@@ -1060,7 +1060,7 @@ function consolidation(){
   }
   //final output
   console.log("Final Grade: "+finalgrade.toFixed(2),"Consolidated Grade: ", consolidated);
-  alert("Final Grade: "+finalgrade.toFixed(2)+"\nConsolidated Grade: ", consolidated)
+  alert("Final Grade: "+finalgrade.toFixed(2)+"\nConsolidated Grade: "+consolidated)
 }
  
 function showSelectedSession () {

@@ -44,6 +44,7 @@ $studentsResult = $conn->query($studentsQuery);
 <form>
   <label for="sessionType">Select Session Type:</label>
   <select id="sessionType">
+    <option value="" disabled selected>Select your option</option>
     <option value="lecture">Lecture</option>
     <option value="lab">Lab</option>
   </select>
@@ -53,6 +54,7 @@ $studentsResult = $conn->query($studentsQuery);
   <div id="lectureForm" class="hidden">
     <label for="examType">Select Exam Type:</label>
     <select id="examType">
+      <option value="" disabled selected>Select your option</option>
       <option value="midterm">Midterm</option>
       <option value="finals">Finals</option>
     </select>
@@ -65,6 +67,7 @@ $studentsResult = $conn->query($studentsQuery);
     <select id="examComponent">
       <!-- Options for Midterm -->
       <optgroup id="midtermOptions" label="Midterm">
+        <option value="" disabled selected>Select your option</option>
         <option value="attendance">Attendance</option>
         <option value="classParticipation">Class Participation</option>
         <option value="quiz">Quiz</option>
@@ -74,6 +77,7 @@ $studentsResult = $conn->query($studentsQuery);
 
       <!-- Options for Finals -->
       <optgroup id="finalsOptions" label="Finals">
+        <option value="" disabled selected>Select your option</option>
         <option value="classParticipationFinals">Class Participation</option>
         <option value="quizFinals">Quiz</option>
         <option value="portfolioFinals">Portfolio</option>
@@ -280,6 +284,7 @@ $studentsResult = $conn->query($studentsQuery);
   <div id="labForm" class="hidden">
     <label for="examTypeLab">Select Exam Type:</label>
     <select id="examTypeLab">
+      <option value="" disabled selected>Select your option</option>
       <option value="midterm">Midterm</option>
       <option value="finals">Finals</option>
     </select>
@@ -292,6 +297,7 @@ $studentsResult = $conn->query($studentsQuery);
     <select id="examComponentLab">
       <!-- Options for Midterm -->
       <optgroup id="midtermOptionsLab" label="Midterm">
+        <option value="" disabled selected>Select your option</option>
         <option value="labAttendance/labClassparticipation">Laboratory Attendance / ClassParticipation</option>
         <option value="labReports">Laboratory Reports</option>
         <option value="labPracticalExam">Practical Exam</option>
@@ -299,6 +305,7 @@ $studentsResult = $conn->query($studentsQuery);
 
       <!-- Options for Finals -->
       <optgroup id="finalsOptionsLab" label="Finals">
+        <option value="" disabled selected>Select your option</option>
         <option value="labFinalsReports">Laboratory Reports</option>
         <option value="labFinalsPracticalExam">Practical Exam</option>
       </optgroup>
@@ -426,7 +433,7 @@ $studentsResult = $conn->query($studentsQuery);
 </div>
 
   <div>
-    <button type="submit">Submit</button>
+    <button type="button" onclick="consolidation()">Submit</button>
   </div>
 
 </form>

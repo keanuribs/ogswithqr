@@ -1061,7 +1061,12 @@ function consolidation(){
   //final output
   console.log("Final Grade: "+finalgrade.toFixed(2),"Consolidated Grade: ", consolidated);
   alert("Final Grade: "+finalgrade.toFixed(2)+"\nConsolidated Grade: "+consolidated)
+  
+    // Set the values in the respective input fields
+    document.getElementById('finalgrade').value = finalgrade.toFixed(2);
+    document.getElementById('consolidated').value = consolidated.toFixed(2);
 }
+
  
 function showSelectedSession () {
   var sessionDropdown = document.getElementById("sessionType");

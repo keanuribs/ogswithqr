@@ -5,6 +5,23 @@ include __DIR__ . '/../../config.php';
 // Fetch existing students for dropdown
 $studentsQuery = "SELECT id, CONCAT(first_name, ' ', middle_name, ' ', last_name) AS full_name, student_number FROM tblstudents";
 $studentsResult = $conn->query($studentsQuery);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Retrieve form data
+  $student_name = $conn->real_escape_string($_POST["student_name"]);
+  $student_number = intval($_POST["student_number"]);
+
+  // Retrieve total attendance status for the selected student
+  $attendanceQuery = "SELECT COUNT(attendance_status) AS total_attendance FROM tblattendance WHERE student_id = (SELECT id FROM tblstudents WHERE student_number = $student_number)";
+  $attendanceResult = $conn->query($attendanceQuery);
+
+  if ($attendanceResult) {
+      $attendanceRow = $attendanceResult->fetch_assoc();
+      $totalAttendance = $attendanceRow['total_attendance'];
+  } else {
+      $totalAttendance = 0; // Default value if there's an error
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,6 +30,7 @@ $studentsResult = $conn->query($studentsQuery);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="script.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <title>Midterm and Finals Dropdown</title>
   <style>
     /* Added some basic styling for better presentation */
@@ -91,31 +109,69 @@ $studentsResult = $conn->query($studentsQuery);
   <div class="form-group">
     <label for="studentDropdown">Select Student:</label>
     <select id="studentDropdown" name="selectedStudentId">
-      <?php
-      // Loop through the fetched students and populate the dropdown
-      while ($row = $studentsResult->fetch_assoc()) {
-        echo "<option value='{$row['id']}'>{$row['full_name']} ({$row['student_number']})</option>";
-      }
-
-      // Close the database connection
-      $conn->close();
-      ?>
+        <?php
+        // Loop through the fetched students and populate the dropdown
+        while ($row = $studentsResult->fetch_assoc()) {
+            echo "<option value='{$row['id']}' data-student-number='{$row['student_number']}'>{$row['full_name']}</option>";
+        }
+        
+        // Close the database connection
+        $conn->close();
+        ?>
     </select>
-  </div>
+    <label for="studentNumber">Student Number:</label>
+    <input type="number" id="studentNumber" name="studentNumber" inputmode="numeric">
+</div>
 
-  <div class="form-group">
+<div class="form-group">
     <label for="attendanceScore">Score:</label>
     <input type="number" id="attendanceScore" name="attendanceScore" inputmode="numeric">
 
     <label for="attendanceTotal">Total:</label>
     <input type="number" id="attendanceTotal" name="attendanceTotal" inputmode="numeric">
-  </div>
+</div>
 
-  <div class="form-group">
+<div class="form-group">
     <label for="attendanceWeighted">Weighted 10%:</label>
     <input type="number" id="attendanceWeighted" name="attendanceWeighted" inputmode="numeric" readonly>
-  </div>
+
+    <label for="finalgrade">Final Grade</label>
+    <input type="number" id="finalgrade" name="finalgrade" inputmode="numeric" readonly>
+
+    <label for="consolidated">Consolidated</label>
+    <input type="number" id="consolidated" name="consolidated" inputmode="numeric" readonly>
 </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var studentDropdown = document.getElementById('studentDropdown');
+    var studentNumberInput = document.getElementById('studentNumber');
+    var attendanceScoreInput = document.getElementById('attendanceScore');
+
+    studentDropdown.addEventListener('change', function () {
+        var selectedOption = studentDropdown.options[studentDropdown.selectedIndex];
+        var selectedStudentId = selectedOption.value;
+        var studentNumber = selectedOption.getAttribute('data-student-number');
+
+        studentNumberInput.value = studentNumber;
+
+        // Add the AJAX call to fetch attendance data
+        $.ajax({
+            type: 'POST',
+            url: 'fetch-attendance.php',
+            data: { selectedStudentId: selectedStudentId },
+            success: function (response) {
+                var count = parseInt(response);
+                console.log("Count: " + count);
+                attendanceScoreInput.value = count;
+            },
+            error: function (error) {
+                console.error("Error fetching data: " + error);
+            }
+        });
+    });
+});
+</script>
 
     <div id="classParticipationForm" class="hidden">
       <h2>Class Participation Form</h2>
@@ -313,14 +369,6 @@ $studentsResult = $conn->query($studentsQuery);
 
     <div id="labAttendanceForm" class="hidden">
       <h2>Lab Attendance Form</h2>
-      <div class="form-group">
-        <label for="user1Name">Name:</label>
-        <input type="text" id="user1Name" name="user1Name" placeholder="User 1 Name">
-    
-        <label for="user1StudentNumber">Student Number:</label>
-        <input type="text" id="user1StudentNumber" name="user1StudentNumber" placeholder="User 1 Student Number">
-      </div>
-    
       <div class="form-group">
         <label for="user1Score">Score:</label>
         <input type="number" id="user1Score" name="user1Score" placeholder="Score">

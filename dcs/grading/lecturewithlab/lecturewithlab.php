@@ -58,6 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </style>
 </head>
 <body>
+  
+<div id="alertContainer" style="position: fixed; top: 0; width: 100%; background-color: #96fa82; text-align: center; padding: 10px; display: none;"></div>
 
 <form>
   <label for="sessionType">Select Session Type:</label>
@@ -479,7 +481,7 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
   
 </div>
-
+<br>
   <div>
     <button type="button" onclick="consolidation()">Submit</button>
   </div>

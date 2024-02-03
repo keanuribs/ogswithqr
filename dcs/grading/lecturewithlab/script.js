@@ -1024,6 +1024,9 @@ function consolidation(){
   var finalgrade = weightedlecture + weightedlab;
   var consolidated = 0;
 
+  // Display the alert at the top of the form
+displayAlert('Please go back to the exam type: midterm, Grade Component: Attendance to view the final grade and Consolidated');
+
   //computing for consolidated
   if(finalgrade<=49.99){
     consolidated=5.0;
@@ -1058,13 +1061,20 @@ function consolidation(){
   else if(finalgrade>=96.7&&finalgrade<=100){
       consolidated=1.0;
   }
-  //final output
-  console.log("Final Grade: "+finalgrade.toFixed(2),"Consolidated Grade: ", consolidated);
-  alert("Final Grade: "+finalgrade.toFixed(2)+"\nConsolidated Grade: "+consolidated)
   
-    // Set the values in the respective input fields
-    document.getElementById('finalgrade').value = finalgrade.toFixed(2);
-    document.getElementById('consolidated').value = consolidated.toFixed(2);
+  // Set the values in the respective input fields
+  document.getElementById('finalgrade').value = finalgrade.toFixed(2);
+  document.getElementById('consolidated').value = consolidated.toFixed(2);
+}
+function displayAlert(message) {
+  var alertContainer = document.getElementById('alertContainer');
+  alertContainer.innerHTML = '<strong>' + message + '</strong>';
+  alertContainer.style.display = 'block';
+
+  // Hide the alert after a few seconds (adjust the timeout as needed)
+  setTimeout(function () {
+    alertContainer.style.display = 'none';
+  }, 3000); // 3000 milliseconds (3 seconds)
 }
 
  

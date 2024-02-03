@@ -5,6 +5,23 @@ include __DIR__ . '/../../config.php';
 // Fetch existing students for dropdown
 $studentsQuery = "SELECT id, CONCAT(first_name, ' ', middle_name, ' ', last_name) AS full_name, student_number FROM tblstudents";
 $studentsResult = $conn->query($studentsQuery);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Retrieve form data
+  $student_name = $conn->real_escape_string($_POST["student_name"]);
+  $student_number = intval($_POST["student_number"]);
+
+  // Retrieve total attendance status for the selected student
+  $attendanceQuery = "SELECT COUNT(attendance_status) AS total_attendance FROM tblattendance WHERE student_id = (SELECT id FROM tblstudents WHERE student_number = $student_number)";
+  $attendanceResult = $conn->query($attendanceQuery);
+
+  if ($attendanceResult) {
+      $attendanceRow = $attendanceResult->fetch_assoc();
+      $totalAttendance = $attendanceRow['total_attendance'];
+  } else {
+      $totalAttendance = 0; // Default value if there's an error
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +30,8 @@ $studentsResult = $conn->query($studentsQuery);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="script.js" defer></script>
-  <title>Lecture</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <title>Midterm and Finals Dropdown</title>
   <style>
     /* Added some basic styling for better presentation */
     label, input {
@@ -32,15 +50,22 @@ $studentsResult = $conn->query($studentsQuery);
     .hidden {
       display: none;
     }
+
+    .score-total-container {
+    display: flex;
+    gap: 10px; /* Adjust the gap as needed */
+}
   </style>
 </head>
 <body>
+  
+<div id="alertContainer" style="position: fixed; top: 0; width: 100%; background-color: #96fa82; text-align: center; padding: 10px; display: none;"></div>
 
 <form>
   <label for="sessionType">Select Session Type:</label>
   <select id="sessionType">
+    <option value="" disabled selected>Select your option</option>
     <option value="lecture">Lecture</option>
-    <option value="lab">Lab</option>
   </select>
 
   <br>
@@ -48,6 +73,7 @@ $studentsResult = $conn->query($studentsQuery);
   <div id="lectureForm" class="hidden">
     <label for="examType">Select Exam Type:</label>
     <select id="examType">
+      <option value="" disabled selected>Select your option</option>
       <option value="midterm">Midterm</option>
       <option value="finals">Finals</option>
     </select>
@@ -60,6 +86,7 @@ $studentsResult = $conn->query($studentsQuery);
     <select id="examComponent">
       <!-- Options for Midterm -->
       <optgroup id="midtermOptions" label="Midterm">
+        <option value="" disabled selected>Select your option</option>
         <option value="attendance">Attendance</option>
         <option value="classParticipation">Class Participation</option>
         <option value="quiz">Quiz</option>
@@ -69,49 +96,82 @@ $studentsResult = $conn->query($studentsQuery);
 
       <!-- Options for Finals -->
       <optgroup id="finalsOptions" label="Finals">
+        <option value="" disabled selected>Select your option</option>
+        <option value="classParticipationFinals">Class Participation</option>
+        <option value="quizFinals">Quiz</option>
+        <option value="portfolioFinals">Portfolio</option>
         <option value="finalsExam">Finals Exam</option>
       </optgroup>
     </select>
 
     <div id="attendanceForm" class="hidden">
-      <h2>Attendance Form</h2>
+  <h2>Attendance Form</h2>
 
-      <div class="form-group">
-  <label for="studentDropdown">Select Student:</label>
-  <select id="studentDropdown" name="selectedStudentId">
-    <?php
-    // Loop through the fetched students and populate the dropdown
-    while ($row = $studentsResult->fetch_assoc()) {
-      echo "<option value='{$row['id']}' data-student-number='{$row['student_number']}'>{$row['full_name']}</option>";
-    }
-    ?>
-  </select>
-  <label for="studentNumber">Student Number:</label>
-  <input type="text" id="studentNumber" name="studentNumber" readonly>
+  <div class="form-group">
+    <label for="studentDropdown">Select Student:</label>
+    <select id="studentDropdown" name="selectedStudentId">
+        <?php
+        // Loop through the fetched students and populate the dropdown
+        while ($row = $studentsResult->fetch_assoc()) {
+            echo "<option value='{$row['id']}' data-student-number='{$row['student_number']}'>{$row['full_name']}</option>";
+        }
+        
+        // Close the database connection
+        $conn->close();
+        ?>
+    </select>
+    <label for="studentNumber">Student Number:</label>
+    <input type="number" id="studentNumber" name="studentNumber" inputmode="numeric">
 </div>
 
 <div class="form-group">
-  <label for="attendanceScore">Score:</label>
-  <input type="number" id="attendanceScore" name="attendanceScore" inputmode="numeric">
+    <label for="attendanceScore">Score:</label>
+    <input type="number" id="attendanceScore" name="attendanceScore" inputmode="numeric">
 
-  <label for="attendanceTotal">Total:</label>
-  <input type="number" id="attendanceTotal" name="attendanceTotal" inputmode="numeric">
+    <label for="attendanceTotal">Total:</label>
+    <input type="number" id="attendanceTotal" name="attendanceTotal" inputmode="numeric">
 </div>
 
 <div class="form-group">
-  <label for="attendanceWeighted">Weighted 10%:</label>
-  <input type="number" id="attendanceWeighted" name="attendanceWeighted" inputmode="numeric" readonly>
+    <label for="attendanceWeighted">Weighted 10%:</label>
+    <input type="number" id="attendanceWeighted" name="attendanceWeighted" inputmode="numeric" readonly>
+
+    <label for="finalgrade">Final Grade</label>
+    <input type="number" id="finalgrade" name="finalgrade" inputmode="numeric" readonly>
+
+    <label for="consolidated">Consolidated</label>
+    <input type="number" id="consolidated" name="consolidated" inputmode="numeric" readonly>
 </div>
 </div>
 <script>
-  // Add an event listener to the student dropdown
-  document.getElementById('studentDropdown').addEventListener('change', function () {
-    // Get the selected option
-    var selectedOption = this.options[this.selectedIndex];
+document.addEventListener('DOMContentLoaded', function () {
+    var studentDropdown = document.getElementById('studentDropdown');
+    var studentNumberInput = document.getElementById('studentNumber');
+    var attendanceScoreInput = document.getElementById('attendanceScore');
 
-    // Update the student number input field
-    document.getElementById('studentNumber').value = selectedOption.getAttribute('data-student-number');
-  });
+    studentDropdown.addEventListener('change', function () {
+        var selectedOption = studentDropdown.options[studentDropdown.selectedIndex];
+        var selectedStudentId = selectedOption.value;
+        var studentNumber = selectedOption.getAttribute('data-student-number');
+
+        studentNumberInput.value = studentNumber;
+
+        // Add the AJAX call to fetch attendance data
+        $.ajax({
+            type: 'POST',
+            url: 'fetch-attendance.php',
+            data: { selectedStudentId: selectedStudentId },
+            success: function (response) {
+                var count = parseInt(response);
+                console.log("Count: " + count);
+                attendanceScoreInput.value = count;
+            },
+            error: function (error) {
+                console.error("Error fetching data: " + error);
+            }
+        });
+    });
+});
 </script>
 
     <div id="classParticipationForm" class="hidden">
@@ -138,28 +198,28 @@ $studentsResult = $conn->query($studentsQuery);
           <label for="quizLength">Number of Quizzes:</label>
           <input type="number" id="quizLength" name="quizLength" inputmode="numeric">
         </div>
-        
       
         <div id="quizScoreTotalContainer" class="hidden">
           <!-- Quiz score and total fields will be dynamically added here -->
         </div>
 
         <div class="form-group">
-          <label for="quizOverallScore">Overall Score:</label>
-          <input type="number" id="quizOverallScore" name="quizOverallScore" inputmode="numeric" readonly>
+            <label for="quizOverallScore">Overall Score:</label>
+            <input type="number" id="quizOverallScore" name="quizOverallScore" inputmode="numeric" readonly>
 
-  
-          <label for="quizOverallTotal">Overall Total:</label>
-          <input type="number" id="quizOverallTotal" name="cquizOverallTotal" inputmode="numeric" readonly>
-        </div>
     
-      <div class="form-group">
-        <label for="quizWeighted">Weighted 15%:</label>
-        <input type="number" id="quizWeighted" name="quizWeighted" inputmode="numeric" readonly>
+            <label for="quizOverallTotal">Overall Total:</label>
+            <input type="number" id="quizOverallTotal" name="cquizOverallTotal" inputmode="numeric" readonly>
+          </div>
+      
+        <div class="form-group">
+          <label for="quizWeighted">Weighted 15%:</label>
+          <input type="number" id="quizWeighted" name="quizWeighted" inputmode="numeric" readonly>
+        </div>
       </div>
-    </div>
       
       <div id="portfolioForm" class="hidden">
+        <h2>Portfolio Form</h2>
         <div class="form-group">
             <label for="portfolioLength">Number of Portfolios:</label>
             <input type="number" id="portfolioLength" name="portfolioLength" inputmode="numeric">
@@ -171,10 +231,10 @@ $studentsResult = $conn->query($studentsQuery);
 
         <div class="form-group">
             <label for="overallPortfolioScore">Overall Score:</label>
-            <input type="number" id="overallPortfolioScore" name="overallPortfolioScore" inputmode="numeric">
+            <input type="number" id="overallPortfolioScore" name="overallPortfolioScore" inputmode="numeric" readonly>
 
             <label for="overallPortfolioTotal">Overall Total:</label>
-            <input type="number" id="overallPortfolioTotal" name="overallPortfolioTotal" inputmode="numeric">
+            <input type="number" id="overallPortfolioTotal" name="overallPortfolioTotal" inputmode="numeric" readonly>
         </div>
 
         <div class="form-group">
@@ -182,18 +242,7 @@ $studentsResult = $conn->query($studentsQuery);
             <input type="number" id="portfolioWeighted" name="portfolioWeighted" inputmode="numeric" readonly>
         </div>
     </div>
-
-    <div id="midtermForm" class="hidden">
-        <!-- Midterm form content -->
-        <label for="midtermScore">Enter Midterm Score:</label>
-        <input type="number" id="midtermScore" name="midtermScore" inputmode="numeric">
-        <label for="midtermItems">Enter Number of Items:</label>
-        <input type="number" id="midtermItems" name="midtermItems" inputmode="numeric">
-        <label for="midtermWeighted">Weighted Percentage:</label>
-        <input type="text" id="midtermWeighted" name="midtermWeighted" readonly>
-        <!-- ... (other midterm form elements) -->
-    </div>
-
+    
     <div id="classParticipationFormFinals" class="hidden">
       <h2>Class Participation Form - Finals</h2>
       <div class="form-group">
@@ -265,55 +314,31 @@ $studentsResult = $conn->query($studentsQuery);
     <div id="finalExamForm" class="hidden">
       <h2>Last Part of the Lecture Final Exam Form</h2>
   
-      <div class="form-group">
           <label for="finalExamScore">Score:</label>
           <input type="number" id="finalExamScore" name="finalExamScore" inputmode="numeric">
-      </div>
-  
-      <div class="form-group">
           <label for="finalExamQuestions">Number of Questions:</label>
           <input type="number" id="finalExamQuestions" name="finalExamQuestions" inputmode="numeric">
-      </div>
-  
-      <div class="form-group">
           <label for="finalExamWeighted">Weighted 20%:</label>
           <input type="number" id="finalExamWeighted" name="finalExamWeighted" inputmode="numeric" readonly>
-      </div>
-  </div>
 
-  <div id="labForm" class="hidden">
-    <label for="examTypeLab">Select Exam Type:</label>
-    <select id="examTypeLab">
-      <option value="midterm">Midterm</option>
-      <option value="finals">Finals</option>
-    </select>
+    </div>
 
-    <p id="selectedExamLab"></p>
 
-    <br>
-
-    <label for="examComponentLab">Select Exam Component:</label>
-    <select id="examComponentLab">
-      <!-- Options for Midterm -->
-      <optgroup id="midtermOptionsLab" label="Midterm">
-        <option value="labAttendance">Lab Attendance</option>
-        <option value="labExperiment">Lab Experiment</option>
-      </optgroup>
-
-      <!-- Options for Finals -->
-      <optgroup id="finalsOptionsLab" label="Finals">
-        <option value="labFinalsExam">Lab Finals Exam</option>
-      </optgroup>
-    </select>
-
-    <div id="labAttendanceForm" class="hidden">
-      <h2>Lab Attendance Form</h2>
-      <!-- Add your lab attendance form fields here -->
+    <div id="midtermForm" class="hidden">
+      <h2>Midterm Form</h2>
+        <!-- Midterm form content -->
+        <label for="midtermScore">Enter Midterm Score:</label>
+        <input type="number" id="midtermScore" name="midtermScore" inputmode="numeric">
+        <label for="midtermItems">Enter Number of Items:</label>
+        <input type="number" id="midtermItems" name="midtermItems" inputmode="numeric">
+        <label for="midtermWeighted">Weighted Percentage:</label>
+        <input type="number" id="midtermWeighted" name="midtermWeighted" readonly>
+        <!-- ... (other midterm form elements) -->
     </div>
   </div>
 
   <div>
-    <button type="submit">Submit</button>
+  <button type="button" onclick="consolidation()">Calcu</button>
 </div>
 
 </form>

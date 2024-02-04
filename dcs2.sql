@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2024 at 02:51 PM
+-- Generation Time: Feb 04, 2024 at 03:21 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,152 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `dcs`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `finalsdata`
---
-
-CREATE TABLE `finalsdata` (
-  `id` int(11) NOT NULL,
-  `student_name` varchar(255) NOT NULL,
-  `student_number` int(11) NOT NULL,
-  `attendance_score` float NOT NULL,
-  `participation_score` float NOT NULL,
-  `quiz1_score` float NOT NULL,
-  `quiz1_total` float NOT NULL,
-  `quiz2_score` float NOT NULL,
-  `quiz2_total` float NOT NULL,
-  `quiz3_score` float NOT NULL,
-  `quiz3_total` float NOT NULL,
-  `quiz4_score` float NOT NULL,
-  `quiz4_total` float NOT NULL,
-  `quiz5_score` float NOT NULL,
-  `quiz5_total` float NOT NULL,
-  `quiz6_score` float NOT NULL,
-  `quiz6_total` float NOT NULL,
-  `quiz7_score` float NOT NULL,
-  `quiz7_total` float NOT NULL,
-  `quiz8_score` float NOT NULL,
-  `quiz8_total` float NOT NULL,
-  `quiz9_score` float NOT NULL,
-  `quiz9_total` float NOT NULL,
-  `quiz10_score` float NOT NULL,
-  `quiz10_total` float NOT NULL,
-  `portfolio1_score` float NOT NULL,
-  `portfolio1_total` float NOT NULL,
-  `portfolio2_score` float NOT NULL,
-  `portfolio2_total` float NOT NULL,
-  `portfolio3_score` float NOT NULL,
-  `portfolio3_total` float NOT NULL,
-  `portfolio4_score` float NOT NULL,
-  `portfolio4_total` float NOT NULL,
-  `portfolio5_score` float NOT NULL,
-  `portfolio5_total` float NOT NULL,
-  `portfolio6_score` float NOT NULL,
-  `portfolio6_total` float NOT NULL,
-  `portfolio7_score` float NOT NULL,
-  `portfolio7_total` float NOT NULL,
-  `portfolio8_score` float NOT NULL,
-  `portfolio8_total` float NOT NULL,
-  `portfolio9_score` float NOT NULL,
-  `portfolio9_total` float NOT NULL,
-  `portfolio10_score` float NOT NULL,
-  `portfolio10_total` float NOT NULL,
-  `finals_score` float NOT NULL,
-  `finals_total` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `finalsdata`
---
-
-INSERT INTO `finalsdata` (`id`, `student_name`, `student_number`, `attendance_score`, `participation_score`, `quiz1_score`, `quiz1_total`, `quiz2_score`, `quiz2_total`, `quiz3_score`, `quiz3_total`, `quiz4_score`, `quiz4_total`, `quiz5_score`, `quiz5_total`, `quiz6_score`, `quiz6_total`, `quiz7_score`, `quiz7_total`, `quiz8_score`, `quiz8_total`, `quiz9_score`, `quiz9_total`, `quiz10_score`, `quiz10_total`, `portfolio1_score`, `portfolio1_total`, `portfolio2_score`, `portfolio2_total`, `portfolio3_score`, `portfolio3_total`, `portfolio4_score`, `portfolio4_total`, `portfolio5_score`, `portfolio5_total`, `portfolio6_score`, `portfolio6_total`, `portfolio7_score`, `portfolio7_total`, `portfolio8_score`, `portfolio8_total`, `portfolio9_score`, `portfolio9_total`, `portfolio10_score`, `portfolio10_total`, `finals_score`, `finals_total`) VALUES
-(1, '2', 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `lecturedata`
---
-
-CREATE TABLE `lecturedata` (
-  `id` int(11) NOT NULL,
-  `student_name` varchar(255) NOT NULL,
-  `student_number` int(11) NOT NULL,
-  `attendance_score` float NOT NULL,
-  `participation_score` float NOT NULL,
-  `parcipation_total` float DEFAULT NULL,
-  `weighted_participation` decimal(10,2) DEFAULT NULL,
-  `quiz1_score` float NOT NULL,
-  `quiz1_total` float NOT NULL,
-  `quiz2_score` float NOT NULL,
-  `quiz2_total` float NOT NULL,
-  `quiz3_score` float NOT NULL,
-  `quiz3_total` float NOT NULL,
-  `quiz4_score` float NOT NULL,
-  `quiz4_total` float NOT NULL,
-  `quiz5_score` float NOT NULL,
-  `quiz5_total` float NOT NULL,
-  `quiz6_score` float NOT NULL,
-  `quiz6_total` float NOT NULL,
-  `quiz7_score` float NOT NULL,
-  `quiz7_total` float NOT NULL,
-  `quiz8_score` float NOT NULL,
-  `quiz8_total` float NOT NULL,
-  `quiz9_score` float NOT NULL,
-  `quiz9_total` float NOT NULL,
-  `quiz10_score` float NOT NULL,
-  `quiz10_total` float NOT NULL,
-  `weighted_quiz` decimal(10,2) DEFAULT NULL,
-  `portfolio1_score` float NOT NULL,
-  `portfolio1_total` float NOT NULL,
-  `portfolio2_score` float NOT NULL,
-  `portfolio2_total` float NOT NULL,
-  `portfolio3_score` float NOT NULL,
-  `portfolio3_total` float NOT NULL,
-  `portfolio4_score` float NOT NULL,
-  `portfolio4_total` float NOT NULL,
-  `portfolio5_score` float NOT NULL,
-  `portfolio5_total` float NOT NULL,
-  `portfolio6_score` float NOT NULL,
-  `portfolio6_total` float NOT NULL,
-  `portfolio7_score` float NOT NULL,
-  `portfolio7_total` float NOT NULL,
-  `portfolio8_score` float NOT NULL,
-  `portfolio8_total` float NOT NULL,
-  `portfolio9_score` float NOT NULL,
-  `portfolio9_total` float NOT NULL,
-  `portfolio10_score` float NOT NULL,
-  `portfolio10_total` float NOT NULL,
-  `weighted_portfolio` decimal(10,2) DEFAULT NULL,
-  `midterm_score` float NOT NULL,
-  `midterm_total` float NOT NULL,
-  `weighted_midterm` decimal(10,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `lecturedata`
---
-
-INSERT INTO `lecturedata` (`id`, `student_name`, `student_number`, `attendance_score`, `participation_score`, `parcipation_total`, `weighted_participation`, `quiz1_score`, `quiz1_total`, `quiz2_score`, `quiz2_total`, `quiz3_score`, `quiz3_total`, `quiz4_score`, `quiz4_total`, `quiz5_score`, `quiz5_total`, `quiz6_score`, `quiz6_total`, `quiz7_score`, `quiz7_total`, `quiz8_score`, `quiz8_total`, `quiz9_score`, `quiz9_total`, `quiz10_score`, `quiz10_total`, `weighted_quiz`, `portfolio1_score`, `portfolio1_total`, `portfolio2_score`, `portfolio2_total`, `portfolio3_score`, `portfolio3_total`, `portfolio4_score`, `portfolio4_total`, `portfolio5_score`, `portfolio5_total`, `portfolio6_score`, `portfolio6_total`, `portfolio7_score`, `portfolio7_total`, `portfolio8_score`, `portfolio8_total`, `portfolio9_score`, `portfolio9_total`, `portfolio10_score`, `portfolio10_total`, `weighted_portfolio`, `midterm_score`, `midterm_total`, `weighted_midterm`) VALUES
-(5, '2', 2, 2, 2, NULL, NULL, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0.00, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, NULL, 2, 2, NULL),
-(6, 'Robinn May Dominguez', 202010123, 2, 2, NULL, NULL, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0.00, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, NULL, 2, 2, NULL),
-(7, 'Vice Mariano Serkis', 202010125, 1, 2, NULL, NULL, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0.00, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, NULL, 2, 2, NULL),
-(8, 'Robinn May Dominguez', 202010123, 3, 3, NULL, NULL, 3, 3, 33, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
-(9, 'Victor Anastacio Vermosa', 202010124, 2, 1, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
-(10, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
-(11, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 30.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
-(12, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 30.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
-(13, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 33, 3, NULL),
-(14, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 33, 3, NULL),
-(15, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 33, 3, NULL),
-(16, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 7.50, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
-(17, 'Victor Anastacio Vermosa', 202010124, 2, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 33, 3, 3, 3, 3, 3, 3, 7.50, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, NULL, 3, 3, NULL),
-(18, 'Robinn May Dominguez', 202010123, 3, 3, NULL, NULL, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 25.00, 3, 3, 20.00),
-(19, 'Robinn May Dominguez', 202010123, 3, 3, 3, 10.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 25.00, 3, 3, 20.00),
-(20, 'Victor Anastacio Vermosa', 202010124, 2, 3, 3, 10.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15.00, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 25.00, 3, 3, 20.00);
 
 -- --------------------------------------------------------
 
@@ -260,7 +114,8 @@ INSERT INTO `tblclass` (`id`, `professor_id`, `day_id`, `course_id`, `section_id
 (93, 1, 1, 1, 1, 4, NULL, NULL, NULL, '?PNG\r\n\Z\n\0\0\0\rIHDR\0\0\0?\0\0\0?\0\0\0#{\0\0\0PLTE\0\0\0????ٟ?\0\0\0	pHYs\0\0?\0\0??+\0\0?IDATH???ۍAɀ??$?j????#???9??yFDdvuFt??x?H?;k?Xs?\\???Xf?E#jL??????/Lujl??H???D????m??IN(?*ɖ??͍?4/??4?N??!???3?y??C^??e?d?+???m?TI(?(?5{?{C G?X(?MTG!???}', '2024-01-09 12:36:57', '20:00:00', '21:00:00', 'CVSU101', 'CVSU history', NULL, NULL, 'qrcodes/class_93.png', '1', 1, NULL, NULL),
 (94, 2, 1, 1, 1, 1, NULL, NULL, NULL, '?PNG\r\n\Z\n\0\0\0\rIHDR\0\0\0?\0\0\0?\0\0\0?q\0\0\0PLTE\0\0\0????ٟ?\0\0\0	pHYs\0\0?\0\0??+\0\0?IDATX????m?0D????Lf? ??A?2?ϝ??ٛ;v??<??????}?\"?]?E_?]>?k?????qK?lA}?崛%s?\r????????????Hjv????C-n??\\?`???S⢐??C???IR??M%?K6?W??k\r?%?t??#S?iM??W??qʠ 0%?????q$??d:ye?', '2024-01-09 14:13:12', '06:00:00', '07:00:00', 'CVSU101', 'CVSU history', NULL, NULL, 'qrcodes/class_94.png', '1', 1, NULL, NULL),
 (95, 2, 3, 1, 1, 4, NULL, NULL, NULL, '?PNG\r\n\Z\n\0\0\0\rIHDR\0\0\0?\0\0\0?\0\0\0?q\0\0\0PLTE\0\0\0????ٟ?\0\0\0	pHYs\0\0?\0\0??+\0\0?IDATX???[nQC????ށ??K?~?f?g???y13????û?yU??{?????r?F????#??k???];¿k???ȯ?l^???????W>????_?]*?\"5???1??΁?Z???.+???Գ\rF????a?T??`??+??6??V-~?Kx%?D?&B??y??}??O', '2024-01-10 01:08:52', '09:00:00', '10:00:00', 'CVSU101', 'CVSU history', NULL, NULL, 'qrcodes/class_95.png', '1', 3, NULL, NULL),
-(96, 1, 3, 1, 1, 4, NULL, NULL, NULL, '?PNG\r\n\Z\n\0\0\0\rIHDR\0\0\0?\0\0\0?\0\0\0?q\0\0\0PLTE\0\0\0????ٟ?\0\0\0	pHYs\0\0?\0\0??+\0\0?IDATX????m?0????ߒ?\"???^{E??\0??????,vv??R?????%E?3g<T?\n?x?????.??z???=?sf-w?~7??]+]???/?\r?`?_????d_??SX%?ĝ#?j_4???????:?ډ???}??Ux???(=֗?q*Ti?y?E?\'=y?*S?.??$.??q???rX5?%', '2024-01-10 01:21:21', '09:00:00', '10:00:00', 'CVSU101', 'CVSU history', NULL, NULL, 'qrcodes/class_96.png', '1', 3, NULL, NULL);
+(96, 1, 3, 1, 1, 4, NULL, NULL, NULL, '?PNG\r\n\Z\n\0\0\0\rIHDR\0\0\0?\0\0\0?\0\0\0?q\0\0\0PLTE\0\0\0????ٟ?\0\0\0	pHYs\0\0?\0\0??+\0\0?IDATX????m?0????ߒ?\"???^{E??\0??????,vv??R?????%E?3g<T?\n?x?????.??z???=?sf-w?~7??]+]???/?\r?`?_????d_??SX%?ĝ#?j_4???????:?ډ???}??Ux???(=֗?q*Ti?y?E?\'=y?*S?.??$.??q???rX5?%', '2024-01-10 01:21:21', '09:00:00', '10:00:00', 'CVSU101', 'CVSU history', NULL, NULL, 'qrcodes/class_96.png', '1', 3, NULL, NULL),
+(97, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL, '2024-02-03 15:23:40', '11:11:00', '12:12:00', 'CVSU101', 'CVSU history', NULL, NULL, 'qrcodes/class_97.png', '1', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -374,6 +229,18 @@ INSERT INTO `tblsection` (`section_id`, `section_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tblstudentclass`
+--
+
+CREATE TABLE `tblstudentclass` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) DEFAULT NULL,
+  `class_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tblstudents`
 --
 
@@ -421,6 +288,55 @@ INSERT INTO `tblyearlvl` (`id`, `yr_lvl`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_lecture`
+--
+
+CREATE TABLE `tbl_lecture` (
+  `id` int(11) NOT NULL,
+  `selectedStudentId` int(11) DEFAULT NULL,
+  `studentNumber` int(11) DEFAULT NULL,
+  `finalgrade` decimal(5,2) DEFAULT NULL,
+  `consolidated` decimal(5,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_lecture`
+--
+
+INSERT INTO `tbl_lecture` (`id`, `selectedStudentId`, `studentNumber`, `finalgrade`, `consolidated`) VALUES
+(1, 2, 202010124, NULL, 0.00),
+(2, 2, 202010124, NULL, 1.00),
+(3, 2, 202010124, NULL, 1.00),
+(4, 2, 202010124, 90.00, 1.75),
+(8, 2, 202010124, 0.00, 0.00),
+(9, 3, 202010125, 0.00, 0.00),
+(10, 2, 202010124, 0.00, 0.00),
+(11, 2, 202010124, 0.00, 0.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_wlab`
+--
+
+CREATE TABLE `tbl_wlab` (
+  `id` int(11) NOT NULL,
+  `selectedStudentId` int(11) DEFAULT NULL,
+  `studentNumber` int(11) DEFAULT NULL,
+  `finalGrade` decimal(5,2) DEFAULT NULL,
+  `consolidated` decimal(5,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_wlab`
+--
+
+INSERT INTO `tbl_wlab` (`id`, `selectedStudentId`, `studentNumber`, `finalGrade`, `consolidated`) VALUES
+(1, 2, 202010124, 0.00, 0.00);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user2`
 --
 
@@ -456,18 +372,6 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `code`, `otp_creation_ti
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `finalsdata`
---
-ALTER TABLE `finalsdata`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `lecturedata`
---
-ALTER TABLE `lecturedata`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `members`
@@ -525,6 +429,14 @@ ALTER TABLE `tblsection`
   ADD PRIMARY KEY (`section_id`);
 
 --
+-- Indexes for table `tblstudentclass`
+--
+ALTER TABLE `tblstudentclass`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `class_id` (`class_id`);
+
+--
 -- Indexes for table `tblstudents`
 --
 ALTER TABLE `tblstudents`
@@ -535,6 +447,19 @@ ALTER TABLE `tblstudents`
 -- Indexes for table `tblyearlvl`
 --
 ALTER TABLE `tblyearlvl`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_lecture`
+--
+ALTER TABLE `tbl_lecture`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `selectedStudentId` (`selectedStudentId`);
+
+--
+-- Indexes for table `tbl_wlab`
+--
+ALTER TABLE `tbl_wlab`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -554,18 +479,6 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `finalsdata`
---
-ALTER TABLE `finalsdata`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `lecturedata`
---
-ALTER TABLE `lecturedata`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
@@ -581,7 +494,7 @@ ALTER TABLE `tblattendance`
 -- AUTO_INCREMENT for table `tblclass`
 --
 ALTER TABLE `tblclass`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `tblclasstype`
@@ -608,6 +521,12 @@ ALTER TABLE `tblsection`
   MODIFY `section_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT for table `tblstudentclass`
+--
+ALTER TABLE `tblstudentclass`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tblstudents`
 --
 ALTER TABLE `tblstudents`
@@ -618,6 +537,18 @@ ALTER TABLE `tblstudents`
 --
 ALTER TABLE `tblyearlvl`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `tbl_lecture`
+--
+ALTER TABLE `tbl_lecture`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `tbl_wlab`
+--
+ALTER TABLE `tbl_wlab`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user2`
@@ -650,6 +581,19 @@ ALTER TABLE `tblclass`
   ADD CONSTRAINT `tblclass_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `tblcourse` (`course_id`),
   ADD CONSTRAINT `tblclass_ibfk_3` FOREIGN KEY (`section_id`) REFERENCES `tblsection` (`section_id`),
   ADD CONSTRAINT `tblclass_ibfk_4` FOREIGN KEY (`year_level`) REFERENCES `tblyearlvl` (`id`);
+
+--
+-- Constraints for table `tblstudentclass`
+--
+ALTER TABLE `tblstudentclass`
+  ADD CONSTRAINT `tblstudentclass_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `tblstudents` (`id`),
+  ADD CONSTRAINT `tblstudentclass_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `tblclass` (`id`);
+
+--
+-- Constraints for table `tbl_lecture`
+--
+ALTER TABLE `tbl_lecture`
+  ADD CONSTRAINT `tbl_lecture_ibfk_1` FOREIGN KEY (`selectedStudentId`) REFERENCES `tblstudents` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

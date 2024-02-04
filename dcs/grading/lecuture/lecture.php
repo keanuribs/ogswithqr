@@ -105,46 +105,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </select>
 
     <div id="attendanceForm" class="hidden">
-  <h2>Attendance Form</h2>
+        <h2>Attendance Form</h2>
 
-  <div class="form-group">
-    <label for="studentDropdown">Select Student:</label>
-    <select id="studentDropdown" name="selectedStudentId">
-        <?php
-        // Loop through the fetched students and populate the dropdown
-        while ($row = $studentsResult->fetch_assoc()) {
-            echo "<option value='{$row['id']}' data-student-number='{$row['student_number']}'>{$row['full_name']}</option>";
-        }
+        <div class="form-group">
+          <label for="studentDropdown">Select Student:</label>
+          <select id="studentDropdown" name="selectedStudentId">
+            <?php
+              // Loop through the fetched students and populate the dropdown
+             while ($row = $studentsResult->fetch_assoc()) {
+              echo "<option value='{$row['id']}' data-student-number='{$row['student_number']}'>{$row['full_name']}</option>";
+            }
         
-        // Close the database connection
-        $conn->close();
-        ?>
-    </select>
-    <label for="studentNumber">Student Number:</label>
-    <input type="number" id="studentNumber" name="studentNumber" inputmode="numeric">
-</div>
+           // Close the database connection
+           $conn->close();
+           ?>
+           </select>
+          <label for="studentNumber">Student Number:</label>
+          <input type="number" id="studentNumber" name="studentNumber" inputmode="numeric">
+        </div>
 
-<div class="form-group">
-    <label for="attendanceScore">Score:</label>
-    <input type="number" id="attendanceScore" name="attendanceScore" inputmode="numeric">
+        <div class="form-group">
+          <label for="attendanceScore">Score:</label>
+          <input type="number" id="attendanceScore" name="attendanceScore" inputmode="numeric"readonly>
 
-    <label for="attendanceTotal">Total:</label>
-    <input type="number" id="attendanceTotal" name="attendanceTotal" inputmode="numeric">
-</div>
+          <label for="attendanceTotal">Total:</label>
+          <input type="number" id="attendanceTotal" name="attendanceTotal" inputmode="numeric" required>
+        </div>
 
-<div class="form-group">
-    <label for="attendanceWeighted">Weighted 10%:</label>
-    <input type="number" id="attendanceWeighted" name="attendanceWeighted" inputmode="numeric" readonly>
+        <div class="form-group">
+         <label for="attendanceWeighted">Weighted 10%:</label>
+         <input type="number" id="attendanceWeighted" name="attendanceWeighted" inputmode="numeric" readonly>
 
-    <label for="finalgrade">Final Grade</label>
-    <input type="number" id="finalgrade" name="finalgrade" inputmode="numeric" readonly>
+          <label for="finalgrade">Final Grade</label>
+          <input type="number" id="finalgrade" name="finalgrade" inputmode="numeric" readonly>
 
-    <label for="consolidated">Consolidated</label>
-    <input type="number" id="consolidated" name="consolidated" inputmode="numeric" readonly>
-</div>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
+          <label for="consolidated">Consolidated</label>
+          <input type="number" id="consolidated" name="consolidated" inputmode="numeric" readonly>
+        </div>
+        <button type="button" id="submitButton">Submit Data</button>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
     var studentDropdown = document.getElementById('studentDropdown');
     var studentNumberInput = document.getElementById('studentNumber');
     var attendanceScoreInput = document.getElementById('attendanceScore');
@@ -170,10 +171,41 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error("Error fetching data: " + error);
             }
         });
+      });
+    });
+    document.getElementById('submitButton').addEventListener('click', function () {
+    // Collect form data manually
+    const selectedStudentId = document.getElementById('studentDropdown').value;
+    const studentNumber = document.getElementById('studentNumber').value;
+    const finalGrade = document.getElementById('finalgrade').value;
+    const consolidated = document.getElementById('consolidated').value;
+
+    // Debugging: Log the finalGrade value
+    console.log('Final Grade:', finalGrade);
+
+    // Create FormData manually
+    const formData = new FormData();
+    formData.append('submitAttendance', 'true'); // Add this line
+    formData.append('selectedStudentId', selectedStudentId);
+    formData.append('studentNumber', studentNumber);
+    formData.append('finalGrade', finalGrade);
+    formData.append('consolidated', consolidated);
+
+    // Fetch request
+    fetch('insert_data.php', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data); // Output the response from the server
+        // Additional handling if needed
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
 });
-</script>
-
+    </script>
     <div id="classParticipationForm" class="hidden">
       <h2>Class Participation Form</h2>
 
@@ -338,8 +370,8 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 
   <div>
-  <button type="button" onclick="consolidation()">Calcu</button>
-</div>
+    <button type="button" onclick="consolidation()">Calcu</button>
+  </div>
 
 </form>
 

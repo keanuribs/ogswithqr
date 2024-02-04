@@ -7,6 +7,14 @@ var grades = {
   Midterm: 0,
   FinalExam: 0,
 }
+document.addEventListener('DOMContentLoaded', function () {
+  var attendanceScoreInput = document.getElementById('attendanceScore');
+
+  if (attendanceScoreInput) {
+      attendanceScoreInput.addEventListener('input', handleAttendanceInput);
+  }
+
+});
 
 var examApp = {
     //(returning value)this one handle the user input of lecture midterm attendance form and compute it based on the user input of score and total
@@ -642,7 +650,6 @@ function displayAlert(message) {
     alertContainer.style.display = 'none';
   }, 3000); // 3000 milliseconds (3 seconds)
 }
-
 
 function showSelectedSession () {
   var sessionDropdown = document.getElementById("sessionType");

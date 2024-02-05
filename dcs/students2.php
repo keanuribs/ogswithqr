@@ -114,92 +114,97 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" />
 
     <!-- JavaScript module for application logic -->
-    <script src="js/app2.js" type="module"></script>
-  </head>
-  <body>
-   <?php include 'inc/sidebar.php';?>
+<script src="js/student-list.js"type="module"></script>
 
-    <section class="content">
-    <?php include 'inc/navbar.php';?>
-      <main>
+</head>
+<body>
+<?php include 'inc/sidebar.php'; ?>
+
+<section class="content">
+    <?php include 'inc/navbar.php'; ?>
+    <main>
         <div class="head-title">
-          <div class="left">
-            <h1>Students List</h1>
-            <ul class="breadcrumb">
-            </ul>
-          </div>
+            <div class="left">
+                <h1>Students List</h1>
+                <ul class="breadcrumb">
+                </ul>
+            </div>
         </div>
 
-<div class="datatable-container">
+        <div class="datatable-container">
+            <div class="top-panel">
+                <a href="#" class="btn btn-success" id="addStudentBtn"><i class="fas fa-plus"></i></a>
+            </div>
+            <table id="studentList" class="table table-striped border" style="width:100%">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Student Number</th>
+                    <th>Course</th>
+                    <th>Year</th>
+                    <th>Section</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </main>
+</section>
 
-    <div class="top-panel">
-        <a href="#" class="btn btn-success" id="addStudentBtn"><i class="fas fa-plus"></i></a>
-    </div>
-    <table id="studentList" class="table table-striped border" style="width:100%">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Last Name</th>
-                <th>First Name</th>
-                <th>Middle Name</th>
-                <th>Student Number</th>
-                <th>Course</th>
-                <th>Year Section</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    </table>
-</div>
-      </main>
-    </section>
-
-<div class="modal fade" id="userDataModal" tabindex="-1" aria-labelledby="userAddEditModalLabel" aria-hidden="true">
+<div class="modal fade" id="studentDataModal" tabindex="-1" aria-labelledby="studentAddEditModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="userModalLabel">Add New Student</h1>
+                <h1 class="modal-title fs-5" id="studentModalLabel">Add New Student</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form name="userDataFrm" id="userDataFrm">
-            <div class="modal-body">
-                <div class="frm-status"></div>
-                <div class="row mb-2">
-                <div class="col">
-                    <label for="studentLastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="studentLastName" placeholder="Enter Last Name" required>
-                </div>
-                <div class="col">
-                    <label for="studentFirstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="studentFirstName" placeholder="Enter First Name" required>
-                </div>
-                <div class="col">
-                    <label for="studentMiddleName" class="form-label">Middle Name</label>
-                    <input type="text" class="form-control" id="studentMiddleName" placeholder="Enter Middle Name" required>
-                </div>
-                </div>
-                <div class="mb-3">
-                    <label for="studentNumber" class="form-label">Student Number</label>
-                    <input type="text" class="form-control" id="studentNumber" placeholder="Enter student number" required>
-                </div>
-                <div class="row mb-2">
-                <div class="mb-3">
-                    <label for="course" class="form-label">Course</label>
-                    <input type="text" class="form-control" id="course" placeholder="Enter course" required>
-                </div>
-                <div class="row mb-2">
-                <div class="mb-3">
-                    <label for="yearsec" class="form-label">Year and Section</label>
-                    <input type="text" class="form-control" id="yearsec" placeholder="Enter Yr&Sec" required>
-                </div>
-            <div class="modal-footer">
-                <input type="hidden" id="studentID" value="0">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" id="submitStudentBtn">Submit</button>
-            </div>
+            <form name="studentDataFrm" id="studentDataFrm">
+                <div class="modal-body">
+                    <div class="frm-status"></div>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label for="studentLastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="studentLastName" placeholder="Enter Last Name" required>
+                        </div>
+                        <div class="col">
+                            <label for="studentFirstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="studentFirstName" placeholder="Enter First Name" required>
+                        </div>
+                        <div class="col">
+                            <label for="studentMiddleName" class="form-label">Middle Name</label>
+                            <input type="text" class="form-control" id="studentMiddleName" placeholder="Enter Middle Name" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="studentNumber" class="form-label">Student Number</label>
+                        <input type="text" class="form-control" id="studentNumber" placeholder="Enter Student Number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="course" class="form-label">Course</label>
+                        <input type="text" class="form-control" id="course" placeholder="Enter Course" required>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label for="year" class="form-label">Year</label>
+                            <input type="text" class="form-control" id="year" placeholder="Enter Year" required>
+                        </div>
+                        <div class="col">
+                            <label for="section" class="form-label">Section</label>
+                            <input type="text" class="form-control" id="section" placeholder="Enter Section" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="studentID" value="0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" id="submitStudentBtn">Submit</button>
+                    </div>
             </form>
         </div>
     </div>
 </div>
 
-  </body>
+</body>
 </html>

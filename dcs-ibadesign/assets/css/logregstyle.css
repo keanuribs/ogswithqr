@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  
+}
+body{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #3ca450;
+  background-image: url('../images/imuscampbg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.wrapper{
+  position: relative;
+  max-width: 430px;
+  width: 100%;
+  background: #fff;
+  padding: 34px;
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+.wrapper h2{
+  position: relative;
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.wrapper form{
+  margin-top: 30px;
+}
+.wrapper form .input-box{
+  height: 52px;
+  margin: 18px 0;
+}
+form .input-box input{
+  height: 100%;
+  width: 100%;
+  outline: none;
+  padding: 0 15px;
+  font-size: 17px;
+  font-weight: 400;
+  color: #333;
+  border: 1.5px solid #C7BEBE;
+  border-bottom-width: 2.5px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+.input-box input:focus,
+.input-box input:valid{
+  border: 3px solid #3ca450;
+}
+
+form h3{
+  color: #707070;
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+.input-box.button input{
+  color: #fff;
+  letter-spacing: 1px;
+  border: none;
+  background: #F7B304;
+  color: #0b0217;
+  cursor: pointer;
+}
+.input-box.button input:hover{
+  background: #3ca450;
+  color: #fff;
+  cursor: pointer;
+}
+form .text h3{
+ color: #333;
+ width: 100%;
+ text-align: center;
+
+}
+form .text h3 a{
+  color: #3ca450;
+  text-decoration: none;
+}
+form .text h3 a:hover{
+  text-decoration: none;
+  color: #F7B304;
+}
+form .textpass h3 a{
+  color: #3ca450;
+  text-decoration: none;
+  margin-left: 220px;
+}
+
+form .textpass h3 a:hover {
+  text-decoration: none;
+  color: #F7B304;
+}
+
+/* Add this CSS to move the icon inside the input box */
+.input-box {
+  position: relative;
+}
+
+.input-box i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px; /* Adjust the right position as needed */
+  cursor: pointer;
+  font-size: 20px;
+  color: #3ca450;
+}
+
+.alert {
+  /* Your existing alert styles */
+  padding: 1rem;
+  border-radius: 5px;
+  margin: 1rem 0;
+  /* Other styles... */
+}
+
+/* Modify the background-color of different alert types if needed */
+.alert-success {
+  background-color: #42ba96;
+  color: #fff;
+}
+
+.alert-danger {
+  background-color: #fc5555;
+  color: #fff;
+}
+
+.alert-info {
+  background-color: #2E9AFE;
+}
+
+.alert-warning {
+  background-color: #ff9966;
+}
+
+.alert-danger a.custom-link {
+  color: #fff; 
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.alert-danger a.custom-link:hover {
+  color: #3ca450;
+  text-decoration: none;
+  background-color: #fff;
+}

@@ -35,6 +35,38 @@
     } else {
         die("Query failed: " . mysqli_error($conn)); 
     }
+    $roles = isset($_SESSION['ROLES']) ? $_SESSION['ROLES'] : "Role Not Found";
+
+    $queryStudentCount = mysqli_query($conn, "SELECT COUNT(*) AS studentCount FROM students");
+
+    if ($queryStudentCount) {
+        $rowStudentCount = mysqli_fetch_assoc($queryStudentCount);
+        $studentCount = $rowStudentCount['studentCount'];
+    } else {
+        die("Query failed: " . mysqli_error($conn)); 
+    }
+
+    // Additional variable definitions
+    $queryCourseCount = mysqli_query($conn, "SELECT COUNT(*) AS courseCount FROM course");
+    $queryYearLevelCount = mysqli_query($conn, "SELECT COUNT(*) AS yearlevelCount FROM tblyearlvl");
+    $querySectionCount = mysqli_query($conn, "SELECT COUNT(*) AS sectionCount FROM tblsection");
+    $queryProfessorCount = mysqli_query($conn, "SELECT COUNT(*) AS professorCount FROM tblprofessors");
+
+    if ($queryCourseCount && $queryYearLevelCount && $querySectionCount && $queryProfessorCount) {
+        $rowCourseCount = mysqli_fetch_assoc($queryCourseCount);
+        $courseCount = $rowCourseCount['courseCount'];
+
+        $rowYearLevelCount = mysqli_fetch_assoc($queryYearLevelCount);
+        $yearlevelCount = $rowYearLevelCount['yearlevelCount'];
+
+        $rowSectionCount = mysqli_fetch_assoc($querySectionCount);
+        $sectionCount = $rowSectionCount['sectionCount'];
+
+        $rowProfessorCount = mysqli_fetch_assoc($queryProfessorCount);
+        $professorCount = $rowProfessorCount['professorCount'];
+    } else {
+        die("Query failed: " . mysqli_error($conn));
+    }
 ?>
 
 <!DOCTYPE html>

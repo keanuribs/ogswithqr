@@ -27,7 +27,7 @@
     }
     $roles = isset($_SESSION['ROLES']) ? $_SESSION['ROLES'] : "Role Not Found";
 
-    $queryStudentCount = mysqli_query($conn, "SELECT COUNT(*) AS studentCount FROM students");
+    $queryStudentCount = mysqli_query($conn, "SELECT COUNT(*) AS studentCount FROM tblstudents");
 
     if ($queryStudentCount) {
         $rowStudentCount = mysqli_fetch_assoc($queryStudentCount);

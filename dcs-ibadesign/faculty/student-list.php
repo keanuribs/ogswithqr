@@ -92,11 +92,59 @@ $roles = isset($_SESSION['ROLES']) ? $_SESSION['ROLES'] : "Role Not Found";
                 <th>Middle Name</th>
                 <th>Student Number</th>
                 <th>Course</th>
-                <th>Year Section</th>
+                <th>Year</th>
+                <th>Section</th>
                 <th>Action</th>
             </tr>
         </thead>
     </table>
+    <div class="modal fade" id="userDataModal" tabindex="-1" aria-labelledby="userAddEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="userModalLabel">Add New Student</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form name="userDataFrm" id="userDataFrm">
+            <div class="modal-body">
+                <div class="frm-status"></div>
+                <div class="row mb-2">
+                <div class="col">
+                    <label for="studentLastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="studentLastName" placeholder="Enter Last Name" required>
+                </div>
+                <div class="col">
+                    <label for="studentFirstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="studentFirstName" placeholder="Enter First Name" required>
+                </div>
+                <div class="col">
+                    <label for="studentMiddleName" class="form-label">Middle Name</label>
+                    <input type="text" class="form-control" id="studentMiddleName" placeholder="Enter Middle Name" required>
+                </div>
+                </div>
+                <div class="mb-3">
+                    <label for="studentNumber" class="form-label">Student Number</label>
+                    <input type="text" class="form-control" id="studentNumber" placeholder="Enter student number" required>
+                </div>
+                <div class="row mb-2">
+                <div class="mb-3">
+                    <label for="course" class="form-label">Course</label>
+                    <input type="text" class="form-control" id="course" placeholder="Enter course" required>
+                </div>
+                <div class="row mb-2">
+                <div class="mb-3">
+                    <label for="yearsec" class="form-label">Year and Section</label>
+                    <input type="text" class="form-control" id="yearsec" placeholder="Enter Yr&Sec" required>
+                </div>
+            <div class="modal-footer">
+                <input type="hidden" id="studentID" value="0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="submitStudentBtn">Submit</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 </div>
 </main>
 </div>

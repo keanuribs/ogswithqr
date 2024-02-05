@@ -58,10 +58,8 @@ if ($query) {
     <script src="js/professors.js" type="module"></script>
 </head>
 <body>
-<?php include 'inc/sidebar.php'; ?>
 
 <section class="content">
-    <?php include 'inc/navbar.php'; ?>
     <main>
         <div class="head-title">
             <div class="left">

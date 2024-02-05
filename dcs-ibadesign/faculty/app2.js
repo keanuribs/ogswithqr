@@ -13,13 +13,13 @@ import 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.mi
 
 
 
-var studentListTable = $('#studentList').DataTable({
-   responsive: true,
+var studentListTable = new DataTable('#studentList', {
+  responsive: true,
   "processing": true,
   "serverSide": true,
   "ajax": "fetchData.php",
   "columnDefs": [
-      { "orderable": false, "targets":  8}
+    { "orderable": false, "targets": 8 }
   ]
 });
 
@@ -37,7 +37,8 @@ function addStudentData() {
     $('#studentMiddleName').val('');
     $('#studentNumber').val('');
     $('#course').val('');
-    $('#yearsec').val('');
+    $('#year').val('');
+    $('#section').val('');
     $('#studentID').val(0);
     $('#userDataModal').modal('show');
 }
@@ -72,7 +73,8 @@ function editData(student_data){
   $('#studentMiddleName').val(student_data.middle_name);
   $('#studentNumber').val(student_data.student_number);
   $('#course').val(student_data.course);
-  $('#yearsec').val(student_data.year_section);
+  $('#years').val(student_data.year);
+  $('#section').val(student_data.section); // Add this line for the 'section' input
   $('#studentID').val(student_data.id);
   $('#userDataModal').modal('show');
 }
@@ -88,7 +90,8 @@ function submitStudentData(){
       document.getElementById('studentMiddleName').value,
       document.getElementById('studentNumber').value,
       document.getElementById('course').value,
-      document.getElementById('yearsec').value,
+      document.getElementById('year').value,
+      document.getElementById('section').value,
       document.getElementById('studentID').value
   ];
   fetch("eventHandler.php", {

@@ -1,6 +1,6 @@
 <?php 
 // Include config file 
-include_once 'config.php'; 
+include_once '../db/config.php'; 
 
  
 // Database connection info 

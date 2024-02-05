@@ -109,6 +109,9 @@ if ($result === false) {
         // Display the QR code image without the "Scan QR Code" text
         $htmlContent .= "<td><img src='data:image/png;base64," . base64_encode($qrCodeImage) . "' alt='QR Code' style='width: 100px; height: 100px;'></td>";
 
+        // Link to view_students.php with the class ID as a parameter
+        $htmlContent .= "<td><a href='view_student.php?class_id={$row['id']}' class='btn btn-info text-white text-decoration-none'>View Records</a></td>";
+        
         // Download link for the QR code
         $htmlContent .= "<td><a href='download_qr.php?class_id={$row['id']}' download class='btn btn-success text-white text-decoration-none'>Download</a></td>";
 

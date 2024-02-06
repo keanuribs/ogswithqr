@@ -127,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="form-group">
           <label for="attendanceScore">Score:</label>
-          <input type="number" id="attendanceScore" name="attendanceScore" inputmode="numeric"readonly>
+          <input type="number" id="attendanceScore" name="attendanceScore" inputmode="numeric"readonly oninput="consolidation()">
 
           <label for="attendanceTotal">Total:</label>
           <input type="number" id="attendanceTotal" name="attendanceTotal" inputmode="numeric" required>
@@ -243,7 +243,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       <div class="form-group">
         <label for="classParticipationScore">Score:</label>
-        <input type="number" id="classParticipationScore" name="classParticipationScore" inputmode="numeric">
+        <input type="number" id="classParticipationScore" name="classParticipationScore" inputmode="numeric" oninput="consolidation()">
 
         <label for="classParticipationTotal">Number of Total:</label>
         <input type="number" id="classParticipationTotal" name="classParticipationTotal" inputmode="numeric">
@@ -269,7 +269,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="form-group">
             <label for="quizOverallScore">Overall Score:</label>
-            <input type="number" id="quizOverallScore" name="quizOverallScore" inputmode="numeric" readonly>
+            <input type="number" id="quizOverallScore" name="quizOverallScore" inputmode="numeric" readonly oninput="consolidation()">
 
     
             <label for="quizOverallTotal">Overall Total:</label>
@@ -295,7 +295,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="form-group">
             <label for="overallPortfolioScore">Overall Score:</label>
-            <input type="number" id="overallPortfolioScore" name="overallPortfolioScore" inputmode="numeric" readonly>
+            <input type="number" id="overallPortfolioScore" name="overallPortfolioScore" inputmode="numeric" readonly oninput="consolidation()">
 
             <label for="overallPortfolioTotal">Overall Total:</label>
             <input type="number" id="overallPortfolioTotal" name="overallPortfolioTotal" inputmode="numeric" readonly>
@@ -311,7 +311,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <h2>Class Participation Form - Finals</h2>
       <div class="form-group">
         <label for="classParticipationScoreFinals">Score:</label>
-        <input type="number" id="classParticipationScoreFinals" name="classParticipationScoreFinals" inputmode="numeric">
+        <input type="number" id="classParticipationScoreFinals" name="classParticipationScoreFinals" inputmode="numeric" oninput="consolidation()">
 
         <label for="classParticipationTotalFinals">Number of Total:</label>
         <input type="number" id="classParticipationTotalFinals" name="classParticipationTotalFinals" inputmode="numeric">
@@ -337,7 +337,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       
       <div class="form-group">
         <label for="finalQuizOverallScore">Overall Score:</label>
-        <input type="number" id="finalQuizOverallScore" name="finalQuizOverallScore" inputmode="numeric">
+        <input type="number" id="finalQuizOverallScore" name="finalQuizOverallScore" inputmode="numeric"oninput="consolidation()">
     
         <label for="finalQuizOverallTotal">Overall Total:</label>
         <input type="number" id="finalQuizOverallTotal" name="finalQuizOverallTotal" inputmode="numeric">
@@ -363,7 +363,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
       <div class="form-group">
         <label for="finalPortfolioOverallScore">Overall Score:</label>
-        <input type="number" id="finalPortfolioOverallScore" name="finalPortfolioOverallScore" inputmode="numeric">
+        <input type="number" id="finalPortfolioOverallScore" name="finalPortfolioOverallScore" inputmode="numeric"oninput="consolidation()">
         
         <label for="finalPortfolioOverallTotal">Overall Total:</label>
         <input type="number" id="finalPortfolioOverallTotal" name="finalPortfolioOverallTotal" inputmode="numeric">
@@ -376,10 +376,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <div id="finalExamForm" class="hidden">
-      <h2>Last Part of the Lecture Final Exam Form</h2>
+      <h2>Final Exam Form</h2>
   
           <label for="finalExamScore">Score:</label>
-          <input type="number" id="finalExamScore" name="finalExamScore" inputmode="numeric">
+          <input type="number" id="finalExamScore" name="finalExamScore" inputmode="numeric" oninput="consolidation()">
           <label for="finalExamQuestions">Number of Questions:</label>
           <input type="number" id="finalExamQuestions" name="finalExamQuestions" inputmode="numeric">
           <label for="finalExamWeighted">Weighted 20%:</label>
@@ -392,7 +392,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <h2>Midterm Form</h2>
         <!-- Midterm form content -->
         <label for="midtermScore">Enter Midterm Score:</label>
-        <input type="number" id="midtermScore" name="midtermScore" inputmode="numeric">
+        <input type="number" id="midtermScore" name="midtermScore" inputmode="numeric" oninput="consolidation()">
         <label for="midtermItems">Enter Number of Items:</label>
         <input type="number" id="midtermItems" name="midtermItems" inputmode="numeric">
         <label for="midtermWeighted">Weighted Percentage:</label>
@@ -436,7 +436,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <h2>Lab Attendance Form</h2>
       <div class="form-group">
         <label for="user1Score">Score:</label>
-        <input type="number" id="user1Score" name="user1Score" placeholder="Score">
+        <input type="number" id="user1Score" name="user1Score" placeholder="Score" oninput="consolidation()">
     
         <label for="user1Total">Total:</label>
         <input type="number" id="user1Total" name="user1Total" placeholder="Total">
@@ -459,7 +459,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
       <div class="form-group">
         <label for="labReportsOverallScore">Overall Score:</label>
-        <input type="number" id="labReportsOverallScore" name="labReportsOverallScore" inputmode="numeric">
+        <input type="number" id="labReportsOverallScore" name="labReportsOverallScore" inputmode="numeric" oninput="consolidation()">
     
         <label for="labReportsOverallTotal">Overall Total:</label>
         <input type="number" id="labReportsOverallTotal" name="labReportsOverallTotal" inputmode="numeric">
@@ -483,7 +483,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
       <div class="form-group">
         <label for="labPracticalExamOverallScore">Overall Score:</label>
-        <input type="number" id="labPracticalExamOverallScore" name="labPracticalExamOverallScore" inputmode="numeric">
+        <input type="number" id="labPracticalExamOverallScore" name="labPracticalExamOverallScore" inputmode="numeric" oninput="consolidation()">
     
         <label for="labpracticalExamOverallTotal">Overall Total:</label>
         <input type="number" id="labPracticalExamOverallTotal" name="labPracticalExamOverallTotal" inputmode="numeric">
@@ -507,7 +507,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   
       <div class="form-group">
           <label for="labFinalsReportsOverallScore">Overall Score:</label>
-          <input type="number" id="labFinalsReportsOverallScore" name="labFinalsReportsOverallScore" inputmode="numeric">
+          <input type="number" id="labFinalsReportsOverallScore" name="labFinalsReportsOverallScore" inputmode="numeric" oninput="consolidation()">
   
           <label for="labFinalsReportsOverallTotal">Overall Total:</label>
           <input type="number" id="labFinalsReportsOverallTotal" name="labFinalsReportsOverallTotal" inputmode="numeric">
@@ -531,7 +531,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="form-group">
         <label for="labFinalsPracticalExamOverallScore">Overall Score:</label>
-        <input type="number" id="labFinalsPracticalExamOverallScore" name="labFinalsPracticalExamOverallScore" inputmode="numeric">
+        <input type="number" id="labFinalsPracticalExamOverallScore" name="labFinalsPracticalExamOverallScore" inputmode="numeric"oninput="consolidation()">
 
         <label for="labFinalsPracticalExamOverallTotal">Overall Total:</label>
         <input type="number" id="labFinalsPracticalExamOverallTotal" name="labFinalsPracticalExamOverallTotal" inputmode="numeric">
@@ -545,9 +545,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   
 </div>
 <br>
-  <div>
-  <button type="button" style="background-color: #4CAF50; color: white; margin-top: 20px; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;" onclick="consolidation()">Calculate</button>
-  </div>
 
 </form>
 

@@ -7,14 +7,7 @@ var grades = {
   Midterm: 0,
   FinalExam: 0,
 }
-document.addEventListener('DOMContentLoaded', function () {
-  var attendanceScoreInput = document.getElementById('attendanceScore');
 
-  if (attendanceScoreInput) {
-      attendanceScoreInput.addEventListener('input', handleAttendanceInput);
-  }
-
-});
 
 var examApp = {
     //(returning value)this one handle the user input of lecture midterm attendance form and compute it based on the user input of score and total
@@ -139,11 +132,12 @@ var examApp = {
           scoreLabel.setAttribute("for", quizScoreId);
           scoreLabel.textContent = "Quiz " + i + " Score:";
 
-          var scoreInput = document.createElement("input");
+          var scoreInput = document.createElement("input" );
           scoreInput.setAttribute("type", "number");
           scoreInput.setAttribute("id", quizScoreId);
           scoreInput.setAttribute("name", quizScoreId);
           scoreInput.setAttribute("inputmode", "numeric");
+          scoreInput.setAttribute("oninput", "consolidation()"); 
 
           var totalLabel = document.createElement("label");
           totalLabel.setAttribute("for", quizTotalId);
@@ -236,6 +230,7 @@ var examApp = {
           scoreInput.setAttribute("id", finalQuizScoreId);
           scoreInput.setAttribute("name", finalQuizScoreId);
           scoreInput.setAttribute("inputmode", "numeric");
+          scoreInput.setAttribute("oninput", "consolidation()"); 
 
           var totalLabel = document.createElement("label");
           totalLabel.setAttribute("for", finalQuizTotalId);
@@ -339,6 +334,7 @@ var examApp = {
             scoreInput.setAttribute("id", portfolioScoreId);
             scoreInput.setAttribute("name", portfolioScoreId);
             scoreInput.setAttribute("inputmode", "numeric");
+            scoreInput.setAttribute("oninput", "consolidation()"); 
     
             var totalLabel = document.createElement("label");
             totalLabel.setAttribute("for", portfolioTotalId);
@@ -431,6 +427,7 @@ var examApp = {
             scoreInput.setAttribute("id", finalPortfolioScoreId);
             scoreInput.setAttribute("name", finalPortfolioScoreId);
             scoreInput.setAttribute("inputmode", "numeric");
+            scoreInput.setAttribute("oninput", "consolidation()"); 
     
             var totalLabel = document.createElement("label");
             totalLabel.setAttribute("for", finalPortfolioTotalId);

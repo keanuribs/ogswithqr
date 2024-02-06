@@ -173,6 +173,7 @@ var examApp = {
           scoreInput.setAttribute("id", quizScoreId);
           scoreInput.setAttribute("name", quizScoreId);
           scoreInput.setAttribute("inputmode", "numeric");
+          scoreInput.setAttribute("oninput", "consolidation()"); 
 
           var totalLabel = document.createElement("label");
           totalLabel.setAttribute("for", quizTotalId);
@@ -265,6 +266,7 @@ var examApp = {
           scoreInput.setAttribute("id", finalQuizScoreId);
           scoreInput.setAttribute("name", finalQuizScoreId);
           scoreInput.setAttribute("inputmode", "numeric");
+          scoreInput.setAttribute("oninput", "consolidation()"); 
 
           var totalLabel = document.createElement("label");
           totalLabel.setAttribute("for", finalQuizTotalId);
@@ -368,6 +370,7 @@ var examApp = {
             scoreInput.setAttribute("id", portfolioScoreId);
             scoreInput.setAttribute("name", portfolioScoreId);
             scoreInput.setAttribute("inputmode", "numeric");
+            scoreInput.setAttribute("oninput", "consolidation()"); 
     
             var totalLabel = document.createElement("label");
             totalLabel.setAttribute("for", portfolioTotalId);
@@ -460,6 +463,7 @@ var examApp = {
             scoreInput.setAttribute("id", finalPortfolioScoreId);
             scoreInput.setAttribute("name", finalPortfolioScoreId);
             scoreInput.setAttribute("inputmode", "numeric");
+            scoreInput.setAttribute("oninput", "consolidation()"); 
     
             var totalLabel = document.createElement("label");
             totalLabel.setAttribute("for", finalPortfolioTotalId);
@@ -649,6 +653,7 @@ var examApp = {
               scoreInput.setAttribute("id", labScoreId);
               scoreInput.setAttribute("name", labScoreId);
               scoreInput.setAttribute("inputmode", "numeric");
+              scoreInput.setAttribute("oninput", "consolidation()"); 
     
               var totalLabel = document.createElement("label");
               totalLabel.setAttribute("for", labTotalId);
@@ -737,6 +742,7 @@ var examApp = {
           scoreInput.setAttribute("id", practicalExamScoreId);
           scoreInput.setAttribute("name", practicalExamScoreId);
           scoreInput.setAttribute("inputmode", "numeric");
+          scoreInput.setAttribute("oninput", "consolidation()"); 
 
           var totalLabel = document.createElement("label");
           totalLabel.setAttribute("for", practicalExamTotalId);
@@ -832,6 +838,7 @@ var examApp = {
                     scoreInput.setAttribute("id", finalsReportsScoreId);
                     scoreInput.setAttribute("name", finalsReportsScoreId);
                     scoreInput.setAttribute("inputmode", "numeric");
+                    scoreInput.setAttribute("oninput", "consolidation()"); 
 
                     var totalLabel = document.createElement("label");
                     totalLabel.setAttribute("for", finalsReportsTotalId);
@@ -936,6 +943,7 @@ var examApp = {
                     scoreInput.setAttribute("id", practicalExamScoreId);
                     scoreInput.setAttribute("name", practicalExamScoreId);
                     scoreInput.setAttribute("inputmode", "numeric");
+                    scoreInput.setAttribute("oninput", "consolidation()"); 
 
                     var totalLabel = document.createElement("label");
                     totalLabel.setAttribute("for", practicalExamTotalId);

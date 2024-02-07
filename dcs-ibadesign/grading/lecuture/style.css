@@ -114,13 +114,4 @@ hr {
     form {
         width: 95%;
     }
-
-    .side-by-side {
-        display: flex;
-        align-items: center;
-    }
-    
-    .side-by-side > div {
-        margin-right: 20px; /* Adjust as needed */
-    }
 }
